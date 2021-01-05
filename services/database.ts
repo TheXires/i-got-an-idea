@@ -79,7 +79,6 @@ function getUserProjects(userID: string) {
     return fs.collection('projects').where('authorID', '==', userID).withConverter(profileDataConverter);
 }
 
-
 /**
  * Returns a query object for fetching the existing projects by the given order and filtered by the filters defined in the string array
  * possible entities are:
@@ -104,27 +103,35 @@ function getUserProjects(userID: string) {
  */
 function getProjects(oldestComesLast = true, filters = [""]) {
     return fs.collection('projects')
-        // .
-        // where("tags.0", '==', filters.find(e => e === "Frontend")).
-        // where("tags.1", '==', filters.find(e => e === "Backend")).
-        // where("tags.2", '==', filters.find(e => e === "Datenhaltung")).
-        // where("tags.3", '==', filters.find(e => e === "iOS")).
-        // where("tags.4", '==', filters.find(e => e === "Android")).
-        // where("tags.5", '==', filters.find(e => e === "HarmonyOS")).
-        // where("tags.6", '==', filters.find(e => e === "Webseite")).
-        // where("tags.7", '==', filters.find(e => e === "Windows")).
-        // where("tags.8", '==', filters.find(e => e === "MacOS")).
-        // where("tags.9", '==', filters.find(e => e === "ChromeOS")).
-        // where("tags.10", '==', filters.find(e => e === "Linux")).
-        // where("tags.11", '==', filters.find(e => e === "Smartwatch")).
-        // where("tags.12", '==', filters.find(e => e === "Microcontroller"))
+        .
+        where("tags.0", '==', filters.find(e => e === "Frontend") != undefined).
+        where("tags.1", '==', filters.find(e => e === "Backend") != undefined).
+        where("tags.2", '==', filters.find(e => e === "Datenhaltung") != undefined).
+        where("tags.3", '==', filters.find(e => e === "iOS") != undefined).
+        where("tags.4", '==', filters.find(e => e === "Android") != undefined).
+        where("tags.5", '==', filters.find(e => e === "HarmonyOS") != undefined).
+        where("tags.6", '==', filters.find(e => e === "Webseite") != undefined).
+        where("tags.7", '==', filters.find(e => e === "Windows") != undefined).
+        where("tags.8", '==', filters.find(e => e === "MacOS") != undefined).
+        where("tags.9", '==', filters.find(e => e === "ChromeOS") != undefined).
+        where("tags.10", '==', filters.find(e => e === "Linux") != undefined).
+        where("tags.11", '==', filters.find(e => e === "Smartwatch") != undefined).
+        where("tags.12", '==', filters.find(e => e === "Microcontroller") != undefined)
 
         .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(projectConverter);
 }
 
+function createProject(project: Project) {
+    try {
+        fs.collection('projects').doc().withConverter(projectConverter).set(project);
+    } catch (error) {
+        alert("Error while setting projct data." + JSON.stringify(error));
+    }
+}
+
 export {
-    createProfileData, getUserProjects, updateProfileData, getProfileData,
-    getProjects
+    createProfileData, updateProfileData, getProfileData,
+    getUserProjects, getProjects, createProject
 }
 
 const profileDataConverter = {

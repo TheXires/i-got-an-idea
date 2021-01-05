@@ -46,8 +46,13 @@ function logOut(): void {
 /**
  * @returns The current user id
  */
-function getUID(): string | undefined {
-    return firebase.auth().currentUser?.uid;
+function getUID(): string {
+    const uid = firebase.auth().currentUser?.uid;
+    if (uid !== undefined) {
+        return uid;
+    } else {
+        throw 'Could not retrieve user ID!';
+    }
 }
 
 /**
