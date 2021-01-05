@@ -17,9 +17,8 @@ function Footer({ navigation }) {
 
 const style = StyleSheet.create({
   container: {
-    width: '80%',
-    flex: 1,
-    backgroundColor: Color.BACKGROUND,
+    width: '100%',
+    flex: 0,
     flexDirection: "column",
     textAlign: 'center'
   },
