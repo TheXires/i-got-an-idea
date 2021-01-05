@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Text} from 'react-native';
-import {Color} from '../customTypes/colors';
 
 
-function Footer({ navigation }) {
+function Footer({navigation}: {navigation: any}) {
   return (
     <View style={style.container}>
       <View style={style.links}>

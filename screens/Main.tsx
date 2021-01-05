@@ -17,7 +17,8 @@ const Main = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <Text onPress={logOut}>Startseite</Text>
+      <Text onPress={logOut} style={styles.testpadding}>Startseite</Text>
+      <Text onPress={() => console.log("LOOOOG")} style={styles.testpadding}>LOOOOOOOG</Text>
       <Text selectable>
         Content: {JSON.stringify(projects)}
       </Text>
@@ -35,7 +36,7 @@ const Main = ({navigation}: {navigation: any}) => {
         </View>
       )} */}
 
-      <Footer navigation={navigation} />
+      {/* <Footer navigation={navigation} /> */}
     </View>
   )
 }
@@ -53,5 +54,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Color.FONT
+  },
+  testpadding: {
+    padding: 10
   }
 });
