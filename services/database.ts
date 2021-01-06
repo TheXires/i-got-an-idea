@@ -55,7 +55,7 @@ function updateProfileData(user: ProfileData) {
 }
 
 /**
- * Fetches the profile data. Does'nt include projects the user created.
+ * Fetches the profile data. Doesn't include projects the user created.
  * The current users ID can be retrieved by auth.js -> getUID()
  * 
  * @param userID ID of the user to fetch the profile of

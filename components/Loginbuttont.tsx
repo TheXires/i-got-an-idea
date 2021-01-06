@@ -7,14 +7,14 @@ import {loginWithGoogle} from '../services/auth';
 function Loginbutton({provider}: {provider: string}) {
   return (
     <View>
-      <TouchableOpacity onPress={loginWithGoogle} style={style.button}>
+      <TouchableOpacity onPress={loginWithGoogle} style={styles.button}>
         <Text>Login with {provider}</Text>
       </TouchableOpacity>
     </View>
   )
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
     marginBottom: 15,
     marginRight: 'auto',

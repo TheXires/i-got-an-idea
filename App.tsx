@@ -26,6 +26,10 @@ import {StatusBar} from 'expo-status-bar';//TODO: needed?
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {Color} from "./customTypes/colors";
+import Ideadetails from "./screens/Ideadetails";
+import Settings from "./screens/Settings";
+import Profile from "./screens/Profile";
+import Chat from "./screens/Chat";
 
 const Stack = createStackNavigator();
 
@@ -46,9 +50,24 @@ export default function App() {
         ) : (
           <>
             <Stack.Screen name='Main' component={Main} options={{ headerShown: false}} />
+            <Stack.Screen name='Ideadetails' component={Ideadetails} />
+            <Stack.Screen name='Chat' component={Chat} />
+            <Stack.Screen name='Profile' component={Profile} />
+            <Stack.Screen name='Settings' component={Settings} />
           </>
         )}
-        <Stack.Screen name='Agb' component={Agb} options={{ title: 'AGB', headerRight: () => (<TouchableOpacity style={styles.button} onPress={null}><Text>Chat starten</Text></TouchableOpacity>)}} />
+        <Stack.Screen 
+          name='Agb' 
+          component={Agb} 
+          options={{ 
+            title: 'AGB', 
+            headerRight: () => (
+              <TouchableOpacity style={styles.button}>
+                <Text>Chat starten</Text>
+              </TouchableOpacity>
+            )
+          }}
+        />
         <Stack.Screen name='Datenschutz' component={Datenschutz} options={{ title: 'Datenschutz'}} />
         <Stack.Screen name='Impressum' component={Impressum} options={{ title: 'Impressum', headerStyle: {backgroundColor: Color.ERROR}, headerTintColor: Color.BACKGROUND, headerTitleStyle: { fontWeight: 'bold' }}} />
       </Stack.Navigator>
