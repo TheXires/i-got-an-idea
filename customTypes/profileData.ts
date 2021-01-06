@@ -4,5 +4,6 @@ export interface ProfileData {
     name: string;
     description: string;
     skills: string[];
-    blockedUsers: BlockedUser[];//TODO: Zu Objekt machen
+    blockedUsers: BlockedUser[];
+    id?: string;
 }

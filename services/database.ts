@@ -8,12 +8,14 @@ import {getProfilePictureURL, getUID} from './auth';
 const fs = firebase.firestore();
 
 /**
- * Updates the users profile to the given parameters. OVERWRITES unset parameters to undefined.
+ * Creates a profile. If this is called on an already existing user profile it will overwrite the current information.
+ * Make sure to use the update function to prevent data loss.
  * The profilePictureURL can be retrieved with auth.js -> getProfilePictureURL(). When left undefined this is done automatically
  * 
  * @param description
+ * @returns A promise which resolves when the data has been written
  */
-function createProfileData(user: ProfileData): void {
+function createProfileData(user: ProfileData) {
     if (user.profilePictureURL === undefined) {
         const url = getProfilePictureURL();
         if (url !== undefined && url !== null) {
@@ -21,7 +23,7 @@ function createProfileData(user: ProfileData): void {
         }
     }
     try {
-        fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).set(user);
+        return fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).set(user);
     } catch (error) {
         alert("Error while setting profile data." + JSON.stringify(error));
     }
@@ -42,10 +44,11 @@ function createProfileData(user: ProfileData): void {
  * !MUST BE CALLED ON AN ALREADY EXISTING PROFILE!
  * 
  * @param user The user information to update
+ * @returns A promise which resolves when the data has been written
  */
-function updateProfileData(user: ProfileData): void {
+function updateProfileData(user: ProfileData) {
     try {
-        fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).update(user);
+        return fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).update(user);
     } catch (error) {
         alert("Error while updating profile data. Make sure to call on existing profile!" + JSON.stringify(error));
     }
@@ -104,7 +107,7 @@ function getUserProjects(userID: string) {
 function getProjects(oldestComesLast = true, filters = [""]) {
     return fs.collection('projects')
         .
-        where("tags.0", '==', filters.find(e => e === "Frontend") != undefined).
+        where("tags.0", '==', filters.find(e => e === "Frontend") != undefined).//TODO: Filter Fixen
         where("tags.1", '==', filters.find(e => e === "Backend") != undefined).
         where("tags.2", '==', filters.find(e => e === "Datenhaltung") != undefined).
         where("tags.3", '==', filters.find(e => e === "iOS") != undefined).
@@ -121,17 +124,67 @@ function getProjects(oldestComesLast = true, filters = [""]) {
         .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(projectConverter);
 }
 
+/**
+ * Creates a new project. If this is called on an already existing project it will overwrite the current information.
+ * Make sure to use the update function to prevent data loss.
+ * 
+ * Following properties don't need to be set, they will be created automatically:
+ * 
+ * Project UID defaults to auth.ts -> getUID()
+ * 
+ * Timestamp defaults to now
+ * 
+ * id will be ignored, gets created by the database
+ * 
+ * @param project The project to create
+ * @returns a promise which resolves when the data has been written
+ */
 function createProject(project: Project) {
+    if (project.authorID == undefined) {
+        project.authorID = getUID();
+    }
+    if (project.creationTimestamp == undefined) {
+        project.creationTimestamp = firebase.firestore.Timestamp.now();
+    }
+    if (project.id != undefined) {
+        delete project.id;
+    }
     try {
-        fs.collection('projects').doc().withConverter(projectConverter).set(project);
+        return fs.collection('projects').doc().withConverter(projectConverter).set(project);
     } catch (error) {
-        alert("Error while setting projct data." + JSON.stringify(error));
+        alert("Error while creating a projct." + JSON.stringify(error));
+    }
+}
+
+/**
+ * Updates project to the given object. If an attribute should not be updated, set it to null (or leave it out).
+ * In TypeScript, this can be achieved by casting an inline object like this:
+ * ```typescript
+ * let test = {
+        name: "test",
+        description: "test",
+    } as Project;
+ * ```
+ * 
+ * !MUST BE CALLED ON AN ALREADY EXISTING PROJECT!
+ * 
+ * @param project The project information to update
+ * @returns A promise which resolves when the data has been written
+ */
+function updateProject(project: Project) {
+    if (project.id == undefined) {
+        throw 'The project ID can\'t be undefined: ' + JSON.stringify(project);
+    }
+    try {
+        return fs.collection('projects').doc(project.id).withConverter(projectConverter).update(project);
+    } catch (error) {
+        alert("Error while updating a projct." + JSON.stringify(error));
     }
 }
 
 export {
     createProfileData, updateProfileData, getProfileData,
-    getUserProjects, getProjects, createProject
+    getUserProjects, getProjects, createProject, updateProject
 }
 
 const profileDataConverter = {
@@ -151,6 +204,7 @@ const profileDataConverter = {
         data.blockedUsers = Object.keys(data.blockedUsers).map((userKey: any) => {
             return {id: userKey, name: data.blockedUsers[userKey]} as BlockedUser;
         })
+        data.id = snapshot.id;
         return data as ProfileData;
     }
 };
@@ -170,6 +224,7 @@ const projectConverter = {
     fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Project {
         const data = snapshot.data(options);
         data.tags = Object.keys(data.tags).filter(key => data.tags[key]);
+        data.id = snapshot.id;
         return data as Project;
     }
 };
