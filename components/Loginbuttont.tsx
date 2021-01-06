@@ -6,7 +6,7 @@ import {loginWithGoogle} from '../services/auth';
 
 function Loginbutton({provider}: {provider: string}) {
   return (
-    <View className="loginbutton">
+    <View>
       <TouchableOpacity onPress={loginWithGoogle} style={style.button}>
         <Text>Login with {provider}</Text>
       </TouchableOpacity>
