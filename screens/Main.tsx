@@ -1,27 +1,42 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, Button} from 'react-native';
 import Footer from '../components/Footer';
 import {getUID, logOut} from '../services/auth'
-import {getProjects, getUserProjects} from '../services/database';
+import {createProject, getProfileData, getProjects, getUserProjects} from '../services/database';
 import {Color} from '../customTypes/colors';
 
 //Firebase Hooks
-import {useCollectionData} from 'react-firebase-hooks/firestore';
+import {useCollectionData, useDocumentData} from 'react-firebase-hooks/firestore';
 import {Project} from '../customTypes/project';
 import {Tag} from '../customTypes/tags';
 import {useNavigation} from '@react-navigation/native';
+import {ProfileData} from '../customTypes/profileData';
+import {TouchableNativeFeedback, TouchableOpacity} from 'react-native-gesture-handler';
+import {ProjectFactory} from '../customTypes/projectFactory';
 
 const Main = ({navigation}: {navigation: any}) => {
-  const [projects, loading, error] = useCollectionData<Project>(getProjects());
-  
+  // const [projects, loading, error] = useCollectionData<Project>(getProjects());
+  const [profile, loading, error] = useDocumentData<ProfileData>(getProfileData(getUID()));
+
+
 
   return (
     <View style={styles.container}>
       <Text onPress={logOut} style={styles.testpadding}>Startseite</Text>
       <Text onPress={() => console.log("LOOOOG")} style={styles.testpadding}>LOOOOOOOG</Text>
-      <Text selectable>
-        Content: {JSON.stringify(projects)}
-      </Text>
+      {/* <Text selectable>
+        Content: {JSON.stringify(profile)}
+      </Text> */}
+      <TouchableOpacity onPress={() => {
+        createProject((new ProjectFactory).with()
+          .authorIDDefault()
+          .creationTimestampDefault()
+          .description("Im a test description")
+          .imageURLs(["https://i.imgur.com/mQ1d252.jpg"])
+          .name("I'm a test name")
+          .tagsEmpty()
+          .build())
+      }}><Text>ICH BIN EIN ERSTELLEN BUTTON</Text></TouchableOpacity>
       {/* {projects?.map(project =>
         <View>
           <Text>{project.name}</Text>
