@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, Button, ImageSourcePropType } from 'react-native';
+import { View, Image } from 'react-native';
 import spinner from '../assets/spinner.gif';
 
 /**
@@ -16,12 +16,12 @@ const CustomImage = ({source , imgSize}: {source: any, imgSize: number}) => {
         const widthData = await getWidth(source, imgSize);
         setIsLoading(false);
         setWidth(widthData);
-      }catch(e){
+      } catch(e) {
         alert(e);
       }
     }
     getData();
-  }, [])
+  }, []);
 
   if(!isLoading){
     return (

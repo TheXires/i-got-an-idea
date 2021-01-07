@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, ScrollView, View } from 'react-native';
 
 import CustomImage from '../components/CustomImage';
 import User from '../components/User';
 import { Color } from '../customTypes/colors';
 
 // implements the detail view for an idea sreached by a given id
-const Ideadetails = ({ navigation }:{navigation: any}) => {
+const Ideadetails = ({ navigation, ideaID }:{navigation: any, ideaID: string}) => {
   
 
   const [idea, setIdea] = useState({
@@ -26,7 +26,9 @@ const Ideadetails = ({ navigation }:{navigation: any}) => {
       <Text>{idea.description}</Text>
 
       <Text style={styles.h2}>Tags</Text>
-      { idea.tags.map((tag) => {return(<Text style={styles.tag} key={tag}> {tag}</Text>)}) }
+      <View style={styles.tagContainer}>
+        { idea.tags.map((tag) => {return(<Text style={styles.tag} key={tag}>{tag}</Text>)}) }
+      </View>
 
       <Text style={styles.h2}>Bilder</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
@@ -54,14 +56,27 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
-  tag: {
-    marginLeft: 15,
+  tagContainer: {
+    marginLeft: 0,
     marginRight: 'auto',
+    marginBottom: 0,
+    flexDirection: 'row'
+  },
+  tag: {
+    marginRight: 5,
     borderWidth: 2,
-    borderRadius: 50,
-    paddingHorizontal: 5,
-    marginBottom: 4
-  }
+    borderRadius: 11,
+    paddingHorizontal: '2%'
+  },
+
+  // tag: {
+  //   marginLeft: 15,
+  //   marginRight: 'auto',
+  //   borderWidth: 2,
+  //   borderRadius: 11,
+  //   paddingHorizontal: '1%',
+  //   marginBottom: 4
+  // }
 });
 
 export default Ideadetails;
