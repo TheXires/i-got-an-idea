@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity} from 'react-native'
 import { Color } from '../customTypes/colors';
 
-const Idea = () => {
+const Idea = ({navigation}: {navigation: any}) => {
   const [idea, setIdea] = useState({
     name: 'Name der Idee',
     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque voluptatibus corporis nisi sapiente assumenda error vitae labore. Amet, ipsa autem molestias libero reprehenderit, culpa similique quaerat eum eligendi tenetur tempore. Fuga provident facere illo laborum unde nemo, itaque quis harum asperiores sit animi fugiat ut id praesentium placeat a labore consectetur nesciunt in cum eveniet magnam. Sit illo molestiae pariatur velit! Porro facilis cum officiis iusto error consequuntur magnam! Aliquid culpa fugit velit quod unde amet eveniet, sit deleniti quidem ullam omnis libero molestiae nobis reprehenderit dicta distinctio illum ratione laborum enim architecto nisi tempora asperiores perferendis. Iure culpa impedit animi hic, nobis perferendis! Nobis aliquid consequuntur ipsam? Obcaecati, eaque?',
@@ -14,17 +14,24 @@ const Idea = () => {
     ]
   });
   
+  // TouchableOpacitys are around the Image as well as the name and description, but not around
+  // the tags. So that the user can scroll throught the tags without accidently clicking on the Idea.
   return (
     <View style={styles.container}>
-      { idea.images  !== null ? (<Image source={{uri: idea.images[0]}} style={styles.image} />) : (<Text></Text>) }
-      <View style={styles.innerBody}>
-        <Text style={styles.title}>{idea.name}</Text>
-        <Text numberOfLines={5} style={styles.description}>{idea.description}</Text>
-        <View style={styles.tagContainer}>
-          <Text style={styles.tag}>{idea.tags[0]}</Text>
-          <Text style={styles.tag}>{idea.tags[1]}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Ideadetails', { id: idea.name })} activeOpacity={1}>
+        { idea.images  !== null ? (<Image source={{uri: idea.images[2]}} style={styles.image} />) : (<Text></Text>) }
+      </TouchableOpacity>
+        <View style={styles.innerBody}>
+        <TouchableOpacity onPress={() => navigation.navigate('Ideadetails', { id: idea.name })} activeOpacity={1}>
+            <Text style={styles.name}>{idea.name}</Text>
+            <Text numberOfLines={4} style={styles.description}>{idea.description}</Text>
+          </TouchableOpacity>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.tagContainer}>
+            {idea.tags.map((tag) => {return(<Text style={styles.tag} key={tag}># {tag}</Text>)})}  
+            </View>
+          </ScrollView>
         </View>
-      </View>
     </View>
   )
 }
@@ -32,25 +39,27 @@ const Idea = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     marginHorizontal: 10,
     marginBottom: 15,
     flexDirection: 'row',
-    backgroundColor: Color.PRIMARY,
-    color: Color.FONT,
-    borderRadius: 20
+    backgroundColor: Color.BACKGROUND2,
+    borderRadius: 20,
+    overflow: 'hidden'
   },
   innerBody: {
-    marginLeft: 5,
-    marginRight: 15
+    marginLeft: 10,
+    marginRight: 15,
+    overflow: 'hidden',
   },
-  title: {
+  name: {
     marginTop: 5,
     fontSize: 16,
+    color: Color.FONT2,
     fontWeight: 'bold'
   },
   description: {
-    paddingRight: 110
+    paddingRight: 110,
+    color: Color.FONT3,
   },
   tagContainer: {
     marginLeft: 0,
@@ -58,13 +67,14 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     marginBottom: 10,
     marginVertical: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    overflow: 'hidden'
   },
   tag: {
-    marginRight: 5,
-    borderWidth: 2,
-    borderRadius: 11,
-    paddingHorizontal: '2%'
+    marginRight: 20,
+    paddingVertical: '8%',
+    overflow: 'hidden',
+    color: Color.ACCENT
   },
   image: {
     width: 100,

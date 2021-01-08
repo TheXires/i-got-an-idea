@@ -1,7 +1,10 @@
 export enum Color {
-  PRIMARY = '#ffff12',
-  SECONDARY = '#0000ff',
+  ACCENT = '#D84315',
   ERROR = '#ff0000',
-  BACKGROUND = '#ffffff',
-  FONT = '#000000'
+  BACKGROUND = '#19222D',
+  BACKGROUND2 = '#1E2835',
+  BACKGROUND3 = '#546E7A',
+  FONT1 = '#FAFAFA',
+  FONT2 = '#CDD1D5',
+  FONT3 = '#546E7A'
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text} from 'react-native';
+import { Color } from '../customTypes/colors';
 
 
 function Footer({navigation}: {navigation: any}) {
@@ -30,7 +31,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-around',
   },
   text: {
-    color: '#3251c9',
+    color: Color.ACCENT,
     textDecorationLine: 'underline'
   }
 

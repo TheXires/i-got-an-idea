@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
-    color: Color.FONT
+    color: Color.FONT1
   },
   button: {
     marginBottom: 15,

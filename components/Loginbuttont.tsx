@@ -7,8 +7,8 @@ import {loginWithGoogle} from '../services/auth';
 function Loginbutton({provider}: {provider: string}) {
   return (
     <View>
-      <TouchableOpacity onPress={loginWithGoogle} style={styles.button}>
-        <Text>Login with {provider}</Text>
+      <TouchableOpacity onPress={loginWithGoogle} style={styles.button} activeOpacity={0.9}>
+        <Text style={{color: Color.FONT2, fontWeight: 'bold'}}>Login with {provider}</Text>
       </TouchableOpacity>
     </View>
   )
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 13,
     paddingHorizontal: 100,
-    backgroundColor: Color.PRIMARY,
+    backgroundColor: Color.BACKGROUND,
     borderRadius: 50
   }
 });

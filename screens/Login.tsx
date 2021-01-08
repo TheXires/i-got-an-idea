@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Image, View, Button} from 'react-native';
+import { ImageBackground, StyleSheet, Image, View} from 'react-native';
 import Footer from '../components/Footer';
 
 
