@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import {getUID} from '../services/auth';
 import {Idea} from './idea';
 import {Tag} from './tags';
-export class ProjectFactory {
+export class IdeaFactory {
     private _authorID?: string;
     private _creationTimestamp?: firebase.firestore.Timestamp;
     private _description?: string;
@@ -16,11 +16,11 @@ export class ProjectFactory {
     constructor() {
     }
 
-    with(): ProjectFactory {
+    with(): IdeaFactory {
         return this;
     }
 
-    and(): ProjectFactory {
+    and(): IdeaFactory {
         return this;
     }
 
@@ -105,7 +105,7 @@ export class ProjectFactory {
      * Builds the idea. Handles unset attributes without errors.
      */
     build(): Idea {
-        const project = {
+        const idea = {
             authorID: this._authorID,
             authorName: this._authorName,
             authorProfilePictureURL: this._authorProfilePictureURL,
@@ -118,13 +118,13 @@ export class ProjectFactory {
         } as Idea;
 
         //clear unused attributes
-        Object.keys(project).forEach(key => {
-            if ((project as any)[key] == undefined) {
-                delete (project as any)[key];
+        Object.keys(idea).forEach(key => {
+            if ((idea as any)[key] == undefined) {
+                delete (idea as any)[key];
             }
         })
 
-        return project;
+        return idea;
     }
 
     /**
@@ -134,7 +134,7 @@ export class ProjectFactory {
      * @throws Throws an error when any attribute is not set!
      */
     buildWithChecks() {
-        const project = {
+        const idea = {
             authorID: this._authorID,
             authorName: this._authorName,
             authorProfilePictureURL: this._authorProfilePictureURL,
@@ -147,14 +147,14 @@ export class ProjectFactory {
         } as Idea;
 
         //checks for unset attributes
-        Object.keys(project).forEach(key => {
-            if (key == 'id' && (project as any)[key] == undefined) {
-                delete (project as any)[key];
-            } else if ((project as any)[key] == undefined) {
+        Object.keys(idea).forEach(key => {
+            if (key == 'id' && (idea as any)[key] == undefined) {
+                delete (idea as any)[key];
+            } else if ((idea as any)[key] == undefined) {
                 throw key + ' seems to be undefined which is forbidden in buildWithChecks!';
             }
         })
 
-        return project;
+        return idea;
     }
 }

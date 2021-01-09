@@ -6,6 +6,7 @@ const Profile = ({ route, navigation }: { route: any, navigation: any}) => {
   // const [profile, loading, error] = useDocumentData<ProfileData>(getProfileData(getUID()));
   
   return (
+    //TODO: wenn der user schon einen chat mit einem anderen nutzer hat, dann darf nicht noch einer erstellt werden
     <View style={styles.container}>
       <Text style={styles.text}>{route.params.id}</Text>
     </View>

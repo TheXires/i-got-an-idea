@@ -10,12 +10,6 @@ const IdeaProvider = (props: any) => {
   const [oldestComesLast, setOldestComesLast] = useState(true);
   const [filters, setFilters] = useState<Tag[]>();
 
-
-  useEffect(() => {
-    console.log('ideas:', JSON.stringify(ideas));
-    
-  }, [ideas])
-
   useEffect(() => {
     // console.log('useEffectCalled');
     

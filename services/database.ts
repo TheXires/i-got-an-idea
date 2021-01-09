@@ -203,13 +203,15 @@ function updateIdea(idea: Idea) {
  * This will set the chat document to en empty object and therefore creates it if non existant
  * !DO NOT CALL ON EXISTING CHAT! (It'll overwrite everything)
  *
- * @param ideaIdentifier An idea ID as a string or a poject object with a valid id property
+ * @param ideaIdentifier An idea ID as a string or an idea object with a valid id property
  */
 function startChat(ideaIdentifier: string | Idea) {
+    console.log('starting: ', ideaIdentifier);
+    
     if (ideaIdentifier == undefined) {
         throw 'The idea can\'t be undefined: ' + JSON.stringify(ideaIdentifier);
     }
-    let id = undefined;
+    let id;
     if (typeof ideaIdentifier == 'string') {
         id = ideaIdentifier;
     } else {
@@ -228,7 +230,8 @@ function sendChatMessage(chat: Chat, message: ChatMessage) {
 
 export {
     createProfileData, updateProfileData, getProfileData,
-    getUserIdeas, getIdeas, createIdea, updateIdea
+    getUserIdeas, getIdeas, createIdea, updateIdea,
+    startChat, sendChatMessage
 }
 
 const profileDataConverter = {

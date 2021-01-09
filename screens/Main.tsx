@@ -6,22 +6,11 @@ import {Color} from '../customTypes/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 import Idea from '../components/Idea';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {getUserIdeas} from '../services/database';
+import {getUID} from '../services/auth';
 
 const Main = ({navigation}: {navigation: any}) => {
-
-
-  {/* <TouchableOpacity onPress={() => {
-          createProject((new ProjectFactory).with()
-            .authorIDDefault()
-            .creationTimestampDefault()
-            .description("Im a test description")
-            .imageURLs(["https://i.imgur.com/mQ1d252.jpg"])
-            .name("I'm a test name")
-            .tagsEmpty()
-            .build())
-        }}><Text>ICH BIN EIN ERSTELLEN BUTTON</Text></TouchableOpacity> */}
-
 
   return (
     <SafeAreaView style={styles.container}>

@@ -2,12 +2,13 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Color } from '../customTypes/colors';
 import { logOut } from '../services/auth';
+import {startChat} from '../services/database';
 
 const Settings = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={logOut} style={styles.button}>
-        <Text>LogOut</Text>
+        <Text style={{color: Color.FONT1}}>LogOut</Text>
       </TouchableOpacity>
     </View>
   )
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 13,
     paddingHorizontal: 100,
-    backgroundColor: Color.PRIMARY,
+    backgroundColor: Color.BACKGROUND3,
     borderRadius: 50
   }
 });

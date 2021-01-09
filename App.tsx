@@ -29,6 +29,7 @@ import Ideadetails from "./screens/Ideadetails";
 import Settings from "./screens/Settings";
 import Profile from "./screens/Profile";
 import Chat from "./screens/Chat";
+import {startChat} from "./services/database";
 
 
 // creating 
@@ -52,7 +53,7 @@ export default function App() {
         ) : (
             <>
               <Stack.Screen name='Main' component={Main} options={{ headerShown: false }} />
-              <Stack.Screen name='Ideadetails' component={Ideadetails} options={{ title: 'AGB', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>) }} />
+              <Stack.Screen name='Ideadetails' component={Ideadetails} options={{ title: 'AGB', headerRight: () => (<TouchableOpacity style={styles.button} onPress={() => startChat('LRt2WVP7CC0lSHRj9KbP')}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>) }} />
               <Stack.Screen name='Chat' component={Chat} />
               <Stack.Screen name='Profile' component={Profile} />
               <Stack.Screen name='Settings' component={Settings} />
