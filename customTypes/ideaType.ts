@@ -2,8 +2,6 @@ import {Tag} from "./tags";
 
 export interface IdeaType {
     authorID: string;
-    authorName: string;
-    authorProfilePictureURL: string;
     creationTimestamp: firebase.firestore.Timestamp;
     description: string;
     imageURLs: string[];
