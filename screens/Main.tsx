@@ -1,27 +1,16 @@
-import React, { useState } from 'react';
-import {StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Text} from 'react-native';
-import {Color} from '../customTypes/colors';
+import React, { useState, useContext, useEffect } from 'react';
+import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Text } from 'react-native';
+import { Color } from '../customTypes/colors';
 
 //Firebase Hooks
 import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons';
 import Idea from '../components/Idea';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-const Main = ({navigation}: {navigation: any}) => {
+import { IdeaContext } from '../contexts/ideaContext';
 
 
-  {/* <TouchableOpacity onPress={() => {
-          createProject((new ProjectFactory).with()
-            .authorIDDefault()
-            .creationTimestampDefault()
-            .description("Im a test description")
-            .imageURLs(["https://i.imgur.com/mQ1d252.jpg"])
-            .name("I'm a test name")
-            .tagsEmpty()
-            .build())
-        }}><Text>ICH BIN EIN ERSTELLEN BUTTON</Text></TouchableOpacity> */}
-
+const Main = ({ navigation }: { navigation: any }) => {
+  const context = useContext<any>(IdeaContext);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,27 +18,35 @@ const Main = ({navigation}: {navigation: any}) => {
 
       {/* Header */}
       <View style={styles.header}>
-        <View style={{flexDirection: 'row'}}>
-          <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" />
-          <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} name="sort-alpha-asc" size={24} color="black" />
+        <View style={{ flexDirection: 'row' }}>
+          {/* TODO: hier muss noch jeweils die Funktion hinter den Buttons geschreiben werden.
+                    Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
+          <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" />
+          <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} name="sort-alpha-asc" size={24} color="black" />
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
-          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Profile')} name="person-sharp" size={24} color="black" />
-          <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
+        <View style={{ flexDirection: 'row' }}>
+          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
+          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile')} name="person-sharp" size={24} color="black" />
+          <Ionicons style={{ marginRight: 15, color: Color.FONT1 }} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
 
       {/* Body */}
       <View style={styles.body}>
         <ScrollView>
-          <Idea navigation={navigation} />
-          <Idea navigation={navigation} />
-          <Idea navigation={navigation} />
-          <Idea navigation={navigation} />
-          <Idea navigation={navigation} />
-          <Idea navigation={navigation} />
-          <Idea navigation={navigation} />
+          {context.ideas !== undefined ? (
+            context.ideas.map((idea: any) => {
+              return (
+                <Idea
+                  navigation={navigation}
+                  key={idea.id}
+                  idea={idea}
+                />)
+            })
+          ) : (
+            <>
+            </>
+          )}
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -75,6 +72,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     marginHorizontal: 10,
+    paddingHorizontal: 10,
     width: '100%',
   },
   category: {

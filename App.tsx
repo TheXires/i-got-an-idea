@@ -29,6 +29,7 @@ import Ideadetails from "./screens/Ideadetails";
 import Settings from "./screens/Settings";
 import Profile from "./screens/Profile";
 import Chat from "./screens/Chat";
+import IdeaProvider from "./contexts/ideaContext";
 
 
 // creating 
@@ -43,27 +44,30 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={headerStyle}>
-        {user === null ? (
-          <>
-            <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
-          </>
-        ) : (
+    <IdeaProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={headerStyle}>
+          {user === null ? (
             <>
-              <Stack.Screen name='Main' component={Main} options={{ headerShown: false }} />
-              <Stack.Screen name='Ideadetails' component={Ideadetails} options={{ title: 'AGB', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>) }} />
-              <Stack.Screen name='Chat' component={Chat} />
-              <Stack.Screen name='Profile' component={Profile} />
-              <Stack.Screen name='Settings' component={Settings} />
+              <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
             </>
-          )
-        }
-        <Stack.Screen name='Agb' component={Agb} />
-        <Stack.Screen name='Datenschutz' component={Datenschutz} />
-        <Stack.Screen name='Impressum' component={Impressum} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          ) : (
+              <>
+                  <Stack.Screen name='Main' component={Main} options={{ headerShown: false }} />
+                  <Stack.Screen name='Ideadetails' component={Ideadetails} options={{ title: 'AGB', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>) }} />
+                  <Stack.Screen name='Chat' component={Chat} />
+                  <Stack.Screen name='Profile' component={Profile} />
+                  <Stack.Screen name='Settings' component={Settings} />
+                
+              </>
+            )
+          }
+          <Stack.Screen name='Agb' component={Agb} />
+          <Stack.Screen name='Datenschutz' component={Datenschutz} />
+          <Stack.Screen name='Impressum' component={Impressum} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </IdeaProvider>
   );
 }
 

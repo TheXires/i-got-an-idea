@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import {getUID} from '../services/auth';
 import {Idea} from './idea';
 import {Tag} from './tags';
-export class ProjectFactory {
+export class IdeaFactory {
     private _authorID?: string;
     private _creationTimestamp?: firebase.firestore.Timestamp;
     private _description?: string;
@@ -16,11 +16,11 @@ export class ProjectFactory {
     constructor() {
     }
 
-    with(): ProjectFactory {
+    with(): IdeaFactory {
         return this;
     }
 
-    and(): ProjectFactory {
+    and(): IdeaFactory {
         return this;
     }
 
