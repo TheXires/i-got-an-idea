@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text} from 'react-native';
-import {Color} from '../customTypes/colors';
+import { StyleSheet, View, Text } from 'react-native';
+import { Color } from '../customTypes/colors';
 
 function Agb() {
   return (

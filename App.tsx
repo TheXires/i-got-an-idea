@@ -32,7 +32,7 @@ import Chat from "./screens/Chat";
 import IdeaProvider from "./contexts/ideaContext";
 
 
-// creating 
+// creating stack for navigation
 const Stack = createStackNavigator();
 
 
@@ -53,12 +53,12 @@ export default function App() {
             </>
           ) : (
               <>
-                  <Stack.Screen name='Main' component={Main} options={{ headerShown: false }} />
-                  <Stack.Screen name='Ideadetails' component={Ideadetails} options={{ title: 'AGB', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>) }} />
-                  <Stack.Screen name='Chat' component={Chat} />
-                  <Stack.Screen name='Profile' component={Profile} />
-                  <Stack.Screen name='Settings' component={Settings} />
-                
+                <Stack.Screen name='Main' component={Main} options={{ headerShown: false }} />
+                <Stack.Screen name='Ideadetails' component={Ideadetails} options={{ title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{ color: Color.FONT1 }}>Chat starten</Text></TouchableOpacity>) }} />
+                <Stack.Screen name='Chat' component={Chat} />
+                <Stack.Screen name='Profile' component={Profile} />
+                <Stack.Screen name='Settings' component={Settings} />
+
               </>
             )
           }
