@@ -12,11 +12,17 @@ function login({navigation}: {navigation: any}) {
     return (
       <View style={styles.container}>
         <ImageBackground source={login_img} style={styles.image}>
+          
+          {/* Logo of the app */}
           <Image style={styles.logo} source={icon} />
           <View style={styles.buttons}>
+
+            {/* loginbuttons of diverent prviders */}
             <Loginbutton provider={'Google'} />
             <Loginbutton provider={'GitHub'} />
           </View>
+
+          {/* Fotercomponent */}
           <Footer navigation={navigation} />
         </ImageBackground>
       </View>
