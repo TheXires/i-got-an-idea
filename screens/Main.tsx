@@ -1,22 +1,16 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, Button} from 'react-native';
-import Footer from '../components/Footer';
-import {getUID, logOut} from '../services/auth'
-import {createProject, getProfileData, getProjects, getUserProjects} from '../services/database';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {logOut} from '../services/auth'
 import {Color} from '../customTypes/colors';
-
-//Firebase Hooks
-import {useCollectionData, useDocumentData} from 'react-firebase-hooks/firestore';
-import {Project} from '../customTypes/project';
+import {createIdea} from '../services/database';
+import {ProjectFactory} from '../customTypes/ideaFactory';
+import IdeaProvider from '../contexts/ideaContext';
 import {Tag} from '../customTypes/tags';
-import {useNavigation} from '@react-navigation/native';
-import {ProfileData} from '../customTypes/profileData';
-import {TouchableNativeFeedback, TouchableOpacity} from 'react-native-gesture-handler';
-import {ProjectFactory} from '../customTypes/projectFactory';
+
 
 const Main = ({navigation}: {navigation: any}) => {
   // const [projects, loading, error] = useCollectionData<Project>(getProjects());
-  const [profile, loading, error] = useDocumentData<ProfileData>(getProfileData(getUID()));
+  // const [profile, loading, error] = useDocumentData<ProfileData>(getProfileData(getUID()));
 
 
 
@@ -24,18 +18,23 @@ const Main = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       <Text onPress={logOut} style={styles.testpadding}>Startseite</Text>
       <Text onPress={() => console.log("LOOOOG")} style={styles.testpadding}>LOOOOOOOG</Text>
+      <IdeaProvider>
+        <Text>Hi</Text>
+      </IdeaProvider>
       {/* <Text selectable>
         Content: {JSON.stringify(profile)}
       </Text> */}
       <TouchableOpacity onPress={() => {
-        createProject((new ProjectFactory).with()
+        createIdea((new ProjectFactory).with()
           .authorIDDefault()
+          .authorName('Felix')
+          .authorProfilePictureURL('https://i.imgur.com/mQ1d252.jpg')
           .creationTimestampDefault()
           .description("Im a test description")
           .imageURLs(["https://i.imgur.com/mQ1d252.jpg"])
           .name("I'm a test name")
-          .tagsEmpty()
-          .build())
+          .tags([Tag.ANDROID, Tag.FRONTEND])
+          .buildWithChecks())
       }}><Text>ICH BIN EIN ERSTELLEN BUTTON</Text></TouchableOpacity>
       {/* {projects?.map(project =>
         <View>

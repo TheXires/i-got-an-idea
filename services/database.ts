@@ -1,9 +1,11 @@
-import { Project } from '../customTypes/project';
+import {Idea} from '../customTypes/idea';
 import {BlockedUser} from '../customTypes/blockedUsers';
 import {ProfileData} from '../customTypes/profileData';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import {getProfilePictureURL, getUID} from './auth';
+import {Chat, ChatMessage} from '../customTypes/chat';
+import {Tag} from '../customTypes/tags';
 
 const fs = firebase.firestore();
 
@@ -55,7 +57,7 @@ function updateProfileData(user: ProfileData) {
 }
 
 /**
- * Fetches the profile data. Does'nt include projects the user created.
+ * Fetches the profile data. Does'nt include ideas the user created.
  * The current users ID can be retrieved by auth.js -> getUID()
  * 
  * @param userID ID of the user to fetch the profile of
@@ -69,21 +71,21 @@ function getProfileData(userID: string) {
 }
 
 /**
- * Returns the query for the projects the user has created
+ * Returns the query for the ideas the user has created
  * The current users ID can be retrieved by auth.js -> getUID()
  * 
  * @param userID ID of the user to fetch the profile of
- * @returns The projcts query object
+ * @returns The idea query object
  */
-function getUserProjects(userID: string) {
+function getUserIdeas(userID: string) {
     if (userID === null || userID === null) {
         throw "The userID is invalid: " + typeof userID;
     }
-    return fs.collection('projects').where('authorID', '==', userID).withConverter(profileDataConverter);
+    return fs.collection('ideas').where('authorID', '==', userID).withConverter(ideaConverter);
 }
 
 /**
- * Returns a query object for fetching the existing projects by the given order and filtered by the filters defined in the string array
+ * Returns a query object for fetching the existing ideas by the given order and filtered by the filters defined in the string array
  * possible entities are:
  * Frontend
  * Backend
@@ -99,92 +101,134 @@ function getUserProjects(userID: string) {
  * Smartwatch
  * Microcontroller
  * 
- * @param oldestComesLast The sorting direction. True means the newest projects are listed first, false is inverted. Defaults to true
- * @param filters Filters out projects which are tagged with the given filter strings. Defaults to an empty array = all projects are queried
+ * @param oldestComesLast The sorting direction. True means the newest ideas are listed first, false is inverted. Defaults to true
+ * @param filters Filters out ideas which are tagged with the given filter strings. Defaults to an empty array = all ideas are queried
  * 
- * @returns {Object[]} A query object for the projects with the modifiers applied 
+ * @returns {Object[]} A query object for the ideas with the modifiers applied 
+ * @throws Error (and alert) when more than 10 items at a time are checked
  */
-function getProjects(oldestComesLast = true, filters = [""]) {
-    return fs.collection('projects')
-        .
-        where("tags.0", '==', filters.find(e => e === "Frontend") != undefined).//TODO: Filter Fixen
-        where("tags.1", '==', filters.find(e => e === "Backend") != undefined).
-        where("tags.2", '==', filters.find(e => e === "Datenhaltung") != undefined).
-        where("tags.3", '==', filters.find(e => e === "iOS") != undefined).
-        where("tags.4", '==', filters.find(e => e === "Android") != undefined).
-        where("tags.5", '==', filters.find(e => e === "HarmonyOS") != undefined).
-        where("tags.6", '==', filters.find(e => e === "Webseite") != undefined).
-        where("tags.7", '==', filters.find(e => e === "Windows") != undefined).
-        where("tags.8", '==', filters.find(e => e === "MacOS") != undefined).
-        where("tags.9", '==', filters.find(e => e === "ChromeOS") != undefined).
-        where("tags.10", '==', filters.find(e => e === "Linux") != undefined).
-        where("tags.11", '==', filters.find(e => e === "Smartwatch") != undefined).
-        where("tags.12", '==', filters.find(e => e === "Microcontroller") != undefined)
+function getIdeas(oldestComesLast = true, filters: Tag[] = []) {
 
-        .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(projectConverter);
+    if (filters.length > 10) {
+        alert('Searching with more than 10 tags at a time is not possible!');
+        throw 'Searching with more than 10 tags at a time is not possible!';
+    }
+
+    if (filters.length == 0) {
+        return fs.collection('ideas').orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(ideaConverter);
+    } else {
+        return fs.collection('ideas').where('tags', 'array-contains-any', filters)
+            .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(ideaConverter);
+        //for exact search if needed any time:
+        // return fs.collection('ideas')
+        //     .
+        //     where("tags.FRONTEND", '==', filters.find(e => e === Tag.FRONTEND) != undefined).
+        //     where("tags.BACKEND", '==', filters.find(e => e === Tag.BACKEND) != undefined).
+        //     where("tags.DATENHALTUNG", '==', filters.find(e => e === Tag.DATENHALTUNG) != undefined).
+        //     where("tags.IOS", '==', filters.find(e => e === Tag.IOS) != undefined).
+        //     where("tags.ANDROID", '==', filters.find(e => e === Tag.ANDROID) != undefined).
+        //     where("tags.HARMONYOS", '==', filters.find(e => e === Tag.HARMONYOS) != undefined).
+        //     where("tags.WEBSEITE", '==', filters.find(e => e === Tag.WEBSEITE) != undefined).
+        //     where("tags.WINDOWS", '==', filters.find(e => e === Tag.WINDOWS) != undefined).
+        //     where("tags.MACOS", '==', filters.find(e => e === Tag.MACOS) != undefined).
+        //     where("tags.CHROMEOS", '==', filters.find(e => e === Tag.CHROMEOS) != undefined).
+        //     where("tags.LINUX", '==', filters.find(e => e === Tag.LINUX) != undefined).
+        //     where("tags.SMARTWATCH", '==', filters.find(e => e === Tag.SMARTWATCH) != undefined).
+        //     where("tags.MICROCONTROLLER", '==', filters.find(e => e === Tag.MICROCONTROLLER) != undefined)
+        //     .
+        //     orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(ideaConverter);
+    }
 }
 
 /**
- * Creates a new project. If this is called on an already existing project it will overwrite the current information.
+ * Creates a new idea. If this is called on an already existing idea it will overwrite the current information.
  * Make sure to use the update function to prevent data loss.
  * 
  * Following properties don't need to be set, they will be created automatically:
  * 
- * Project UID defaults to auth.ts -> getUID()
+ * Idea authorID defaults to auth.ts -> getUID()
  * 
  * Timestamp defaults to now
  * 
  * id will be ignored, gets created by the database
  * 
- * @param project The project to create
+ * @param idea The idea to create
  * @returns a promise which resolves when the data has been written
  */
-function createProject(project: Project) {
-    if (project.authorID == undefined) {
-        project.authorID = getUID();
+function createIdea(idea: Idea) {
+    if (idea.authorID == undefined) {
+        idea.authorID = getUID();
     }
-    if (project.creationTimestamp == undefined) {
-        project.creationTimestamp = firebase.firestore.Timestamp.now();
-    }
-    if (project.id != undefined) {
-        delete project.id;
+    if (idea.creationTimestamp == undefined) {
+        idea.creationTimestamp = firebase.firestore.Timestamp.now();
     }
     try {
-        return fs.collection('projects').doc().withConverter(projectConverter).set(project);
+        return fs.collection('ideas').doc().withConverter(ideaConverter).set(idea);
     } catch (error) {
-        alert("Error while creating a projct." + JSON.stringify(error));
+        alert("Error while creating an idea." + JSON.stringify(error));
     }
 }
 
 /**
- * Updates project to the given object. If an attribute should not be updated, set it to null (or leave it out).
+ * Updates idea to the given object. If an attribute should not be updated, set it to null (or leave it out).
  * In TypeScript, this can be achieved by casting an inline object like this:
  * ```typescript
  * let test = {
         name: "test",
         description: "test",
-    } as Project;
+    } as Idea;
  * ```
  * 
- * !MUST BE CALLED ON AN ALREADY EXISTING PROJECT!
+ * !MUST BE CALLED ON AN ALREADY EXISTING IDEA!
  * 
- * @param project The project information to update
+ * @param idea The idea information to update
  * @returns A promise which resolves when the data has been written
  */
-function updateProject(project: Project) {
-    if (project.id == undefined) {
-        throw 'The project ID can\'t be undefined: ' + JSON.stringify(project);
+function updateIdea(idea: Idea) {
+    if (idea.id == undefined) {
+        throw 'The idea ID can\'t be undefined: ' + JSON.stringify(idea);
     }
     try {
-        return fs.collection('projects').doc(project.id).withConverter(projectConverter).update(project);
+        return fs.collection('ideas').doc(idea.id).withConverter(ideaConverter).update(idea);
     } catch (error) {
-        alert("Error while updating a projct." + JSON.stringify(error));
+        alert("Error while updating a idea." + JSON.stringify(error));
     }
+}
+
+/**
+ * Starts a chat with the idea owner of the given idea.
+ * It is mandatory to call this method before starting to chat, because the permissions set in the backend require the chat
+ * document to be existent before adding values to it.
+ * 
+ * This will set the chat document to en empty object and therefore creates it if non existant
+ * !DO NOT CALL ON EXISTING CHAT! (It'll overwrite everything)
+ *
+ * @param ideaIdentifier An idea ID as a string or a poject object with a valid id property
+ */
+function startChat(ideaIdentifier: string | Idea) {
+    if (ideaIdentifier == undefined) {
+        throw 'The idea can\'t be undefined: ' + JSON.stringify(ideaIdentifier);
+    }
+    let id = undefined;
+    if (typeof ideaIdentifier == 'string') {
+        id = ideaIdentifier;
+    } else {
+        id = (ideaIdentifier as Idea).id
+    }
+    try {
+        return fs.collection('ideas').doc(id).collection('chats').doc(getUID()).set({});
+    } catch (error) {
+        alert("Error while creating chat." + JSON.stringify(error));
+    }
+}
+
+function sendChatMessage(chat: Chat, message: ChatMessage) {
+
 }
 
 export {
     createProfileData, updateProfileData, getProfileData,
-    getUserProjects, getProjects, createProject, updateProject
+    getUserIdeas, getIdeas, createIdea, updateIdea
 }
 
 const profileDataConverter = {
@@ -195,6 +239,9 @@ const profileDataConverter = {
                 return map;
             }, {});
             data.blockedUsers = transformedBlockedUsers;
+        }
+        if (data.id != undefined) {
+            delete data.id;
         }
         return data;
     },
@@ -209,23 +256,32 @@ const profileDataConverter = {
     }
 };
 
-const projectConverter = {
-    toFirestore(data: Project): firebase.firestore.DocumentData {
-        if (data.tags !== undefined) {
-            let transformedTags = data.tags.reduce((map: any, tag) => {
-                map[tag] = true;
-                return map;
-            }, {});
-            data.tags = transformedTags;
+const ideaConverter = {
+    toFirestore(data: Idea): firebase.firestore.DocumentData {
+
+        //for EXACT search, if needed any time:
+        //reduces tags from format of array to an object where every tag is set like this: {ANDROID: true, IOS: false}
+        //this is done whith EVERY key of the enum so every tag is definietly set in the resulting object
+        //this is done because of the firebase filtered query, which wouldn't work otherwise
+        // const transformedTags = Object.keys(Tag).filter((key: any) => !isNaN(Number(Tag[key]))).reduce((previousObject: any, keyName) => {
+        //     previousObject[keyName] = data.tags.find(tag => Tag[tag] == keyName) !== undefined;
+        //     return previousObject;
+        // }, {});
+
+        // data.tags = transformedTags;
+
+        if (data.id != undefined) {
+            delete data.id;
         }
         return data;
     },
 
-    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Project {
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Idea {
         const data = snapshot.data(options);
-        data.tags = Object.keys(data.tags).filter(key => data.tags[key]);
+        // data.tags = Object.keys(data.tags).filter(key => data.tags[key]).map((key: any) => Tag[key]);
+
         data.id = snapshot.id;
-        return data as Project;
+        return data as Idea;
     }
 };
 
