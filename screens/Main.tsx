@@ -41,15 +41,17 @@ const Main = ({navigation}: {navigation: any}) => {
       </View>
 
       {/* Body */}
-      <ScrollView style={styles.body}>
-        <Idea navigation={navigation} />
-        <Idea navigation={navigation} />
-        <Idea navigation={navigation} />
-        <Idea navigation={navigation} />
-        <Idea navigation={navigation} />
-        <Idea navigation={navigation} />
-        <Idea navigation={navigation} />
-      </ScrollView>
+      <View style={styles.body}>
+        <ScrollView>
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+        </ScrollView>
+      </View>
     </SafeAreaView>
   )
 }
@@ -58,6 +60,7 @@ export default Main
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: '100%',
     alignItems: 'center',
     backgroundColor: Color.BACKGROUND,
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   body: {
-    paddingTop: 5,
+    flex: 1,
     marginHorizontal: 10,
     width: '100%',
   },

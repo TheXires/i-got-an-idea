@@ -2,12 +2,12 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Color } from '../customTypes/colors';
 
-const Profile = () => {
+const Profile = ({ route, navigation }: { route: any, navigation: any}) => {
   // const [profile, loading, error] = useDocumentData<ProfileData>(getProfileData(getUID()));
   
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Profile</Text>
+      <Text style={styles.text}>{route.params.id}</Text>
     </View>
   )
 }
