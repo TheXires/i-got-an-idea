@@ -2,15 +2,18 @@ import React, { useContext } from 'react';
 import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView } from 'react-native';
 import { Color } from '../customTypes/colors';
 
-//Firebase Hooks
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
 import Idea from '../components/Idea';
-import { IdeaContext } from '../contexts/ideaContext';
+
+import {Color} from '../customTypes/colors';
+import {Ionicons} from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
+
+import {IdeaContext} from '../contexts/ideaContext';
+import {IdeaType} from '../customTypes/ideaType';
 
 
-const Main = ({ navigation }: { navigation: any }) => {
-  const context = useContext<any>(IdeaContext);
+const Main = ({navigation}: {navigation: any}) => {
+  const {ideas}: {ideas: IdeaType[]} = useContext<any>(IdeaContext);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -18,24 +21,24 @@ const Main = ({ navigation }: { navigation: any }) => {
 
       {/* Header */}
       <View style={styles.header}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           {/* TODO: hier muss noch jeweils die Funktion hinter den Buttons geschreiben werden.
                     Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
-          <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" />
-          <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} name="sort-alpha-asc" size={24} color="black" />
+          <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" />
+          <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} name="sort-alpha-asc" size={24} color="black" />
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
-          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile')} name="person-sharp" size={24} color="black" />
-          <Ionicons style={{ marginRight: 15, color: Color.FONT1 }} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
+        <View style={{flexDirection: 'row'}}>
+          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
+          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Profile')} name="person-sharp" size={24} color="black" />
+          <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
 
       {/* Body */}
       <View style={styles.body}>
         <ScrollView>
-          {context.ideas !== undefined ? (
-            context.ideas.map((idea: any) => {
+          {ideas !== undefined ? (
+            ideas.map(idea => {
               return (
                 <Idea
                   navigation={navigation}
@@ -44,9 +47,9 @@ const Main = ({ navigation }: { navigation: any }) => {
                 />)
             })
           ) : (
-            <>
-            </>
-          )}
+              <>
+              </>
+            )}
         </ScrollView>
       </View>
     </SafeAreaView>

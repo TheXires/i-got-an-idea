@@ -1,4 +1,4 @@
-import {Idea} from '../customTypes/idea';
+import {IdeaType} from '../customTypes/ideaType';
 import {BlockedUser} from '../customTypes/blockedUsers';
 import {ProfileData} from '../customTypes/profileData';
 import firebase from 'firebase/app'
@@ -155,7 +155,7 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = []) {
  * @param idea The idea to create
  * @returns a promise which resolves when the data has been written
  */
-function createIdea(idea: Idea) {
+function createIdea(idea: IdeaType) {
     if (idea.authorID == undefined) {
         idea.authorID = getUID();
     }
@@ -184,7 +184,7 @@ function createIdea(idea: Idea) {
  * @param idea The idea information to update
  * @returns A promise which resolves when the data has been written
  */
-function updateIdea(idea: Idea) {
+function updateIdea(idea: IdeaType) {
     if (idea.id == undefined) {
         throw 'The idea ID can\'t be undefined: ' + JSON.stringify(idea);
     }
@@ -203,17 +203,19 @@ function updateIdea(idea: Idea) {
  * This will set the chat document to en empty object and therefore creates it if non existant
  * !DO NOT CALL ON EXISTING CHAT! (It'll overwrite everything)
  *
- * @param ideaIdentifier An idea ID as a string or a poject object with a valid id property
+ * @param ideaIdentifier An idea ID as a string or an idea object with a valid id property
  */
-function startChat(ideaIdentifier: string | Idea) {
+function startChat(ideaIdentifier: string | IdeaType) {
+    console.log('starting: ', ideaIdentifier);
+    
     if (ideaIdentifier == undefined) {
         throw 'The idea can\'t be undefined: ' + JSON.stringify(ideaIdentifier);
     }
-    let id = undefined;
+    let id;
     if (typeof ideaIdentifier == 'string') {
         id = ideaIdentifier;
     } else {
-        id = (ideaIdentifier as Idea).id
+        id = (ideaIdentifier as IdeaType).id
     }
     try {
         return fs.collection('ideas').doc(id).collection('chats').doc(getUID()).set({});
@@ -228,7 +230,8 @@ function sendChatMessage(chat: Chat, message: ChatMessage) {
 
 export {
     createProfileData, updateProfileData, getProfileData,
-    getUserIdeas, getIdeas, createIdea, updateIdea
+    getUserIdeas, getIdeas, createIdea, updateIdea,
+    startChat, sendChatMessage
 }
 
 const profileDataConverter = {
@@ -257,7 +260,7 @@ const profileDataConverter = {
 };
 
 const ideaConverter = {
-    toFirestore(data: Idea): firebase.firestore.DocumentData {
+    toFirestore(data: IdeaType): firebase.firestore.DocumentData {
 
         //for EXACT search, if needed any time:
         //reduces tags from format of array to an object where every tag is set like this: {ANDROID: true, IOS: false}
@@ -276,12 +279,12 @@ const ideaConverter = {
         return data;
     },
 
-    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Idea {
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): IdeaType {
         const data = snapshot.data(options);
         // data.tags = Object.keys(data.tags).filter(key => data.tags[key]).map((key: any) => Tag[key]);
 
         data.id = snapshot.id;
-        return data as Idea;
+        return data as IdeaType;
     }
 };
 
