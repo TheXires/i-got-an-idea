@@ -1,57 +1,58 @@
-import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {logOut} from '../services/auth'
+import React, { useState } from 'react';
+import {StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Text} from 'react-native';
 import {Color} from '../customTypes/colors';
-import {createIdea} from '../services/database';
-import {ProjectFactory} from '../customTypes/ideaFactory';
-import IdeaProvider from '../contexts/ideaContext';
-import {Tag} from '../customTypes/tags';
 
+//Firebase Hooks
+import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons'; 
+import Idea from '../components/Idea';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Main = ({navigation}: {navigation: any}) => {
-  // const [projects, loading, error] = useCollectionData<Project>(getProjects());
-  // const [profile, loading, error] = useDocumentData<ProfileData>(getProfileData(getUID()));
 
+
+  {/* <TouchableOpacity onPress={() => {
+          createProject((new ProjectFactory).with()
+            .authorIDDefault()
+            .creationTimestampDefault()
+            .description("Im a test description")
+            .imageURLs(["https://i.imgur.com/mQ1d252.jpg"])
+            .name("I'm a test name")
+            .tagsEmpty()
+            .build())
+        }}><Text>ICH BIN EIN ERSTELLEN BUTTON</Text></TouchableOpacity> */}
 
 
   return (
-    <View style={styles.container}>
-      <Text onPress={logOut} style={styles.testpadding}>Startseite</Text>
-      <Text onPress={() => console.log("LOOOOG")} style={styles.testpadding}>LOOOOOOOG</Text>
-      <IdeaProvider>
-        <Text>Hi</Text>
-      </IdeaProvider>
-      {/* <Text selectable>
-        Content: {JSON.stringify(profile)}
-      </Text> */}
-      <TouchableOpacity onPress={() => {
-        createIdea((new ProjectFactory).with()
-          .authorIDDefault()
-          .authorName('Felix')
-          .authorProfilePictureURL('https://i.imgur.com/mQ1d252.jpg')
-          .creationTimestampDefault()
-          .description("Im a test description")
-          .imageURLs(["https://i.imgur.com/mQ1d252.jpg"])
-          .name("I'm a test name")
-          .tags([Tag.ANDROID, Tag.FRONTEND])
-          .buildWithChecks())
-      }}><Text>ICH BIN EIN ERSTELLEN BUTTON</Text></TouchableOpacity>
-      {/* {projects?.map(project =>
-        <View>
-          <Text>{project.name}</Text>
-          <Text>{project.description}</Text>
-          <Text>
-            {JSON.stringify(
-              project.tags.map(tag => Tag[tag])
-            )}
-          </Text>
-          <Image source={{uri: project.imageURLs[0]}}
-            style={{width: 100, height: 100}} />
-        </View>
-      )} */}
+    <SafeAreaView style={styles.container}>
+      <StatusBar />
 
-      {/* <Footer navigation={navigation} /> */}
-    </View>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={{flexDirection: 'row'}}>
+          <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" />
+          <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} name="sort-alpha-asc" size={24} color="black" />
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
+          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Profile')} name="person-sharp" size={24} color="black" />
+          <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
+        </View>
+      </View>
+
+      {/* Body */}
+      <View style={styles.body}>
+        <ScrollView>
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+          <Idea navigation={navigation} />
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   )
 }
 
@@ -59,17 +60,28 @@ export default Main
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     flex: 1,
-    backgroundColor: Color.BACKGROUND,
+    width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
-    color: Color.FONT
+    backgroundColor: Color.BACKGROUND,
   },
-  text: {
-    color: Color.FONT
+  header: {
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  testpadding: {
-    padding: 10
+  body: {
+    flex: 1,
+    marginHorizontal: 10,
+    width: '100%',
+  },
+  category: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 15,
+    marginBottom: 5,
+    color: Color.ACCENT
   }
 });
