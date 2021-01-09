@@ -10,8 +10,6 @@ export class IdeaFactory {
     private _name?: string;
     private _tags?: Tag[]
     private _id?: string;
-    private _authorName?: string;
-    private _authorProfilePictureURL?: string;
 
     constructor() {
     }
@@ -91,24 +89,12 @@ export class IdeaFactory {
         return this;
     }
     
-    authorName(authorName: string) {
-        this._authorName = authorName;
-        return this;
-    }
-    
-    authorProfilePictureURL(authorProfilePictureURL: string) {
-        this._authorProfilePictureURL = authorProfilePictureURL;
-        return this;
-    }
-
     /**
      * Builds the idea. Handles unset attributes without errors.
      */
     build(): IdeaType {
         const idea = {
             authorID: this._authorID,
-            authorName: this._authorName,
-            authorProfilePictureURL: this._authorProfilePictureURL,
             creationTimestamp: this._creationTimestamp,
             description: this._description,
             imageURLs: this._imageURLs,
@@ -136,8 +122,6 @@ export class IdeaFactory {
     buildWithChecks() {
         const idea = {
             authorID: this._authorID,
-            authorName: this._authorName,
-            authorProfilePictureURL: this._authorProfilePictureURL,
             creationTimestamp: this._creationTimestamp,
             description: this._description,
             imageURLs: this._imageURLs,

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView } from 'react-native';
-import { Color } from '../customTypes/colors';
 
 import Idea from '../components/Idea';
 
