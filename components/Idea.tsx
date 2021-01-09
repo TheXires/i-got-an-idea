@@ -1,17 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import { Color } from '../customTypes/colors';
 import ideaplaceholder from '../assets/ideaplaceholder.jpg';
 import { Tag } from '../customTypes/tags';
-import { IdeaType as IdeaTyp } from '../customTypes/ideaType';
+import { IdeaType } from '../customTypes/ideaType';
 
-const Idea = ({
-  navigation,
-  idea
-}: {
-  navigation: any,
-    idea: IdeaTyp
-}) => {
+const Idea = ({ navigation, idea }: { navigation: any, idea: IdeaType }) => {
 
   // TouchableOpacitys are around the Image as well as the name and description, but not around
   // the tags. So that the user can scroll throught the tags without accidently clicking on the Idea.
@@ -33,6 +27,7 @@ const Idea = ({
         </TouchableOpacity>
 
         {/* tags */}
+        {/* TODO: Tags werden am Ende abgeschnitten und können nicht ganz durch gescrolled werden */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.tagContainer}>
             {idea.tags.map((tag) => { return (<Text style={styles.tag} key={Tag[tag]}>#{Tag[tag]}</Text>) })}
@@ -46,7 +41,6 @@ const Idea = ({
 
 const styles = StyleSheet.create({
   container: {
-    // marginHorizontal: 10,
     marginBottom: 15,
     flexDirection: 'row',
     backgroundColor: Color.BACKGROUND2,

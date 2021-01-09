@@ -2,13 +2,13 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Color } from '../customTypes/colors';
 import { logOut } from '../services/auth';
-import {startChat} from '../services/database';
+import { startChat } from '../services/database';
 
-const Settings = ({navigation}: {navigation: any}) => {
+const Settings = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={logOut} style={styles.button}>
-        <Text style={{color: Color.FONT1}}>LogOut</Text>
+        <Text style={{ color: Color.FONT1 }}>LogOut</Text>
       </TouchableOpacity>
     </View>
   )
