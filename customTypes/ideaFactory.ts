@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import {getUID} from '../services/auth';
-import {Idea} from './idea';
+import {IdeaType} from './ideaType';
 import {Tag} from './tags';
 export class IdeaFactory {
     private _authorID?: string;
@@ -104,7 +104,7 @@ export class IdeaFactory {
     /**
      * Builds the idea. Handles unset attributes without errors.
      */
-    build(): Idea {
+    build(): IdeaType {
         const idea = {
             authorID: this._authorID,
             authorName: this._authorName,
@@ -115,7 +115,7 @@ export class IdeaFactory {
             name: this._name,
             tags: this._tags,
             id: this._id
-        } as Idea;
+        } as IdeaType;
 
         //clear unused attributes
         Object.keys(idea).forEach(key => {
@@ -144,7 +144,7 @@ export class IdeaFactory {
             name: this._name,
             tags: this._tags,
             id: this._id
-        } as Idea;
+        } as IdeaType;
 
         //checks for unset attributes
         Object.keys(idea).forEach(key => {

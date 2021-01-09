@@ -1,12 +1,12 @@
 import React, {createContext, useState, useEffect} from "react";
-import {Idea} from "../customTypes/idea";
+import {IdeaType} from "../customTypes/ideaType";
 import {Tag} from "../customTypes/tags";
 import {getIdeas} from "../services/database";
 
 export const IdeaContext = createContext({});
 
 const IdeaProvider = (props: any) => {
-  const [ideas, setIdeas] = useState<Idea[]>();
+  const [ideas, setIdeas] = useState<IdeaType[]>();
   const [oldestComesLast, setOldestComesLast] = useState(true);
   const [filters, setFilters] = useState<Tag[]>();
 
@@ -14,7 +14,7 @@ const IdeaProvider = (props: any) => {
     // console.log('useEffectCalled');
     
     const unsub = getIdeas(oldestComesLast, filters).onSnapshot(snap => {
-      var ret: Idea[] = [];
+      var ret: IdeaType[] = [];
       snap.forEach(idea => {
         ret.push(idea.data());
       });

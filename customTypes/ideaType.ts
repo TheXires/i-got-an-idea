@@ -1,6 +1,6 @@
 import {Tag} from "./tags";
 
-export interface Idea {
+export interface IdeaType {
     authorID: string;
     authorName: string;
     authorProfilePictureURL: string;

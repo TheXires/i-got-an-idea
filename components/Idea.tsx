@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'rea
 import { Color } from '../customTypes/colors';
 import ideaplaceholder from '../assets/ideaplaceholder.jpg';
 import { Tag } from '../customTypes/tags';
-import { Idea as IdeaTyp } from '../customTypes/idea';
+import { IdeaType as IdeaTyp } from '../customTypes/ideaType';
 
 const Idea = ({
   navigation,
