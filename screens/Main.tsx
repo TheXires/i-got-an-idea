@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Text } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView } from 'react-native';
 import { Color } from '../customTypes/colors';
 
 //Firebase Hooks

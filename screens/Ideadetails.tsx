@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, ScrollView, View, SafeAreaView, NavigatorIOS} from 'react-native';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, Text, ScrollView, View } from 'react-native';
 
 import CustomImage from '../components/CustomImage';
 import User from '../components/User';
 import { Color } from '../customTypes/colors';
 import { Tag } from '../customTypes/tags';
+import { IdeaContext } from '../contexts/ideaContext';
 
 // implements the detail view for an idea sreached by a given id
-const Ideadetails = ({ navigation, route }: { navigation: any, route: any}) => {
+const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => {
+  const context = useContext<any>(IdeaContext);
 
   // TODO: Muss noch durch context ersetzt werden
   //*********************************************
@@ -19,11 +21,18 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any}) => {
   /* */    'https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg',
   /* */    'https://cdn1.sklum.com/de/791807/stuhl-arhiza-supreme.jpg',
   /* */    'https://blog.swissflex.com/wp-content/uploads/2018/02/Die-5-h%C3%B6chsten-Berge-der-Schweiz.png'
-  /* */  ],
+  /* */],
   /* */  authorID: 'authorID',
   /* */  id: 'ideaID'
-  /* */});
-  
+    /* */
+});
+
+  if (context !== undefined) {
+    return <View><Text>Loading...</Text></View>
+  } else {
+    // context.ideas.find(idea => {})
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.innerContainer}>
@@ -43,22 +52,22 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any}) => {
               </View>
             </ScrollView>
           </>
-        ): (
-          <>
-          </>
-        )}
-        
+        ) : (
+            <>
+            </>
+          )}
+
 
         {/* shows images the user uploaded to the idea, if there are no images it shows nothing instead */}
         {/* TODO: Bilder in grpß anzeigen, wenn drauf geklickt wird */}
         {idea.images.length > 0 ? (
-            <>
-              <Text style={styles.h2}>Bilder</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-                {idea.images.map((image) => { return (<CustomImage source={{ uri: image }} imgSize={200} key={image} />) })}
-              </ScrollView>
-            </>
-          ) : (
+          <>
+            <Text style={styles.h2}>Bilder</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+              {idea.images.map((image) => { return (<CustomImage source={{ uri: image }} imgSize={200} key={image} />) })}
+            </ScrollView>
+          </>
+        ) : (
             <></>
           )
         }

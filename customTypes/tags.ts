@@ -13,3 +13,5 @@ export enum Tag {
      SMARTWATCH,
      MICROCONTROLLER
 }
+
+// TODO: funktion, um Worte auf icons zu mappen

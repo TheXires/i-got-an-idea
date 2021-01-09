@@ -35,7 +35,7 @@ const Idea = ({
         {/* tags */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.tagContainer}>
-            {idea.tags.map((tag) => { return (<Text style={styles.tag} key={Tag[tag]}># {Tag[tag]}</Text>) })}
+            {idea.tags.map((tag) => { return (<Text style={styles.tag} key={Tag[tag]}>#{Tag[tag]}</Text>) })}
           </View>
         </ScrollView>
       </View>
