@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView } from 'react-native';
 
 import Idea from '../components/Idea';
@@ -10,8 +10,6 @@ import {FontAwesome} from '@expo/vector-icons';
 import { IdeaContext } from '../contexts/ideaContext';
 import { IdeaType } from '../customTypes/ideaType';
 import { getUID } from '../services/auth';
-import { createIdea, createProfileData } from '../services/database';
-import { IdeaFactory } from '../customTypes/ideaFactory';
 
 
 const Main = ({ navigation }: { navigation: any }) => {
