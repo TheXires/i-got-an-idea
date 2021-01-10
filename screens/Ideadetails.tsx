@@ -63,7 +63,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
         }
 
         {/* Author */}
-        <Text style={styles.h2}>Erstellt durch</Text>
+        <Text style={styles.h2}>Idee von</Text>
         <User userID={idea!.authorID} navigation={navigation} />
       </ScrollView>
     </View>
@@ -79,13 +79,14 @@ const styles = StyleSheet.create({
   },
   h1: {
     marginTop: 10,
-    fontSize: 15,
+    marginBottom: 10,
+    fontSize: 17,
     fontWeight: 'bold',
     color: Color.FONT1
   },
   h2: {
     marginTop: 25,
-    marginBottom: 5,
+    marginBottom: 10,
     fontSize: 15,
     fontWeight: 'bold',
     color: Color.FONT2

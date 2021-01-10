@@ -7,8 +7,11 @@ import {Color} from '../customTypes/colors';
 import {Ionicons} from '@expo/vector-icons';
 import {FontAwesome} from '@expo/vector-icons';
 
-import IdeaProvider, {IdeaContext} from '../contexts/ideaContext';
-import {IdeaType} from '../customTypes/ideaType';
+import { IdeaContext } from '../contexts/ideaContext';
+import { IdeaType } from '../customTypes/ideaType';
+import { getUID } from '../services/auth';
+import { ProfileData } from '../customTypes/profileData';
+import { createProfileData } from '../services/database';
 
 
 const Main = ({navigation}: {navigation: any}) => {
@@ -26,10 +29,10 @@ const Main = ({navigation}: {navigation: any}) => {
           <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" />
           <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} name="sort-alpha-asc" size={24} color="black" />
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
-          <Ionicons style={{marginRight: 25, color: Color.FONT1}} onPress={() => navigation.navigate('Profile')} name="person-sharp" size={24} color="black" />
-          <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
+        <View style={{ flexDirection: 'row' }}>
+          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
+          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile', { id: getUID()})} name="person-sharp" size={24} color="black" />
+          <Ionicons style={{ marginRight: 15, color: Color.FONT1 }} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
 

@@ -9,11 +9,14 @@ import {useDocumentData} from 'react-firebase-hooks/firestore';
 import {getProfileData} from '../services/database';
 import {ProfileData} from '../customTypes/profileData';
 
-const Profile = ({route, navigation}: {route: any, navigation: any}) => {
+const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
+  var userID: string = '';
   const [user, userLoading, userError] = useDocumentData<ProfileData>(getProfileData(route.params.id));
+  const [ideas, ideaLoading, ideaError] = useCollectionData(getUserIdeas(userID));
 
-  // const ideas = getUserIdeas(user.id);
-  const [ideas, ideaLoading, ideaError] = useCollectionData(getUserIdeas('J8iBUgatzBQ3mSVoxRF31iqkKw72'));
+  if (userLoading === false && user!.id !== undefined){
+    userID = user!.id;
+  }
 
   return (
       <ScrollView style={styles.container}>
