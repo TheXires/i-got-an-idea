@@ -15,6 +15,7 @@ import { getUID } from '../services/auth';
 const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
   const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast;
+  const loadMoreEntries = useContext<any>(IdeaContext).loadMoreEntries;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -58,6 +59,7 @@ const Main = ({ navigation }: { navigation: any }) => {
               <>
               </>
             )}
+          <Button title="MEHR!!" onPress={loadMoreEntries}></Button>
         </ScrollView>
       </View>
     </SafeAreaView>
