@@ -111,6 +111,7 @@ function getUserIdeas(userID: string) {
  */
 function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined) {
 
+
     if (filters.length > 10) {
         alert('Searching with more than 10 tags at a time is not possible!');
         throw 'Searching with more than 10 tags at a time is not possible!';
@@ -123,7 +124,7 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
                 .startAfter(offset)
                 .limit(20)
                 .withConverter(ideaConverter);
-            } else {
+        } else {
             return fs.collection('ideas')
                 .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
                 .limit(20)

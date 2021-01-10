@@ -24,6 +24,8 @@ const IdeaProvider = (props: any) => {
     if (loading == false && user == null) {
       return;
     }
+
+
     setLastQueriedSnapshot(undefined);
 
     getIdeas(oldestComesLast, filters, undefined).get().then(snap => {
@@ -32,7 +34,7 @@ const IdeaProvider = (props: any) => {
         ret.push(idea.data());
         setLastQueriedSnapshot(idea);
       });
-      if (ideas != undefined && ideas.length > 0) {
+      if (ret != undefined && ret.length > 0) {
         setIdeas(ret);
       } else {
         setLimitReached(true);
@@ -53,7 +55,7 @@ const IdeaProvider = (props: any) => {
         ret.push(idea.data());
         setLastQueriedSnapshot(idea);
       });
-      if (ideas != undefined && ideas.length > 0) {
+      if (ret != undefined && ret.length > 0 && ideas != undefined) {
         setIdeas(ideas.concat(ret));
       } else {
         setLimitReached(true);
