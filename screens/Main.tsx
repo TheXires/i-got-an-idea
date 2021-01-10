@@ -3,9 +3,9 @@ import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView } from 'react-nat
 
 import Idea from '../components/Idea';
 
-import { Color } from '../customTypes/colors';
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
+import {Color} from '../customTypes/colors';
+import {Ionicons} from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
 
 import { IdeaContext } from '../contexts/ideaContext';
 import { IdeaType } from '../customTypes/ideaType';

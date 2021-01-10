@@ -103,11 +103,14 @@ function getUserIdeas(userID: string) {
  * 
  * @param oldestComesLast The sorting direction. True means the newest ideas are listed first, false is inverted. Defaults to true
  * @param filters Filters out ideas which are tagged with the given filter strings. Defaults to an empty array = all ideas are queried
+ * @param offset This value signals the method to load a batch of documents (20 by default) with an offset. The value should be the last queried document. Set it to undefined to
+ * indicate that the query should start at the beginning
  * 
  * @returns {Object[]} A query object for the ideas with the modifiers applied 
  * @throws Error (and alert) when more than 10 items at a time are checked
  */
-function getIdeas(oldestComesLast = true, filters: Tag[] = []) {
+function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined) {
+
 
     if (filters.length > 10) {
         alert('Searching with more than 10 tags at a time is not possible!');
@@ -115,10 +118,34 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = []) {
     }
 
     if (filters.length == 0) {
-        return fs.collection('ideas').orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(ideaConverter);
+        if (offset != undefined) {
+            return fs.collection('ideas')
+                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .startAfter(offset)
+                .limit(20)
+                .withConverter(ideaConverter);
+        } else {
+            return fs.collection('ideas')
+                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .limit(20)
+                .withConverter(ideaConverter);
+
+        }
     } else {
-        return fs.collection('ideas').where('tags', 'array-contains-any', filters)
-            .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc').withConverter(ideaConverter);
+        if (offset != undefined) {
+            return fs.collection('ideas')
+                .where('tags', 'array-contains-any', filters)
+                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .startAfter(offset)
+                .limit(20)
+                .withConverter(ideaConverter);
+            } else {
+            return fs.collection('ideas')
+                .where('tags', 'array-contains-any', filters)
+                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .limit(20)
+                .withConverter(ideaConverter);
+        }
         //for exact search if needed any time:
         // return fs.collection('ideas')
         //     .

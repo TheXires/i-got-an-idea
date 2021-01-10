@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native'
-import { Color } from '../customTypes/colors';
+import React, {useEffect, useState} from 'react'
+import {StyleSheet, Text, View, ScrollView, Image} from 'react-native'
+import {Color} from '../customTypes/colors';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
-import { getUserIdeas } from '../services/database';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import {getUserIdeas} from '../services/database';
+import {useCollectionData} from 'react-firebase-hooks/firestore';
 import Idea from '../components/Idea';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { getProfileData } from '../services/database';
-import { ProfileData } from '../customTypes/profileData';
+import {useDocumentData} from 'react-firebase-hooks/firestore';
+import {getProfileData} from '../services/database';
+import {ProfileData} from '../customTypes/profileData';
 
 const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
   const [userID, setUserID] = useState('');
@@ -21,63 +21,63 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
   }, [user])
 
   return (
-    <ScrollView style={styles.container}>
-      {(userLoading === false && user !== undefined) ? (
-        <>
-          <View style={styles.upperInnerContainer}>
-            {user.profilePictureURL !== '' ? (
-              <Image source={{ uri: user.profilePictureURL }} style={styles.profileimage} />
-            ) : (
-                <Image source={profileplaceolder} style={styles.profileimage} />
-              )}
-            <Text style={styles.name}>{user.name}</Text>
-          </View>
-          <View style={styles.lowerInnerContainer}>
-            {user.description.length > 0 ? (
-              <>
-                <Text style={styles.h2}>Beschreibung</Text>
-                <Text style={styles.description}>{user.description}</Text>
-              </>
-            ) : (
-                <>
-                </>
-              )}
-
-            {user.skills.length > 0 ? (
-              <>
-                <Text style={styles.h2}>Skills</Text>
-                {user.skills.map((skill) => { return (<Text style={styles.skills} key={skill}>&#x2022; {skill}</Text>) })}
-              </>
-            ) : (
-                <>
-                </>
-              )}
-
-            {(ideaLoading === false && ideas !== undefined && ideas!.length > 0) ? (
-              <>
-                <Text style={styles.h2}>Ideen</Text>
-                {ideas!.map((idea: any) => {
-                  return (
-                    <Idea
-                      navigation={navigation}
-                      key={idea.id}
-                      idea={idea}
-                    />)
-                })}
-              </>
-            ) : (
-                <>
-                </>
-              )}
-          </View>
-        </>
-      ) : (
+      <ScrollView style={styles.container}>
+        {(userLoading === false && user !== undefined) ? (
           <>
-            {/* TODO: spinner einbauen */}
-          </>
-        )}
+            <View style={styles.upperInnerContainer}>
+              {user.profilePictureURL !== '' ? (
+                <Image source={{uri: user.profilePictureURL}} style={styles.profileimage} />
+              ) : (
+                  <Image source={profileplaceolder} style={styles.profileimage} />
+                )}
+              <Text style={styles.name}>{user.name}</Text>
+            </View>
+            <View style={styles.lowerInnerContainer}>
+              {user.description.length > 0 ? (
+                <>
+                  <Text style={styles.h2}>Beschreibung</Text>
+                  <Text style={styles.description}>{user.description}</Text>
+                </>
+              ) : (
+                  <>
+                  </>
+                )}
 
-    </ScrollView>
+              {user.skills.length > 0 ? (
+                <>
+                  <Text style={styles.h2}>Skills</Text>
+                  {user.skills.map((skill) => {return (<Text style={styles.skills} key={skill}>&#x2022; {skill}</Text>)})}
+                </>
+              ) : (
+                  <>
+                  </>
+                )}
+
+              {(ideaLoading === false && ideas !== undefined && ideas!.length > 0) ? (
+                <>
+                  <Text style={styles.h2}>Ideen</Text>
+                  {ideas!.map((idea: any) => {
+                    return (
+                      <Idea
+                        navigation={navigation}
+                        key={idea.id}
+                        idea={idea}
+                      />)
+                  })}
+                </>
+              ) : (
+                  <>
+                  </>
+                )}
+            </View>
+          </>
+        ) : (
+            <>
+              {/* TODO: spinner einbauen */}
+            </>
+          )}
+
+      </ScrollView>
   )
 }
 
