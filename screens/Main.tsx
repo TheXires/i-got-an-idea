@@ -17,17 +17,6 @@ import { createProfileData } from '../services/database';
 const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
 
-  const user: ProfileData = { 
-    profilePictureURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Andrzej_Person_Kancelaria_Senatu.jpg/400px-Andrzej_Person_Kancelaria_Senatu.jpg',
-    name: 'Robin',
-    description: 'Das ist einfach nur ein kurzer Test!',
-    skills: ['skill 1', 'skill 2', 'skill 3', 'skill4'],
-    blockedUsers: [{ id: 'asd56fg498sreg8836aQ9', name: 'Peter' }, { id: 'asd56f23468dg8836aQ9', name: 'Lars' }],
-    id: getUID()
-  }
-  
-  createProfileData(user);
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
