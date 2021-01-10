@@ -12,7 +12,7 @@ const Idea = ({ navigation, idea }: { navigation: any, idea: IdeaType }) => {
   return (
     <View style={styles.container}>
       {/* shows the first image if at least one image is available otherwise it shows a placeholderimage */}
-      <TouchableOpacity onPress={() => navigation.navigate('Ideadetails', { id: idea.name })} activeOpacity={1}>
+      <TouchableOpacity onPress={() => navigation.navigate('Ideadetails', { id: idea.id })} activeOpacity={1}>
         {idea.imageURLs.length > 0 ? (<Image source={{ uri: idea.imageURLs[0] }} style={styles.image} />) : (<Image source={ideaplaceholder} style={styles.image} />)}
       </TouchableOpacity>
 

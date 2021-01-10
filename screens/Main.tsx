@@ -9,10 +9,24 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import { IdeaContext } from '../contexts/ideaContext';
 import { IdeaType } from '../customTypes/ideaType';
+import { getUID } from '../services/auth';
+import { ProfileData } from '../customTypes/profileData';
+import { createProfileData } from '../services/database';
 
 
 const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
+
+  const user: ProfileData = { 
+    profilePictureURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Andrzej_Person_Kancelaria_Senatu.jpg/400px-Andrzej_Person_Kancelaria_Senatu.jpg',
+    name: 'Robin',
+    description: 'Das ist einfach nur ein kurzer Test!',
+    skills: ['skill 1', 'skill 2', 'skill 3', 'skill4'],
+    blockedUsers: [{ id: 'asd56fg498sreg8836aQ9', name: 'Peter' }, { id: 'asd56f23468dg8836aQ9', name: 'Lars' }],
+    id: getUID()
+  }
+  
+  createProfileData(user);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,7 +42,7 @@ const Main = ({ navigation }: { navigation: any }) => {
         </View>
         <View style={{ flexDirection: 'row' }}>
           <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
-          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile')} name="person-sharp" size={24} color="black" />
+          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile', { id: getUID()})} name="person-sharp" size={24} color="black" />
           <Ionicons style={{ marginRight: 15, color: Color.FONT1 }} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
