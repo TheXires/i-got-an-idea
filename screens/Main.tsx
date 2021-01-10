@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView } from 'react-native';
 
 import Idea from '../components/Idea';
@@ -10,12 +10,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import { IdeaContext } from '../contexts/ideaContext';
 import { IdeaType } from '../customTypes/ideaType';
 import { getUID } from '../services/auth';
-import { ProfileData } from '../customTypes/profileData';
-import { createProfileData } from '../services/database';
+import { createIdea, createProfileData } from '../services/database';
+import { IdeaFactory } from '../customTypes/ideaFactory';
 
 
 const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
+  const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,11 +28,15 @@ const Main = ({ navigation }: { navigation: any }) => {
           {/* TODO: hier muss noch jeweils die Funktion hinter den Buttons geschreiben werden.
                     Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
           <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" />
-          <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} name="sort-alpha-asc" size={24} color="black" />
+          {oldestComesLast ? (
+            <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => setOldestComesLast(false)} name="sort-alpha-asc" size={24} color="black" />
+          ) : (
+              <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => setOldestComesLast(true)} name="sort-alpha-desc" size={24} color="black" />
+            )}
         </View>
         <View style={{ flexDirection: 'row' }}>
           <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
-          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile', { id: getUID()})} name="person-sharp" size={24} color="black" />
+          <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile', { id: getUID() })} name="person-sharp" size={24} color="black" />
           <Ionicons style={{ marginRight: 15, color: Color.FONT1 }} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>

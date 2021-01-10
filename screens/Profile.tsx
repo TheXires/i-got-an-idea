@@ -10,13 +10,15 @@ import { getProfileData } from '../services/database';
 import { ProfileData } from '../customTypes/profileData';
 
 const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
-  var userID: string = '';
+  const [userID, setUserID] = useState('');
   const [user, userLoading, userError] = useDocumentData<ProfileData>(getProfileData(route.params.id));
   const [ideas, ideaLoading, ideaError] = useCollectionData(getUserIdeas(userID));
 
-  if (userLoading === false && user!.id !== undefined){
-    userID = user!.id;
-  }
+  useEffect(() => {
+    if (userLoading === false && user!.id !== undefined) {
+      setUserID(user!.id);
+    }
+  }, [user])
 
   return (
     <ScrollView style={styles.container}>
@@ -85,16 +87,18 @@ const styles = StyleSheet.create({
   },
   upperInnerContainer: {
     width: '100%',
-    padding: 15,
+    padding: 10,
+    paddingBottom: 0,
     flex: 1,
     backgroundColor: Color.BACKGROUND,
     alignItems: 'center'
   },
   lowerInnerContainer: {
-    padding: 15
+    padding: 15,
+    paddingTop: 0
   },
   name: {
-    color: Color.FONT1,
+    color: Color.ACCENT,
     fontSize: 21,
     fontWeight: 'bold'
   },
@@ -109,13 +113,13 @@ const styles = StyleSheet.create({
   },
   h2: {
     marginTop: 25,
-    marginBottom: 5,
+    marginBottom: 10,
     fontSize: 15,
     fontWeight: 'bold',
     color: Color.FONT2
   },
   skills: {
-    color: Color.ACCENT
+    color: Color.FONT3
   }
 });
 
