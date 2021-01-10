@@ -4,7 +4,7 @@ import './services/firebaseInitializer'
 import 'firebase/auth';
 
 // Firebase Hooks
-import { useAuthState } from 'react-firebase-hooks/auth';
+import {useAuthState} from 'react-firebase-hooks/auth';
 
 // Screens
 import Login from './screens/Login';
@@ -15,16 +15,16 @@ import Datenschutz from './screens/Datenschutz';
 import Impressum from './screens/Impressum';
 
 // Navigator
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 // supresses a harmless warning the react firebase hook lib causes
-import { LogBox } from 'react-native';
+import {LogBox} from 'react-native';
 LogBox.ignoreLogs(['Setting a timer']);
 
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Color } from "./customTypes/colors";
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Color} from "./customTypes/colors";
 import Ideadetails from "./screens/Ideadetails";
 import Settings from "./screens/Settings";
 import Profile from "./screens/Profile";
@@ -49,12 +49,12 @@ export default function App() {
         <Stack.Navigator screenOptions={headerStyle}>
           {user === null ? (
             <>
-              <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
+              <Stack.Screen name='Login' component={Login} options={{headerShown: false}} />
             </>
           ) : (
               <>
-                <Stack.Screen name='Main' component={Main} options={{ headerShown: false }} />
-                <Stack.Screen name='Ideadetails' component={Ideadetails} options={{ title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{ color: Color.FONT1 }}>Chat starten</Text></TouchableOpacity>) }} />
+                <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
+                <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
                 <Stack.Screen name='Chat' component={Chat} />
                 <Stack.Screen name='Profile' component={Profile} />
                 <Stack.Screen name='Settings' component={Settings} />

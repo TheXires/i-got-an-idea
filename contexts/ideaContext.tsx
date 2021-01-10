@@ -1,4 +1,6 @@
+import firebase from "firebase/app";
 import React, {createContext, useState, useEffect} from "react";
+import {useAuthState} from "react-firebase-hooks/auth";
 import {IdeaType} from "../customTypes/ideaType";
 import {Tag} from "../customTypes/tags";
 import {getIdeas} from "../services/database";
@@ -8,12 +10,17 @@ export const IdeaContext = createContext({});
 //TODO: Pagination
 
 const IdeaProvider = (props: any) => {
+  const [user, loading, error] = useAuthState(firebase.auth());
   const [ideas, setIdeas] = useState<IdeaType[]>();
   const [oldestComesLast, setOldestComesLast] = useState(true);
   const [filters, setFilters] = useState<Tag[]>();
 
+  
+
   useEffect(() => {
-    // console.log('useEffectCalled');
+    if (loading == false && user == null) {
+      return;
+    }
     
     const unsub = getIdeas(oldestComesLast, filters).onSnapshot(snap => {
       var ret: IdeaType[] = [];
@@ -27,7 +34,7 @@ const IdeaProvider = (props: any) => {
       // console.log('unsub'); TODO: subs überprüfen
       unsub();
     }
-  }, [oldestComesLast, filters]);
+  }, [oldestComesLast, filters, user, loading]);
 
   // const fetchIdeasOnce = async () => {
   //   const data = await getIdeas(oldestComesLast, filters).get();
