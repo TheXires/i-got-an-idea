@@ -5,6 +5,8 @@ import {getIdeas} from "../services/database";
 
 export const IdeaContext = createContext({});
 
+//TODO: Pagination
+
 const IdeaProvider = (props: any) => {
   const [ideas, setIdeas] = useState<IdeaType[]>();
   const [oldestComesLast, setOldestComesLast] = useState(true);
