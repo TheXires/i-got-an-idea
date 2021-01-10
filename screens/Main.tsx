@@ -25,7 +25,7 @@ const Main = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <View style={styles.header}>
         <View style={{ flexDirection: 'row' }}>
-          {/* TODO: hier muss noch jeweils die Funktion hinter den Buttons geschreiben werden.
+          {/* TODO: hier muss noch jeweils die Funktion hinter dem Filter Button geschreiben werden.
                     Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
           <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" />
           {oldestComesLast ? (
@@ -34,6 +34,8 @@ const Main = ({ navigation }: { navigation: any }) => {
               <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => setOldestComesLast(true)} name="sort-alpha-desc" size={24} color="black" />
             )}
         </View>
+
+        {/* Header Buttons on the top right */}
         <View style={{ flexDirection: 'row' }}>
           <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Chat')} name="chatbubbles-sharp" size={24} color="black" />
           <Ionicons style={{ marginRight: 25, color: Color.FONT1 }} onPress={() => navigation.navigate('Profile', { id: getUID() })} name="person-sharp" size={24} color="black" />
@@ -44,6 +46,7 @@ const Main = ({ navigation }: { navigation: any }) => {
       {/* Body */}
       <View style={styles.body}>
         <ScrollView>
+          {/* Ideas from context get rendered here */}
           {ideas !== undefined ? (
             ideas.map(idea => {
               return (

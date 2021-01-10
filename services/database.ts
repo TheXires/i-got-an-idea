@@ -1,11 +1,11 @@
-import {IdeaType} from '../customTypes/ideaType';
-import {BlockedUser} from '../customTypes/blockedUsers';
-import {ProfileData} from '../customTypes/profileData';
+import { IdeaType } from '../customTypes/ideaType';
+import { BlockedUser } from '../customTypes/blockedUsers';
+import { ProfileData } from '../customTypes/profileData';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import {getProfilePictureURL, getUID} from './auth';
-import {Chat, ChatMessage} from '../customTypes/chat';
-import {Tag} from '../customTypes/tags';
+import { getProfilePictureURL, getUID } from './auth';
+import { Chat, ChatMessage } from '../customTypes/chat';
+import { Tag } from '../customTypes/tags';
 
 const fs = firebase.firestore();
 
@@ -207,7 +207,7 @@ function updateIdea(idea: IdeaType) {
  */
 function startChat(ideaIdentifier: string | IdeaType) {
     console.log('starting: ', ideaIdentifier);
-    
+
     if (ideaIdentifier == undefined) {
         throw 'The idea can\'t be undefined: ' + JSON.stringify(ideaIdentifier);
     }
@@ -252,7 +252,7 @@ const profileDataConverter = {
     fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ProfileData {
         const data = snapshot.data(options);
         data.blockedUsers = Object.keys(data.blockedUsers).map((userKey: any) => {
-            return {id: userKey, name: data.blockedUsers[userKey]} as BlockedUser;
+            return { id: userKey, name: data.blockedUsers[userKey] } as BlockedUser;
         })
         data.id = snapshot.id;
         return data as ProfileData;
