@@ -10,6 +10,7 @@ import {FontAwesome} from '@expo/vector-icons';
 import { IdeaContext } from '../contexts/ideaContext';
 import { IdeaType } from '../customTypes/ideaType';
 import { getUID } from '../services/auth';
+import {Button} from 'react-native';
 
 
 const Main = ({ navigation }: { navigation: any }) => {

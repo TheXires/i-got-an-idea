@@ -1,11 +1,8 @@
-interface Chat {
-    messages: ChatMessage[];
-}
-
-interface ChatMessage {
+export interface ChatMessage {
+    id: string;
+    ideaID: string;
+    chatID: string;
     authorID: string;
     timestamp: firebase.firestore.Timestamp;
     content: string;
 }
-
-export {Chat, ChatMessage}

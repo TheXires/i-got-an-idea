@@ -1,14 +1,25 @@
+import firebase from 'firebase/app';
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Color } from '../customTypes/colors';
-import { logOut } from '../services/auth';
-import { startChat } from '../services/database';
+import { getUID, logOut } from '../services/auth';
+import { sendChatMessage, startChat } from '../services/database';
 
 const Settings = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={logOut} style={styles.button}>
         <Text style={{ color: Color.FONT1 }}>LogOut</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => startChat('LRt2WVP7CC0lSHRj9KbP')} style={styles.button}>
+        <Text style={{ color: Color.FONT1 }}>StartChat</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => sendChatMessage({
+        id: '12345', ideaID: 'LRt2WVP7CC0lSHRj9KbP',
+        chatID: 'J8iBUgatzBQ3mSVoxRF31iqkKw72', authorID: getUID(),
+        timestamp: firebase.firestore.Timestamp.now(), content: 'Dies ist eine Nachricht!'
+      })} style={styles.button}>
+        <Text style={{ color: Color.FONT1 }}>SendChatMessage</Text>
       </TouchableOpacity>
     </View>
   )
