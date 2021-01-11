@@ -1,15 +1,19 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler';
+import Footer from '../components/Footer';
 import { Color } from '../customTypes/colors';
 import { logOut } from '../services/auth';
-import { startChat } from '../services/database';
 
 const Settings = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={logOut} style={styles.button}>
-        <Text style={{ color: Color.FONT1 }}>LogOut</Text>
-      </TouchableOpacity>
+      <ScrollView>
+        <View>
+          {/* TODO: Einstellungsmöglichkeiten hier einfügen */}
+        </View>
+      </ScrollView>
+      <Footer navigation={navigation} />
     </View>
   )
 }
@@ -19,8 +23,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: Color.BACKGROUND,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    justifyContent: 'space-between',
     color: Color.FONT1
   },
   button: {

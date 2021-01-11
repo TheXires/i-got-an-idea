@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Button, Text, TouchableOpacity } from 'react-native';
 
 import Idea from '../components/Idea';
 
@@ -10,12 +10,22 @@ import {FontAwesome} from '@expo/vector-icons';
 import { IdeaContext } from '../contexts/ideaContext';
 import { IdeaType } from '../customTypes/ideaType';
 import { getUID } from '../services/auth';
+import FloatingActionButton from '../components/FloatingActionButton';
+import CustomSpinner from '../components/CustomSpinner';
 
 
 const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
-  const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast;
-  const loadMoreEntries = useContext<any>(IdeaContext).loadMoreEntries;
+  const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast; 
+  const {loadMoreEntries} = useContext<any>(IdeaContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if(ideas !== undefined){
+      setLoading(false);
+    }
+  }, [ideas])
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,13 +34,13 @@ const Main = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <View style={styles.header}>
         <View style={{ flexDirection: 'row' }}>
-          {/* TODO: hier muss noch jeweils die Funktion hinter dem Filter Button geschreiben werden.
+          {/* TODO: hier muss noch jeweils die Funktionalität hinter dem Filter Button geschreiben werden.
                     Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
           <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" />
           {oldestComesLast ? (
-            <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => setOldestComesLast(false)} name="sort-alpha-asc" size={24} color="black" />
+            <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => {setOldestComesLast(false); setLoading(true)}} name="sort-alpha-asc" size={24} color="black" />
           ) : (
-              <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => setOldestComesLast(true)} name="sort-alpha-desc" size={24} color="black" />
+              <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => {setOldestComesLast(true); setLoading(true)}} name="sort-alpha-desc" size={24} color="black" />
             )}
         </View>
 
@@ -45,6 +55,12 @@ const Main = ({ navigation }: { navigation: any }) => {
       {/* Body */}
       <View style={styles.body}>
         <ScrollView>
+          {loading ? (
+            <CustomSpinner />
+          ) : (
+            <>
+            </>
+          )}
           {/* Ideas from context get rendered here */}
           {ideas !== undefined ? (
             ideas.map(idea => {
@@ -59,8 +75,15 @@ const Main = ({ navigation }: { navigation: any }) => {
               <>
               </>
             )}
-          <Button title="MEHR!!" onPress={loadMoreEntries}></Button>
+            {/* TODO: Wie kann ich mit setLoading noch loadMoreEntries aufrufen */}
+            {/* TODO: erreichen der unteren kannte muss durch funktion errechnet werden. 
+                      https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
+                      https://reactnative.dev/docs/scrollview */}
+          <Button title="MEHR!!" onPress={() => { setLoading(true); return loadMoreEntries}}></Button>
         </ScrollView>
+
+        <FloatingActionButton navigation={navigation} />
+
       </View>
     </SafeAreaView>
   )
