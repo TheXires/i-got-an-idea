@@ -55,12 +55,6 @@ const Main = ({ navigation }: { navigation: any }) => {
       {/* Body */}
       <View style={styles.body}>
         <ScrollView>
-          {loading ? (
-            <CustomSpinner />
-          ) : (
-            <>
-            </>
-          )}
           {/* Ideas from context get rendered here */}
           {ideas !== undefined ? (
             ideas.map(idea => {
@@ -75,11 +69,18 @@ const Main = ({ navigation }: { navigation: any }) => {
               <>
               </>
             )}
-            {/* TODO: Wie kann ich mit setLoading noch loadMoreEntries aufrufen */}
+
+          {loading ? (
+            <CustomSpinner />
+          ) : (
+            <>
+            </>
+          )}
+
             {/* TODO: erreichen der unteren kannte muss durch funktion errechnet werden. 
                       https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
                       https://reactnative.dev/docs/scrollview */}
-          <Button title="MEHR!!" onPress={() => { setLoading(true); return loadMoreEntries}}></Button>
+          <Button title="MEHR!!" onPress={() => { setLoading(true); loadMoreEntries()}}></Button>
         </ScrollView>
 
         <FloatingActionButton navigation={navigation} />
