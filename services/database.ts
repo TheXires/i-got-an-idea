@@ -4,7 +4,7 @@ import { ProfileData } from '../customTypes/profileData';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import { getProfilePictureURL, getUID } from './auth';
-import { Chat, ChatMessage } from '../customTypes/chat';
+import { ChatMessage } from '../customTypes/chat';
 import { Tag } from '../customTypes/tags';
 
 const fs = firebase.firestore();
@@ -109,15 +109,13 @@ function getUserIdeas(userID: string) {
  * @returns {Object[]} A query object for the ideas with the modifiers applied 
  * @throws Error (and alert) when more than 10 items at a time are checked
  */
-function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined) {
+function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined, limit = 20) {
 
 
     if (filters.length > 10) {
         alert('Searching with more than 10 tags at a time is not possible!');
         throw 'Searching with more than 10 tags at a time is not possible!';
     }
-
-    const limit = 20;
 
     if (filters.length == 0) {
         if (offset != undefined) {
