@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Button, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Button } from 'react-native';
 
 import Idea from '../components/Idea';
 

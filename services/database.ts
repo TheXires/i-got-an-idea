@@ -17,7 +17,7 @@ const fs = firebase.firestore();
  * @param description
  * @returns A promise which resolves when the data has been written
  */
-function createProfileData(user: ProfileData) {
+async function createProfileData(user: ProfileData) {
     if (user.profilePictureURL === undefined) {
         const url = getProfilePictureURL();
         if (url !== undefined && url !== null) {
@@ -25,7 +25,7 @@ function createProfileData(user: ProfileData) {
         }
     }
     try {
-        return fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).set(user);
+        return await fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).set(user);
     } catch (error) {
         alert("Error while setting profile data." + JSON.stringify(error));
     }
@@ -48,9 +48,9 @@ function createProfileData(user: ProfileData) {
  * @param user The user information to update
  * @returns A promise which resolves when the data has been written
  */
-function updateProfileData(user: ProfileData) {
+async function updateProfileData(user: ProfileData) {
     try {
-        return fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).update(user);
+        return await fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).update(user);
     } catch (error) {
         alert("Error while updating profile data. Make sure to call on existing profile!" + JSON.stringify(error));
     }
@@ -117,17 +117,19 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
         throw 'Searching with more than 10 tags at a time is not possible!';
     }
 
+    const limit = 20;
+
     if (filters.length == 0) {
         if (offset != undefined) {
             return fs.collection('ideas')
                 .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
                 .startAfter(offset)
-                .limit(20)
+                .limit(limit)
                 .withConverter(ideaConverter);
         } else {
             return fs.collection('ideas')
                 .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
-                .limit(20)
+                .limit(limit)
                 .withConverter(ideaConverter);
 
         }
@@ -137,13 +139,13 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
                 .where('tags', 'array-contains-any', filters)
                 .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
                 .startAfter(offset)
-                .limit(20)
+                .limit(limit)
                 .withConverter(ideaConverter);
             } else {
             return fs.collection('ideas')
                 .where('tags', 'array-contains-any', filters)
                 .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
-                .limit(20)
+                .limit(limit)
                 .withConverter(ideaConverter);
         }
         //for exact search if needed any time:
@@ -182,7 +184,7 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
  * @param idea The idea to create
  * @returns a promise which resolves when the data has been written
  */
-function createIdea(idea: IdeaType) {
+async function createIdea(idea: IdeaType) {
     if (idea.authorID == undefined) {
         idea.authorID = getUID();
     }
@@ -190,7 +192,7 @@ function createIdea(idea: IdeaType) {
         idea.creationTimestamp = firebase.firestore.Timestamp.now();
     }
     try {
-        return fs.collection('ideas').doc().withConverter(ideaConverter).set(idea);
+        return await fs.collection('ideas').doc().withConverter(ideaConverter).set(idea);
     } catch (error) {
         alert("Error while creating an idea." + JSON.stringify(error));
     }
@@ -211,12 +213,12 @@ function createIdea(idea: IdeaType) {
  * @param idea The idea information to update
  * @returns A promise which resolves when the data has been written
  */
-function updateIdea(idea: IdeaType) {
+async function updateIdea(idea: IdeaType) {
     if (idea.id == undefined) {
         throw 'The idea ID can\'t be undefined: ' + JSON.stringify(idea);
     }
     try {
-        return fs.collection('ideas').doc(idea.id).withConverter(ideaConverter).update(idea);
+        return await fs.collection('ideas').doc(idea.id).withConverter(ideaConverter).update(idea);
     } catch (error) {
         alert("Error while updating a idea." + JSON.stringify(error));
     }
@@ -228,11 +230,11 @@ function updateIdea(idea: IdeaType) {
  * document to be existent before adding values to it.
  * 
  * This will set the chat document to en empty object and therefore creates it if non existant
- * !DO NOT CALL ON EXISTING CHAT! (It'll overwrite everything)
- *
+ * !DO NOT CALL ON EXISTING CHAT!
+ * 
  * @param ideaIdentifier An idea ID as a string or an idea object with a valid id property
  */
-function startChat(ideaIdentifier: string | IdeaType) {
+async function startChat(ideaIdentifier: string | IdeaType) {
     console.log('starting: ', ideaIdentifier);
 
     if (ideaIdentifier == undefined) {
@@ -245,14 +247,19 @@ function startChat(ideaIdentifier: string | IdeaType) {
         id = (ideaIdentifier as IdeaType).id
     }
     try {
-        return fs.collection('ideas').doc(id).collection('chats').doc(getUID()).set({});
+        return await fs.collection('ideas').doc(id).collection('chats').doc(getUID()).set({});
     } catch (error) {
         alert("Error while creating chat." + JSON.stringify(error));
     }
 }
 
-function sendChatMessage(chat: Chat, message: ChatMessage) {
-
+async function sendChatMessage(message: ChatMessage) {
+    try {
+        return await fs.collection('ideas').doc(message.ideaID).collection('chats').
+            doc(message.chatID).collection('messages').doc().withConverter(chatMessageConverter).set(message);
+    } catch (error) {
+        alert("Error while creating chat." + JSON.stringify(error));
+    }
 }
 
 export {
@@ -309,12 +316,35 @@ const ideaConverter = {
     fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): IdeaType {
         const data = snapshot.data(options);
         // data.tags = Object.keys(data.tags).filter(key => data.tags[key]).map((key: any) => Tag[key]);
-
         data.id = snapshot.id;
         return data as IdeaType;
     }
 };
 
+const chatMessageConverter = {
+    toFirestore(data: ChatMessage): firebase.firestore.DocumentData {
+        if (data.ideaID != undefined) {
+            delete (data as any).ideaID;
+        }
+        if (data.chatID != undefined) {
+            delete (data as any).chatID;
+        }
+        if (data.id != undefined) {
+            delete (data as any).id;
+        }
+        return data;
+    },
+
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ChatMessage {
+        const data = snapshot.data(options);
+        //ideas/LRt2WVP7CC0lSHRj9KbP/chats/J8iBUgatzBQ3mSVoxRF31iqkKw72/messages/7h8GIhsV4eXF6GTbCi2P
+        const pathElements = snapshot.ref.path.split('/');
+        data.ideaID = pathElements[1];
+        data.chatID = pathElements[3];
+        data.id = snapshot.id;
+        return data as ChatMessage;
+    }
+};
 // function sanitizeProfilePictureURL(url) {
 //     // TODO: needed?
 //     // https://lh3.googleusercontent.com/a-/AOh14GjTQVmEk-kWD1fKnagm2W7U6wyEKUx_S0yFV1IQGg=s200-p-k-no-mo

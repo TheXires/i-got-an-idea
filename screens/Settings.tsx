@@ -1,9 +1,9 @@
+import firebase from 'firebase/app';
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../components/Footer';
 import { Color } from '../customTypes/colors';
-import { logOut } from '../services/auth';
 
 const Settings = ({ navigation }: { navigation: any }) => {
   return (
