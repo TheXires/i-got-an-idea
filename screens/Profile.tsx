@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {StyleSheet, Text, View, ScrollView, Image} from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image} from 'react-native'
 import {Color} from '../customTypes/colors';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
 import {getUserIdeas} from '../services/database';
@@ -8,6 +8,7 @@ import Idea from '../components/Idea';
 import {useDocumentData} from 'react-firebase-hooks/firestore';
 import {getProfileData} from '../services/database';
 import {ProfileData} from '../customTypes/profileData';
+import CustomSpinner from '../components/CustomSpinner';
 
 const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
   const [userID, setUserID] = useState('');
@@ -52,28 +53,37 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
                   <>
                   </>
                 )}
-
-              {(ideaLoading === false && ideas !== undefined && ideas!.length > 0) ? (
+              
+              {!ideaLoading ? (
                 <>
-                  <Text style={styles.h2}>Ideen</Text>
-                  {ideas!.map((idea: any) => {
-                    return (
-                      <Idea
-                        navigation={navigation}
-                        key={idea.id}
-                        idea={idea}
-                      />)
-                  })}
+                  {(ideas !== undefined && ideas!.length > 0) ? (
+                    <>
+                      <Text style={styles.h2}>Ideen</Text>
+                      {ideas!.map((idea: any) => {
+                        return (
+                          <Idea
+                            navigation={navigation}
+                            key={idea.id}
+                            idea={idea}
+                          />)
+                      })}
+                    </>
+                  ) : (
+                    <>
+                    {/* If there are no ideas or its undefind, nothing needs to be rendered */}
+                    </>
+                  )}
                 </>
               ) : (
-                  <>
-                  </>
-                )}
+                <>
+                  <CustomSpinner />
+                </>
+              )}
             </View>
           </>
         ) : (
             <>
-              {/* TODO: spinner einbauen */}
+              <CustomSpinner />
             </>
           )}
 

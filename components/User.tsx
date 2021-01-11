@@ -4,18 +4,10 @@ import { Color } from '../customTypes/colors';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { getProfileData } from '../services/database';
 import { ProfileData } from '../customTypes/profileData';
+import CustomSpinner from './CustomSpinner';
 
 const User = ({ navigation, userID }: { navigation: any, userID: string }) => {
   const [user, loading, error] = useDocumentData<ProfileData>(getProfileData(userID));
-
-  // const [user, setUser] = useState({
-  //   profilePictureURL: 'https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg',
-  //   name: 'Peter Lustig',
-  //   description: 'ich bin der Lustigste Peter der Welt',
-  //   skills: ['krativ sein', 'HTML', 'CSS'],
-  //   blockedUsers: ['dfg556df4g65adfgdgf1fdg15s89WEQR48', 'df5588ofre52f4g65adfgdgf1fdg15s89WEQR48'],
-  //   id: 'df44e7e65safdg6Q9+9S+FDA45A64GA',
-  // })
 
   if (error) {
     return <Text style={styles.error}>{error}</Text>
@@ -31,7 +23,7 @@ const User = ({ navigation, userID }: { navigation: any, userID: string }) => {
           </>
         ) : (
             <>
-              {/* TODO: spinner einfügen */}
+              <CustomSpinner />
             </>
           )}
 

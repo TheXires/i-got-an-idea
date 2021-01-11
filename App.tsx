@@ -2,6 +2,7 @@
 import * as firebase from "firebase/app";
 import './services/firebaseInitializer'
 import 'firebase/auth';
+import { logOut } from './services/auth';
 
 // Firebase Hooks
 import {useAuthState} from 'react-firebase-hooks/auth';
@@ -30,6 +31,7 @@ import Settings from "./screens/Settings";
 import Profile from "./screens/Profile";
 import Chat from "./screens/Chat";
 import IdeaProvider from "./contexts/ideaContext";
+import CreateIdea from "./screens/CreateIdea";
 
 
 // creating stack for navigation
@@ -39,7 +41,12 @@ const Stack = createStackNavigator();
 export default function App() {
   const [user, loading, error] = useAuthState(firebase.auth());
 
+  if(error){
+    return <Text>{error}</Text>
+  }
+
   if (loading) {
+    // TODO: muss noch durch etwas zum Design passendem ersetzt werden
     return <SplashScreen />;
   }
 
@@ -57,8 +64,8 @@ export default function App() {
                 <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
                 <Stack.Screen name='Chat' component={Chat} />
                 <Stack.Screen name='Profile' component={Profile} />
-                <Stack.Screen name='Settings' component={Settings} />
-
+                <Stack.Screen name='Settings' component={Settings} options={{ title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{ color: Color.FONT1 }}>LogOut</Text></TouchableOpacity>) }} />
+                <Stack.Screen name='CreateIdea' component={CreateIdea} options={{ title: 'Meine Idee'}} />
               </>
             )
           }
@@ -81,8 +88,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    marginRight: 10,
-    paddingHorizontal: 10,
+    marginRight: 15,
+    paddingHorizontal: 15,
     paddingVertical: 5,
     borderRadius: 50,
     backgroundColor: Color.ACCENT,

@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   name: {
     marginTop: 5,
     fontSize: 16,
-    color: Color.FONT2,
+    color: Color.FONT1,
     fontWeight: 'bold'
   },
   description: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     paddingVertical: '8%',
     overflow: 'hidden',
-    color: Color.ACCENT
+    color: Color.FONT2
   },
   image: {
     width: 100,

@@ -1,26 +1,19 @@
 import firebase from 'firebase/app';
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler';
+import Footer from '../components/Footer';
 import { Color } from '../customTypes/colors';
-import { getUID, logOut } from '../services/auth';
-import { sendChatMessage, startChat } from '../services/database';
 
 const Settings = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={logOut} style={styles.button}>
-        <Text style={{ color: Color.FONT1 }}>LogOut</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => startChat('LRt2WVP7CC0lSHRj9KbP')} style={styles.button}>
-        <Text style={{ color: Color.FONT1 }}>StartChat</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => sendChatMessage({
-        id: '12345', ideaID: 'LRt2WVP7CC0lSHRj9KbP',
-        chatID: 'J8iBUgatzBQ3mSVoxRF31iqkKw72', authorID: getUID(),
-        timestamp: firebase.firestore.Timestamp.now(), content: 'Dies ist eine Nachricht!'
-      })} style={styles.button}>
-        <Text style={{ color: Color.FONT1 }}>SendChatMessage</Text>
-      </TouchableOpacity>
+      <ScrollView>
+        <View>
+          {/* TODO: Einstellungsmöglichkeiten hier einfügen */}
+        </View>
+      </ScrollView>
+      <Footer navigation={navigation} />
     </View>
   )
 }
@@ -30,8 +23,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: Color.BACKGROUND,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    justifyContent: 'space-between',
     color: Color.FONT1
   },
   button: {

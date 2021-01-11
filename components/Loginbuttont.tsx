@@ -4,9 +4,10 @@ import {Color} from '../customTypes/colors';
 import {loginWithGoogle} from '../services/auth';
 
 
-function Loginbutton({provider}: {provider: string}) {
+function Loginbutton({provider}: {provider: string}) {  
   return (
     <View>
+      {/* TODO: Login mit Github muss noch ergänzt werden */}
       <TouchableOpacity onPress={loginWithGoogle} style={styles.button} activeOpacity={0.9}>
         <Text style={{color: Color.FONT2, fontWeight: 'bold'}}>Login with {provider}</Text>
       </TouchableOpacity>
