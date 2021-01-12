@@ -32,6 +32,7 @@ import Profile from "./screens/Profile";
 import Chat from "./screens/Chat";
 import IdeaProvider from "./contexts/ideaContext";
 import CreateIdea from "./screens/CreateIdea";
+import IdeaCreationProvider from "./contexts/ideaCreationContext";
 
 
 // creating stack for navigation
@@ -52,28 +53,30 @@ export default function App() {
 
   return (
     <IdeaProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={headerStyle}>
-          {user === null ? (
-            <>
-              <Stack.Screen name='Login' component={Login} options={{headerShown: false}} />
-            </>
-          ) : (
+      <IdeaCreationProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={headerStyle}>
+            {user === null ? (
               <>
-                <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
-                <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
-                <Stack.Screen name='Chat' component={Chat} />
-                <Stack.Screen name='Profile' component={Profile} />
-                <Stack.Screen name='Settings' component={Settings} options={{ title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{ color: Color.FONT1 }}>LogOut</Text></TouchableOpacity>) }} />
-                <Stack.Screen name='CreateIdea' component={CreateIdea} options={{ title: 'Meine Idee'}} />
+                <Stack.Screen name='Login' component={Login} options={{headerShown: false}} />
               </>
-            )
-          }
-          <Stack.Screen name='Agb' component={Agb} />
-          <Stack.Screen name='Datenschutz' component={Datenschutz} />
-          <Stack.Screen name='Impressum' component={Impressum} />
-        </Stack.Navigator>
-      </NavigationContainer>
+            ) : (
+                <>
+                  <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
+                  <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
+                  <Stack.Screen name='Chat' component={Chat} />
+                  <Stack.Screen name='Profile' component={Profile} />
+                  <Stack.Screen name='Settings' component={Settings} options={{ title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{ color: Color.FONT1 }}>LogOut</Text></TouchableOpacity>) }} />
+                  <Stack.Screen name='CreateIdea' component={CreateIdea} options={{ title: 'Meine Idee'}} />
+                </>
+              )
+            }
+            <Stack.Screen name='Agb' component={Agb} />
+            <Stack.Screen name='Datenschutz' component={Datenschutz} />
+            <Stack.Screen name='Impressum' component={Impressum} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </IdeaCreationProvider>
     </IdeaProvider>
   );
 }

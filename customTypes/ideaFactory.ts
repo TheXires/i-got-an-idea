@@ -14,6 +14,26 @@ export class IdeaFactory {
     constructor() {
     }
 
+    // Getter
+    public getDescription(){
+        return this._description;
+    }
+
+    public getImageURLs(){
+        return this._imageURLs;
+    }
+    
+    public getName() {
+        return this._name;
+    }
+
+
+    public getTags() {
+        return this._tags;
+    }
+    
+
+    // setter
     with(): IdeaFactory {
         return this;
     }
