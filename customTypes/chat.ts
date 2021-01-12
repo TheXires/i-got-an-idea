@@ -1,8 +1,9 @@
 export interface ChatMessage {
-    id: string;
+    id?: string;
     ideaID: string;
-    chatID: string;
     authorID: string;
+    authorName: string;
+    authorProfilePictureURL: string;
     timestamp: firebase.firestore.Timestamp;
     content: string;
 }

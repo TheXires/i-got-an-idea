@@ -110,6 +110,8 @@ const styles = StyleSheet.create({
   name: {
     color: Color.ACCENT,
     fontSize: 21,
+    width: '100%',
+    textAlign: 'center',
     fontWeight: 'bold'
   },
   profileimage: {

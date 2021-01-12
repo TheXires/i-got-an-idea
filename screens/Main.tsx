@@ -75,11 +75,10 @@ const Main = ({ navigation }: { navigation: any }) => {
               <>
               </>
             )}
-            {/* TODO: Wie kann ich mit setLoading noch loadMoreEntries aufrufen */}
             {/* TODO: erreichen der unteren kannte muss durch funktion errechnet werden. 
                       https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
                       https://reactnative.dev/docs/scrollview */}
-          <Button title="MEHR!!" onPress={() => { setLoading(true); return loadMoreEntries}}></Button>
+          <Button title="MEHR!!" onPress={() => { setLoading(true); loadMoreEntries()}}></Button>
         </ScrollView>
 
         <FloatingActionButton navigation={navigation} />

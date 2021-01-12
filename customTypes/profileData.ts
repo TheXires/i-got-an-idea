@@ -6,4 +6,5 @@ export interface ProfileData {
     skills: string[];
     blockedUsers: BlockedUser[];
     id?: string;
+    ideaChatsPinned: string[];
 }

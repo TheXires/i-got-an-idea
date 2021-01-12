@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    //TODO Data sanitization
+    
+    match /profileData/{userDoc} {
+    allow read: if signedIn();
+    allow write: if request.auth.uid == userDoc;
+    }
+    
+    match /ideas/{ideaID} {
+      allow read: if signedIn();
+      allow update: if signedIn() && isIdeaOwner();
+      allow create: if signedIn() && !ideaExists(ideaID);
+    }
+    
+    
+    match /ideas/{ideaID}/chats/{userID}/messages/{messageID} {
+      allow read: if isChatAlreadyExisting(ideaID, userID) &&
+      isChatParticipant(userID, ideaID) &&
+      !isBlockedUser(ideaID, request.auth.uid);
+      
+      allow create: if signedIn() &&
+      isChatAlreadyExisting(ideaID, userID) &&
+      isChatParticipant(userID, ideaID) &&
+      request.resource.data.authorID == request.auth.uid && 
+      !isBlockedUser(ideaID, request.auth.uid);
+    }
+    
+    match /ideas/{ideaID}/chats/{userID} {
+      allow create: if signedIn() &&
+      userID == request.auth.uid &&
+      ideaExists(ideaID) &&
+      !isChatAlreadyExisting(userID, ideaID) &&
+      fetchIdeaOwnerID(ideaID) != request.auth.uid && 
+      !isBlockedUser(ideaID, request.auth.uid);
+    }
+    
+    function isChatAlreadyExisting(ideaID, userID) {
+    	return exists(/databases/$(database)/documents/ideas/$(ideaID)/chats/$(userID));
+    }
+    
+    function isChatParticipant(userID, ideaID){
+    return userID == request.auth.uid ||
+    isIdeaAuthor(get(/databases/$(database)/documents/ideas/$(ideaID)));
+    }
+    
+    function isIdeaAuthor(ideaData){
+    	return ideaData != null &&
+      ideaData.data != null &&
+      ideaData.data.authorID != null && 
+      ideaData.data.authorID == request.auth.uid;
+    }
+    
+    function signedIn() {
+      return request != null && request.auth != null && request.auth.uid != null;
+    }
+    
+    //only usable with a idea query
+    function isIdeaOwner() {
+    	return resource != null &&
+      resource.data != null &&
+      request.auth.uid == resource.data.authorID;    
+    }
+    
+    function ideaExists(id){
+    	return exists(/databases/$(database)/documents/ideas/$(id));
+    }
+    
+    function isBlockedUser(ideaID, userID){
+    	return fetchIdeaOwnerID(ideaID) in fetchBlockedUsers(userID).keys();
+    }
+    
+    function fetchIdeaOwnerID(ideaID){
+    	return get(/databases/$(database)/documents/ideas/$(ideaID)).data.authorID;
+    }
+    
+    function fetchBlockedUsers(userID) {
+    	return get(/databases/$(database)/documents/profileData/$(userID)).data.blockedUsers;
+    }
+  }
+}

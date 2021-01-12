@@ -105,6 +105,7 @@ function getUserIdeas(userID: string) {
  * @param filters Filters out ideas which are tagged with the given filter strings. Defaults to an empty array = all ideas are queried
  * @param offset This value signals the method to load a batch of documents (20 by default) with an offset. The value should be the last queried document. Set it to undefined to
  * indicate that the query should start at the beginning
+ * @param limit A limit for the amount of queried data. Defaults to 20 if left undefined
  * 
  * @returns {Object[]} A query object for the ideas with the modifiers applied 
  * @throws Error (and alert) when more than 10 items at a time are checked
@@ -223,47 +224,29 @@ async function updateIdea(idea: IdeaType) {
 }
 
 /**
- * Starts a chat with the idea owner of the given idea.
- * It is mandatory to call this method before starting to chat, because the permissions set in the backend require the chat
- * document to be existent before adding values to it.
+ * A method to write a new chat message
  * 
- * This will set the chat document to en empty object and therefore creates it if non existant
- * !DO NOT CALL ON EXISTING CHAT!
- * 
- * @param ideaIdentifier An idea ID as a string or an idea object with a valid id property
+ * @param message The chat message which should be written to the database
  */
-async function startChat(ideaIdentifier: string | IdeaType) {
-    console.log('starting: ', ideaIdentifier);
-
-    if (ideaIdentifier == undefined) {
-        throw 'The idea can\'t be undefined: ' + JSON.stringify(ideaIdentifier);
-    }
-    let id;
-    if (typeof ideaIdentifier == 'string') {
-        id = ideaIdentifier;
-    } else {
-        id = (ideaIdentifier as IdeaType).id
-    }
-    try {
-        return await fs.collection('ideas').doc(id).collection('chats').doc(getUID()).set({});
-    } catch (error) {
-        alert("Error while creating chat." + JSON.stringify(error));
-    }
-}
-
 async function sendChatMessage(message: ChatMessage) {
     try {
-        return await fs.collection('ideas').doc(message.ideaID).collection('chats').
-            doc(message.chatID).collection('messages').doc().withConverter(chatMessageConverter).set(message);
+        return await fs.collection('ideas').doc(message.ideaID).collection('chatmessages').doc()
+            .withConverter(chatMessageConverter)
+            .set(message);
     } catch (error) {
-        alert("Error while creating chat." + JSON.stringify(error));
+        alert("Error sending chat message: " + JSON.stringify(error));
     }
 }
+
+// function getChatsByOwnProjects() {
+//     return fs.collectionGroup('ideas').where('authorID', '==', getUID()).
+    
+// }
 
 export {
     createProfileData, updateProfileData, getProfileData,
     getUserIdeas, getIdeas, createIdea, updateIdea,
-    startChat, sendChatMessage
+    sendChatMessage
 }
 
 const profileDataConverter = {
@@ -324,9 +307,6 @@ const chatMessageConverter = {
         if (data.ideaID != undefined) {
             delete (data as any).ideaID;
         }
-        if (data.chatID != undefined) {
-            delete (data as any).chatID;
-        }
         if (data.id != undefined) {
             delete (data as any).id;
         }
@@ -335,10 +315,9 @@ const chatMessageConverter = {
 
     fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ChatMessage {
         const data = snapshot.data(options);
-        //ideas/LRt2WVP7CC0lSHRj9KbP/chats/J8iBUgatzBQ3mSVoxRF31iqkKw72/messages/7h8GIhsV4eXF6GTbCi2P
+        //ideas/LRt2WVP7CC0lSHRj9KbP/chatmessages/7h8GIhsV4eXF6GTbCi2P
         const pathElements = snapshot.ref.path.split('/');
         data.ideaID = pathElements[1];
-        data.chatID = pathElements[3];
         data.id = snapshot.id;
         return data as ChatMessage;
     }
