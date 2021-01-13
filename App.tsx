@@ -33,6 +33,10 @@ import Chat from "./screens/Chat";
 import IdeaProvider from "./contexts/ideaContext";
 import CreateIdea from "./screens/CreateIdea";
 import IdeaCreationProvider from "./contexts/ideaCreationContext";
+import CreateIdeaFrontend from "./screens/CreateIdeaFrontend";
+import CreateIdeaBackend from "./screens/CreateIdeaBackend";
+import CreateIdeaData from "./screens/CreateIdeaData";
+import CreateIdeaPlatforms from "./screens/CreateIdeaPlatforms";
 
 
 // creating stack for navigation
@@ -67,7 +71,11 @@ export default function App() {
                   <Stack.Screen name='Chat' component={Chat} />
                   <Stack.Screen name='Profile' component={Profile} />
                   <Stack.Screen name='Settings' component={Settings} options={{ title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{ color: Color.FONT1 }}>LogOut</Text></TouchableOpacity>) }} />
-                  <Stack.Screen name='CreateIdea' component={CreateIdea} options={{ title: 'Meine Idee'}} />
+                  <Stack.Screen name='CreateIdea' component={CreateIdea} options={{ title: 'Meine Idee' }} />
+                  <Stack.Screen name='CreateIdeaFrontend' component={CreateIdeaFrontend} options={{ title: 'Meine Idee' }} />
+                  <Stack.Screen name='CreateIdeaBackend' component={CreateIdeaBackend} options={{ title: 'Meine Idee' }} />
+                  <Stack.Screen name='CreateIdeaData' component={CreateIdeaData} options={{ title: 'Meine Idee'}} />
+                  <Stack.Screen name='CreateIdeaPlatforms' component={CreateIdeaPlatforms} options={{ title: 'Meine Idee'}} />
                 </>
               )
             }

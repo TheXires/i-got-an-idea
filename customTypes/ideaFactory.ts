@@ -95,6 +95,11 @@ export class IdeaFactory {
         this._tags = tags;
         return this;
     }
+    
+    addTags(tags: Tag[]) {
+        this._tags = [...tags];
+        return this;
+    }
 
     /**
      * No tags specified

@@ -1,20 +1,25 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { ideaCreationContext } from '../contexts/ideaCreationContext';
-import { IdeaType } from '../customTypes/ideaType';
 import { IdeaFactory } from '../customTypes/ideaFactory';
 
 const CreateIdea = ({ navigation }: { navigation: any }) => {
-  const { idea }: { idea: IdeaFactory } = useContext<any>(ideaCreationContext).idea;
+  const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
+
+  useEffect(() => {
+    console.log(newIdea);
+  }, [newIdea])
+  
+  newIdea.authorIDDefault();
 
   return (
     <View style={styles.container}>
       <Text style={styles.h1}>Name der Idee</Text>
       <TextInput
-        style={styles.nameInput}
-        onChangeText={text => idea.name(text)}
+        style={styles.textInput}
+        onChangeText={text => newIdea.name(text)}
         placeholderTextColor={Color.FONT3}
         placeholder='Name der Idee'
       />
@@ -23,20 +28,24 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
       <Text style={styles.h1}>Beschreibung</Text>
       <TextInput
         multiline={true}
-        style={[styles.nameInput, { height: 100 },]}
-        onChangeText={text => idea.name(text)}
+        style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
+        onChangeText={text => newIdea.description(text)}
         placeholderTextColor={Color.FONT3}
         placeholder='Name der Idee'
       />
 
 
       <Text style={styles.h1}>Bilder</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('CreateIdea')} style={styles.container}>
-        <Ionicons name="ios-add" size={40} color={Color.FONT1} />
-      </TouchableOpacity>
+      <View style={styles.addImage}>
+        <TouchableOpacity onPress={() => newIdea.imageURLsEmpty} style={styles.addImageButton}>
+          <Ionicons name="ios-add" size={60} color={Color.FONT1} style={{ height: 62, width: 58}} />
+        </TouchableOpacity>
+        <Text style={styles.addImageText}>Bilder hinzufügen</Text>
+      </View>
 
-      {/* TODO: Button hinzufügen, der beim weitermachen die Felder setzt in die IdeaFactory setzt. 
-                Gebaut wird diese dann beim letztn Screen durch den Button "abschließen" */}
+      <TouchableOpacity style={[styles.button, styles.next]} onPress={() => navigation.navigate('CreateIdeaFrontend')}>
+        <Text style={{color: Color.FONT1}}>Weiter</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Color.FONT1
   },
-  nameInput: {
+  textInput: {
     marginBottom: 20,
     padding: 10,
     height: 40,
@@ -62,6 +71,38 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     color: Color.FONT2
+  },
+  addImage:{
+    marginTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center',    
+  },
+  addImageButton: {
+    width: 70,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Color.ACCENT,
+    borderRadius: 50,
+    textAlign: 'center',
+    textAlignVertical: 'center'
+  },
+  addImageText: {
+    marginTop: 20,
+    color: Color.FONT3
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: '3%',
+    paddingHorizontal: '8%',
+    backgroundColor: Color.ACCENT,
+    borderRadius: 50,
+  },
+  next: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
   }
 })
 
