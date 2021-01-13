@@ -18,6 +18,7 @@ const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
   const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast; 
   const {loadMoreEntries} = useContext<any>(IdeaContext);
+  const {limitReached} = useContext<any>(IdeaContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const Main = ({ navigation }: { navigation: any }) => {
             {/* TODO: erreichen der unteren kannte muss durch funktion errechnet werden. 
                       https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
                       https://reactnative.dev/docs/scrollview */}
-          <Button title="MEHR!!" onPress={() => { setLoading(true); loadMoreEntries()}}></Button>
+          {limitReached ? (<></>) : <Button title="MEHR!!" onPress={() => { setLoading(true); loadMoreEntries()}}></Button> }
         </ScrollView>
 
         <FloatingActionButton navigation={navigation} />

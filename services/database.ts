@@ -302,7 +302,7 @@ const ideaConverter = {
     }
 };
 
-const chatMessageConverter = {
+export const chatMessageConverter = {
     toFirestore(data: ChatMessage): firebase.firestore.DocumentData {
         if (data.ideaID != undefined) {
             delete (data as any).ideaID;
