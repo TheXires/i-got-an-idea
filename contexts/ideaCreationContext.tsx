@@ -8,10 +8,12 @@ const IdeaCreationProvider = (props: any) => {
   const [newIdea, setNewIdea] = useState(new IdeaFactory);
   const [completed, setCompleted] = useState(false);
   
-  newIdea.with()
+  useEffect(() => {
+    newIdea.with()
     .creationTimestampDefault()
     .imageURLsEmpty()
     .tags([])
+  }, [])
 
   useEffect(() => {
     if (completed){

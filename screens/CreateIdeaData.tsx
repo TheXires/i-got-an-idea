@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import Radiobuttons from '../components/Radiobuttons';
+import { Tag } from '../customTypes/tags';
+import { IdeaFactory } from '../customTypes/ideaFactory';
+import { ideaCreationContext } from '../contexts/ideaCreationContext';
 
 const CreateIdeaData = ({ navigation }: { navigation: any }) => {
+  const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const [selected, setSelected] = useState([false, false, true]);
-  const [dataNeeded, setDataNeeded] = useState(false);
   
   return (
     <View style={styles.container}>
@@ -18,66 +22,21 @@ const CreateIdeaData = ({ navigation }: { navigation: any }) => {
         Hier muss noch der richtige Text eingef&uuml;gt werden ...
       </Text>
       
-      
       {/* Row with radiobuttons */}
-      <View style={styles.selectionContainer}>
+      <Radiobuttons selected={selected} setSelected={setSelected} />
 
-        {/* 
-          * yes 
-          */}
-        <TouchableOpacity activeOpacity={.7} style={styles.radioButtons}
-          onPress={() => {
-            setSelected([true, false, false]);
-            setDataNeeded(true);
-          }}
-        >
-          { selected[0] ? (
-            <Ionicons name="radio-button-on-sharp" size={24} color={Color.ACCENT} />
-          ) : (
-            <Ionicons name="radio-button-off-sharp" size={24} color={Color.ACCENT} />
-          )}
-          <Text style={{color: Color.FONT2}}> Ja</Text>
-        </TouchableOpacity>
-
-        {/* 
-          * not sure 
-          */}
-        <TouchableOpacity activeOpacity={.7} style={styles.radioButtons}
-          onPress={() => {
-            setSelected([false, true, false]);
-            setDataNeeded(false);
-          }}
-        >
-          {selected[1] ? (
-            <Ionicons name="radio-button-on-sharp" size={24} color={Color.ACCENT} />
-          ) : (
-            <Ionicons name="radio-button-off-sharp" size={24} color={Color.ACCENT} />
-          )}
-          <Text style={{ color: Color.FONT2 }}> Nicht sicher</Text>
-        </TouchableOpacity>
-
-        {/* 
-          * no 
-          */}
-        <TouchableOpacity activeOpacity={.7} style={styles.radioButtons}
-          onPress={() => {
-            setSelected([false, false, true]);
-            setDataNeeded(false);
-          }}
-        >
-          {selected[2] ? (
-            <Ionicons name="radio-button-on-sharp" size={24} color={Color.ACCENT} />
-          ) : (
-            <Ionicons name="radio-button-off-sharp" size={24} color={Color.ACCENT} />
-          )}
-          <Text style={{ color: Color.FONT2 }}> Nein</Text>
-        </TouchableOpacity>
-      </View>
-
-
-      <TouchableOpacity style={[styles.button, styles.next]} onPress={() => navigation.navigate('CreateIdeaPlatforms')}>
+      {/* Navigation Buttons */}
+      {/* next */}
+      <TouchableOpacity style={[styles.button, styles.next]} 
+        onPress={() => {
+          selected[0] ? newIdea.addTags([Tag.BACKEND]) : newIdea.tags(newIdea.getTags()!.filter(tag => tag !== Tag.BACKEND))
+          navigation.navigate('CreateIdeaPlatforms')
+        }}
+      >
         <Text style={{ color: Color.FONT1 }}>Weiter</Text>
       </TouchableOpacity>
+
+      {/* previous */}
       <TouchableOpacity style={[styles.button, styles.previous]} onPress={() => navigation.goBack()}>
         <Text style={{ color: Color.FONT1 }}>Zur&uuml;ck</Text>
       </TouchableOpacity>
