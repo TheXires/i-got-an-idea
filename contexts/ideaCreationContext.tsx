@@ -9,6 +9,13 @@ const IdeaCreationProvider = (props: any) => {
   const [completed, setCompleted] = useState(false);
   
   useEffect(() => {
+    newIdea.with()
+    .creationTimestampDefault()
+    .imageURLsEmpty()
+    .tags([])
+  }, [])
+
+  useEffect(() => {
     if (completed){
       try{
         createIdea(newIdea.buildWithChecks());

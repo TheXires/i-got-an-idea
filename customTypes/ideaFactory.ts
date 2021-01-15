@@ -95,6 +95,13 @@ export class IdeaFactory {
         this._tags = tags;
         return this;
     }
+    
+    addTags(tags: Tag[]) {
+        if(this._tags !== undefined){
+          this._tags = [...this._tags,...tags]
+        }
+        return this;
+    }
 
     /**
      * No tags specified
@@ -119,7 +126,7 @@ export class IdeaFactory {
             description: this._description,
             imageURLs: this._imageURLs,
             name: this._name,
-            tags: this._tags,
+            tags: this._tags?.filter((tag, index, self) => index === self.indexOf(tag)),
             id: this._id
         } as IdeaType;
 
@@ -146,7 +153,7 @@ export class IdeaFactory {
             description: this._description,
             imageURLs: this._imageURLs,
             name: this._name,
-            tags: this._tags,
+            tags: this._tags?.filter((tag, index, self) => index === self.indexOf(tag)),
             id: this._id
         } as IdeaType;
 

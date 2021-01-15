@@ -5,7 +5,6 @@ import spinner from '../assets/spinner.gif';
 /**
  * Shows an image with the original aspectratio but a given hight
  */
-
 const CustomImage = ({source , imgSize}: {source: any, imgSize: number}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [width, setWidth] = useState(0);
