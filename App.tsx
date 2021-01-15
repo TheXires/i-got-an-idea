@@ -37,6 +37,7 @@ import CreateIdeaFrontend from "./screens/CreateIdeaFrontend";
 import CreateIdeaBackend from "./screens/CreateIdeaBackend";
 import CreateIdeaData from "./screens/CreateIdeaData";
 import CreateIdeaPlatforms from "./screens/CreateIdeaPlatforms";
+import CreateIdeaOverview from "./screens/CreateIdeaOverview";
 import ChatProvider from "./contexts/chatContext";
 
 
@@ -78,6 +79,7 @@ export default function App() {
                     <Stack.Screen name='CreateIdeaBackend' component={CreateIdeaBackend} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaData' component={CreateIdeaData} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaPlatforms' component={CreateIdeaPlatforms} options={{title: 'Meine Idee'}} />
+                    <Stack.Screen name='CreateIdeaOverview' component={CreateIdeaOverview} options={{title: 'Meine Idee'}} />
                   </>
                 )
               }

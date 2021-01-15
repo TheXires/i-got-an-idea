@@ -18,6 +18,8 @@ const IdeaCreationProvider = (props: any) => {
   useEffect(() => {
     if (completed){
       try{
+        console.log('called: ', newIdea);
+        
         createIdea(newIdea.buildWithChecks());
         setNewIdea(new IdeaFactory);
       }catch(e){

@@ -92,13 +92,16 @@ export class IdeaFactory {
     }
 
     tags(tags: Tag[]) {
-        this._tags = tags;
+        this._tags = tags.filter((tag, index, self) => index === self.indexOf(tag));
         return this;
     }
     
     addTags(tags: Tag[]) {
         if(this._tags !== undefined){
-          this._tags = [...this._tags,...tags]
+          this._tags = [...this._tags,...tags];
+          this._tags = this._tags?.filter((tag, index, self) => index === self.indexOf(tag));
+        }else{
+          this.tags(tags);
         }
         return this;
     }

@@ -13,7 +13,6 @@ import { getUID } from '../services/auth';
 import FloatingActionButton from '../components/FloatingActionButton';
 import CustomSpinner from '../components/CustomSpinner';
 
-
 const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
   const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast; 
@@ -22,9 +21,7 @@ const Main = ({ navigation }: { navigation: any }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if(ideas !== undefined){
-      setLoading(false);
-    }
+    ideas !== undefined && setLoading(false);
   }, [ideas])
   
 
@@ -66,17 +63,8 @@ const Main = ({ navigation }: { navigation: any }) => {
                   idea={idea}
                 />)
             })
-          ) : (
-              <>
-              </>
-            )}
-
-          {loading ? (
-            <CustomSpinner />
-          ) : (
-            <>
-            </>
-          )}
+          ) : (<></>)}
+          {loading && <CustomSpinner />}
 
             {/* TODO: erreichen der unteren kannte muss durch funktion errechnet werden. 
                       https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
