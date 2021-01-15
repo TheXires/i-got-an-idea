@@ -21,7 +21,7 @@ const IdeaProvider = (props: any) => {
 
   // Initial load
   useEffect(() => {
-    if (loading == false && user == null) {
+    if (user == undefined || user == null || loading) {
       return;
     }
 

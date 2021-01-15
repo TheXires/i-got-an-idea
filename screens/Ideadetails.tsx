@@ -65,6 +65,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
         {/* Author */}
         <Text style={styles.h2}>Idee von</Text>
         <User userID={idea!.authorID} navigation={navigation} />
+        {/* TODO: Robi zu Robin machen (Buchstabe abgeschitten) */}
       </ScrollView>
     </View>
   )
