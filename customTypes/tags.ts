@@ -1,7 +1,7 @@
 export enum Tag {
      FRONTEND,
      BACKEND,
-     DATENHALTUNG,
+     DATAMANAGAMENT,
      IOS,
      ANDROID,
      HARMONYOS,

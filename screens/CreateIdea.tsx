@@ -9,44 +9,54 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
 
   useEffect(() => {
-    console.log(newIdea);
+    // console.log(newIdea);
   }, [newIdea])
   
   newIdea.authorIDDefault();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.h1}>Name der Idee</Text>
-      <TextInput
-        style={styles.textInput}
-        onChangeText={text => newIdea.name(text)}
-        placeholderTextColor={Color.FONT3}
-        placeholder='Name der Idee'
-      />
+    <>
+      <View style={styles.container}>
+        <Text style={styles.h1}>Name der Idee</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={text => newIdea.name(text)}
+          placeholderTextColor={Color.FONT3}
+          placeholder='Name der Idee'
+        />
 
 
-      <Text style={styles.h1}>Beschreibung</Text>
-      <TextInput
-        multiline={true}
-        style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
-        onChangeText={text => newIdea.description(text)}
-        placeholderTextColor={Color.FONT3}
-        placeholder='Name der Idee'
-      />
+        <Text style={styles.h1}>Beschreibung</Text>
+        <TextInput
+          multiline={true}
+          style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
+          onChangeText={text => newIdea.description(text)}
+          placeholderTextColor={Color.FONT3}
+          placeholder='Name der Idee'
+        />
 
 
-      <Text style={styles.h1}>Bilder</Text>
-      <View style={styles.addImage}>
-        <TouchableOpacity onPress={() => newIdea.imageURLsEmpty} style={styles.addImageButton}>
-          <Ionicons name="ios-add" size={60} color={Color.FONT1} style={{ height: 62, width: 58}} />
-        </TouchableOpacity>
-        <Text style={styles.addImageText}>Bilder hinzufügen</Text>
+        <Text style={styles.h1}>Bilder</Text>
+        <View style={styles.addImage}>
+          <TouchableOpacity onPress={() => newIdea.imageURLs(['https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg'])} style={styles.addImageButton}>
+            <Ionicons name="ios-add" size={60} color={Color.FONT1} style={{ height: 62, width: 58}} />
+          </TouchableOpacity>
+          <Text style={styles.addImageText}>Bilder hinzufügen</Text>
+        </View>
       </View>
 
-      <TouchableOpacity style={[styles.button, styles.next]} onPress={() => navigation.navigate('CreateIdeaFrontend')}>
-        <Text style={{color: Color.FONT1}}>Weiter</Text>
-      </TouchableOpacity>
-    </View>
+
+      {/* Navigation Buttons */}
+      <View style={styles.navigationbackground}>
+        {/* next */}
+        <TouchableOpacity 
+          style={[styles.button, styles.next]} 
+          onPress={() => navigation.navigate('CreateIdeaFrontend')}
+        >
+          <Text style={{ color: Color.FONT1 }}>Weiter</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   )
 }
 
@@ -91,6 +101,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: Color.FONT3
   },
+  navigationbackground: {
+    width: '100%',
+    height: '10%',
+    backgroundColor: Color.BACKGROUND,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+  },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -100,10 +119,15 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   next: {
-    position: 'absolute',
-    bottom: 25,
-    right: 25,
-  }
+    position: 'relative',
+    marginLeft: 'auto',
+    marginRight: 15,
+  },
+  previous: {
+    position: 'relative',
+    marginLeft: 15,
+    marginRight: 'auto',
+  },
 })
 
 export default CreateIdea;
