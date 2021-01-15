@@ -2,7 +2,7 @@
 import * as firebase from "firebase/app";
 import './services/firebaseInitializer'
 import 'firebase/auth';
-import { logOut } from './services/auth';
+import {logOut} from './services/auth';
 
 // Firebase Hooks
 import {useAuthState} from 'react-firebase-hooks/auth';
@@ -38,6 +38,7 @@ import CreateIdeaBackend from "./screens/CreateIdeaBackend";
 import CreateIdeaData from "./screens/CreateIdeaData";
 import CreateIdeaPlatforms from "./screens/CreateIdeaPlatforms";
 import CreateIdeaOverview from "./screens/CreateIdeaOverview";
+import ChatProvider from "./contexts/chatContext";
 
 
 // creating stack for navigation
@@ -47,7 +48,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [user, loading, error] = useAuthState(firebase.auth());
 
-  if(error){
+  if (error) {
     return <Text>{error}</Text>
   }
 
@@ -59,33 +60,34 @@ export default function App() {
   return (
     <IdeaProvider>
       <IdeaCreationProvider>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={headerStyle}>
-            {user === null ? (
-              <>
-                <Stack.Screen name='Login' component={Login} options={{headerShown: false}} />
-              </>
-            ) : (
+        <ChatProvider>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={headerStyle}>
+              {user === null ? (
                 <>
-                  <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
-                  <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
-                  <Stack.Screen name='Chat' component={Chat} />
-                  <Stack.Screen name='Profile' component={Profile} />
-                  <Stack.Screen name='Settings' component={Settings} options={{ title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{ color: Color.FONT1 }}>LogOut</Text></TouchableOpacity>) }} />
-                  <Stack.Screen name='CreateIdea' component={CreateIdea} options={{ title: 'Meine Idee' }} />
-                  <Stack.Screen name='CreateIdeaFrontend' component={CreateIdeaFrontend} options={{ title: 'Meine Idee' }} />
-                  <Stack.Screen name='CreateIdeaBackend' component={CreateIdeaBackend} options={{ title: 'Meine Idee' }} />
-                  <Stack.Screen name='CreateIdeaData' component={CreateIdeaData} options={{ title: 'Meine Idee'}} />
-                  <Stack.Screen name='CreateIdeaPlatforms' component={CreateIdeaPlatforms} options={{ title: 'Meine Idee'}} />
-                  <Stack.Screen name='CreateIdeaOverview' component={CreateIdeaOverview} options={{ title: 'Meine Idee'}} />
+                  <Stack.Screen name='Login' component={Login} options={{headerShown: false}} />
                 </>
-              )
-            }
-            <Stack.Screen name='Agb' component={Agb} />
-            <Stack.Screen name='Datenschutz' component={Datenschutz} />
-            <Stack.Screen name='Impressum' component={Impressum} />
-          </Stack.Navigator>
-        </NavigationContainer>
+              ) : (
+                  <>
+                    <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
+                    <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
+                    <Stack.Screen name='Chat' component={Chat} />
+                    <Stack.Screen name='Profile' component={Profile} />
+                    <Stack.Screen name='Settings' component={Settings} options={{title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{color: Color.FONT1}}>LogOut</Text></TouchableOpacity>)}} />
+                    <Stack.Screen name='CreateIdea' component={CreateIdea} options={{title: 'Meine Idee'}} />
+                    <Stack.Screen name='CreateIdeaFrontend' component={CreateIdeaFrontend} options={{title: 'Meine Idee'}} />
+                    <Stack.Screen name='CreateIdeaBackend' component={CreateIdeaBackend} options={{title: 'Meine Idee'}} />
+                    <Stack.Screen name='CreateIdeaData' component={CreateIdeaData} options={{title: 'Meine Idee'}} />
+                    <Stack.Screen name='CreateIdeaPlatforms' component={CreateIdeaPlatforms} options={{title: 'Meine Idee'}} />
+                  </>
+                )
+              }
+              <Stack.Screen name='Agb' component={Agb} />
+              <Stack.Screen name='Datenschutz' component={Datenschutz} />
+              <Stack.Screen name='Impressum' component={Impressum} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ChatProvider>
       </IdeaCreationProvider>
     </IdeaProvider>
   );

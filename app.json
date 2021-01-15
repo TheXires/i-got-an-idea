@@ -20,6 +20,12 @@
       "supportsTablet": true
     },
     "android": {
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyBZ9_wTKS2c6aYC0PSR6Cr0qNHi8Tjn8vw",
+          "certificateHash": "A7:A1:ED:B3:93:55:48:05:DD:8F:9F:E9:0C:3B:06:AB:96:09:2C:A7"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

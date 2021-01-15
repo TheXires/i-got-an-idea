@@ -11,6 +11,6 @@ export interface ChatMessage {
 export interface Chat {
     ideaID: string;
     messages: ChatMessage[];
-    //The last synced message from the database to set cursor for refresh query
-    lastSyncedMessageSnapshot: firebase.firestore.QuerySnapshot<ChatMessage>;
+    //The last synced message from the database to set cursor condition for refresh query
+    lastSyncedMessageTimestamp: firebase.firestore.Timestamp;
 }

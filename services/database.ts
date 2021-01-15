@@ -183,7 +183,7 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
  * @param idea The idea to create
  * @returns a promise which resolves when the data has been written
  */
-async function createIdea(idea: IdeaType) {
+async function createIdea(idea: IdeaType) {//TODO: initialwerte für den chat setzen + erste Nachricht schreiben
     if (idea.authorID == undefined) {
         idea.authorID = getUID();
     }
