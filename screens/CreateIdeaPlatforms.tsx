@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
     color: Color.FONT2
   },
   selectionContainer: {
-    // paddingTop: 10,
     marginBottom: '10%',
     width: '100%',
     alignItems: 'baseline',

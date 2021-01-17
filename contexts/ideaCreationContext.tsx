@@ -7,13 +7,14 @@ export const ideaCreationContext = createContext({});
 const IdeaCreationProvider = (props: any) => {
   const [newIdea, setNewIdea] = useState(new IdeaFactory);
   const [completed, setCompleted] = useState(false);
+  const [discard, setDiscard] = useState(false);
   
   useEffect(() => {
     newIdea.with()
     .creationTimestampDefault()
     .imageURLsEmpty()
     .tags([])
-  }, [])
+  }, [newIdea])
 
   useEffect(() => {
     if (completed){
@@ -27,13 +28,18 @@ const IdeaCreationProvider = (props: any) => {
         return;
       }
     }
-  }, [completed])
+    if(discard){
+      setNewIdea(new IdeaFactory);
+      setDiscard(false);
+    }
+  }, [completed, discard])
 
   
   return (
     <ideaCreationContext.Provider value={{
       newIdea,
-      setCompleted
+      setCompleted,
+      setDiscard
     }}>
       {props.children}
     </ideaCreationContext.Provider>
