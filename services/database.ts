@@ -1,11 +1,12 @@
-import { IdeaType } from '../customTypes/ideaType';
-import { BlockedUser } from '../customTypes/blockedUsers';
-import { ProfileData } from '../customTypes/profileData';
+import {PinnedChat} from './../customTypes/profileData';
+import {IdeaType} from '../customTypes/ideaType';
+import {BlockedUser} from '../customTypes/blockedUsers';
+import {ProfileData} from '../customTypes/profileData';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { getProfilePictureURL, getUID } from './auth';
-import { ChatMessage } from '../customTypes/chat';
-import { Tag } from '../customTypes/tags';
+import {getProfilePictureURL, getUID} from './auth';
+import {ChatMessage} from '../customTypes/chat';
+import {Tag} from '../customTypes/tags';
 
 const fs = firebase.firestore();
 
@@ -39,7 +40,7 @@ async function createProfileData(user: ProfileData) {
         name: "test",
         description: "test",
         skills: ["test"],
-    } as ProfileData;
+    } as unknown as ProfileData;
  * ```
  * The profilePictureURL can be retrieved with auth.js -> getProfilePictureURL().
  * 
@@ -121,13 +122,13 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
     if (filters.length == 0) {
         if (offset != undefined) {
             return fs.collection('ideas')
-                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
                 .startAfter(offset)
                 .limit(limit)
                 .withConverter(ideaConverter);
         } else {
             return fs.collection('ideas')
-                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
                 .limit(limit)
                 .withConverter(ideaConverter);
 
@@ -136,14 +137,14 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
         if (offset != undefined) {
             return fs.collection('ideas')
                 .where('tags', 'array-contains-any', filters)
-                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
                 .startAfter(offset)
                 .limit(limit)
                 .withConverter(ideaConverter);
-            } else {
+        } else {
             return fs.collection('ideas')
                 .where('tags', 'array-contains-any', filters)
-                .orderBy("creationTimestamp", oldestComesLast ? 'asc' : 'desc')
+                .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
                 .limit(limit)
                 .withConverter(ideaConverter);
         }
@@ -197,6 +198,28 @@ async function createIdea(idea: IdeaType) {//TODO: initialwerte für den chat se
     }
 }
 
+//For creating fake data
+// import * as faker from 'faker'
+// faker.locale = "de";
+// async function createIdeaFaker() {
+//     // faker.seed(Math.random() * 100);
+//     const idea: IdeaType = {
+//         authorID: getUID(),
+//         creationTimestamp: firebase.firestore.Timestamp.now(),
+//         description: faker.lorem.paragraph(),
+//         imageURLs: [`${faker.image.imageUrl()}?random=${Math.round(Math.random() * 1000)}`,
+//         `${faker.image.imageUrl()}?random=${Math.round(Math.random() * 1000)}`,
+//         `${faker.image.imageUrl()}?random=${Math.round(Math.random() * 1000)}`],
+//         name: faker.company.bsNoun(),
+//         tags: [0, 3, 2]
+//     }
+//     try {
+//         return await fs.collection('ideas').doc().withConverter(ideaConverter).set(idea);
+//     } catch (error) {
+//         alert("Error while creating an idea." + JSON.stringify(error));
+//     }
+// }
+
 /**
  * Updates idea to the given object. If an attribute should not be updated, set it to null (or leave it out).
  * In TypeScript, this can be achieved by casting an inline object like this:
@@ -204,7 +227,7 @@ async function createIdea(idea: IdeaType) {//TODO: initialwerte für den chat se
  * let test = {
         name: "test",
         description: "test",
-    } as Idea;
+    } as unknown as IdeaType;
  * ```
  * 
  * !MUST BE CALLED ON AN ALREADY EXISTING IDEA!
@@ -218,6 +241,22 @@ async function updateIdea(idea: IdeaType) {
     }
     try {
         return await fs.collection('ideas').doc(idea.id).withConverter(ideaConverter).update(idea);
+    } catch (error) {
+        alert("Error while updating a idea." + JSON.stringify(error));
+    }
+}
+
+/**
+ * Returns a query object to an idea by the given idea ID
+ * 
+ * @param id The ID to query for
+ */
+async function getIdeaByID(id: string) {
+    if (id == undefined) {
+        throw 'The idea ID can\'t be undefined: ' + id;
+    }
+    try {
+        return await fs.collection('ideas').doc(id).withConverter(ideaConverter);
     } catch (error) {
         alert("Error while updating a idea." + JSON.stringify(error));
     }
@@ -238,15 +277,48 @@ async function sendChatMessage(message: ChatMessage) {
     }
 }
 
+/**
+ * This adds an idea to the pinned chats
+ * 
+ * @param idea The idea to pin to the chats
+ */
+async function pinIdeaToChats(idea: IdeaType) {
+    updateProfileData({
+        ideaChatsPinned: firebase.firestore.FieldValue.arrayUnion({
+            ideaID: idea.id,
+            name: idea.name,
+            pictureURL: idea.imageURLs[0]
+        } as PinnedChat)
+    } as unknown as ProfileData);
+}
+
+/**
+ * This removes an idea from the pinned chats
+ * 
+ * @param idea The idea to remove
+ */
+async function unpinIdeaFromChats(idea: IdeaType) {
+    updateProfileData({
+        ideaChatsPinned: firebase.firestore.FieldValue.arrayRemove({
+            ideaID: idea.id,
+            name: idea.name,
+            pictureURL: idea.imageURLs[0]
+        } as PinnedChat)
+    } as unknown as ProfileData);
+}
+
 // function getChatsByOwnProjects() {
 //     return fs.collectionGroup('ideas').where('authorID', '==', getUID()).
-    
+
 // }
 
 export {
     createProfileData, updateProfileData, getProfileData,
     getUserIdeas, getIdeas, createIdea, updateIdea,
-    sendChatMessage
+    sendChatMessage,
+    pinIdeaToChats, unpinIdeaFromChats,
+    getIdeaByID
+    // createIdeaFaker
 }
 
 const profileDataConverter = {
@@ -267,7 +339,7 @@ const profileDataConverter = {
     fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ProfileData {
         const data = snapshot.data(options);
         data.blockedUsers = Object.keys(data.blockedUsers).map((userKey: any) => {
-            return { id: userKey, name: data.blockedUsers[userKey] } as BlockedUser;
+            return {id: userKey, name: data.blockedUsers[userKey]} as BlockedUser;
         })
         data.id = snapshot.id;
         return data as ProfileData;
