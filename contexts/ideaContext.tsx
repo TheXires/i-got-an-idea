@@ -63,6 +63,7 @@ const IdeaProvider = (props: any) => {
     });
   }
 
+
   // const fetchIdeasOnce = async () => {
   //   const data = await getIdeas(oldestComesLast, filters).get();
   //   const ideas = data.docs.map(doc => doc.data());

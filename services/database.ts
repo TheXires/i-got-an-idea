@@ -247,6 +247,22 @@ async function updateIdea(idea: IdeaType) {
 }
 
 /**
+ * Returns a query object to an idea by the given idea ID
+ * 
+ * @param id The ID to query for
+ */
+async function getIdeaByID(id: string) {
+    if (id == undefined) {
+        throw 'The idea ID can\'t be undefined: ' + id;
+    }
+    try {
+        return await fs.collection('ideas').doc(id).withConverter(ideaConverter);
+    } catch (error) {
+        alert("Error while updating a idea." + JSON.stringify(error));
+    }
+}
+
+/**
  * A method to write a new chat message
  * 
  * @param message The chat message which should be written to the database
@@ -301,6 +317,7 @@ export {
     getUserIdeas, getIdeas, createIdea, updateIdea,
     sendChatMessage,
     pinIdeaToChats, unpinIdeaFromChats,
+    getIdeaByID
     // createIdeaFaker
 }
 
