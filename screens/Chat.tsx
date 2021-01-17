@@ -4,8 +4,9 @@ import {ChatContext} from '../contexts/chatContext';
 import {Color} from '../customTypes/colors';
 import {Chat as ChatType} from '../customTypes/chat';
 import CustomSpinner from '../components/CustomSpinner';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const Chat = () => {
+const Chat = ({ navigation }: { navigation: any }) => {
   const {chats}: {chats: ChatType[]} = useContext<any>(ChatContext);
   return (
 
@@ -13,7 +14,7 @@ const Chat = () => {
       {chats !== undefined ? (
         chats.map(c => {
           return (
-            <View key={c.pinnedIdea.ideaID} style={styles.chatBox}>
+            <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: c.pinnedIdea.ideaID})} key={c.pinnedIdea.ideaID} style={styles.chatBox}>
               <Image source={{uri: c.pinnedIdea.pictureURL}} style={styles.image} />
               <View style={styles.textBox}>
                 <Text style={styles.heading}>{c.pinnedIdea.name}</Text>
@@ -36,12 +37,10 @@ const Chat = () => {
                   <></>
                 }
               </View>
-              {/* {
-                c.messages.map(m => {
-                  return (<Text key={m.id} style={{color: Color.FONT1}}>{m.content}</Text>)
-                })
-              } */}
-            </View>
+            </TouchableOpacity>
+            // <Text style={{color: 'white'}} key={c.pinnedIdea.ideaID}>
+            //   {JSON.stringify(c)}
+            // </Text>
           )
         })
       ) : (

@@ -7,8 +7,6 @@ import {getIdeas} from "../services/database";
 
 export const IdeaContext = createContext({});
 
-//TODO: Pagination test
-
 const IdeaProvider = (props: any) => {
   const [user, loading, error] = useAuthState(firebase.auth());
   const [ideas, setIdeas] = useState<IdeaType[]>();

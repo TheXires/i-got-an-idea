@@ -5,7 +5,7 @@ export interface ChatMessage {
     ideaID: string;
     authorID: string;
     authorName: string;
-    authorProfilePictureURL: string;
+    authorProfilePictureURL?: string;
     timestamp: firebase.firestore.Timestamp;
     content: string;
 }

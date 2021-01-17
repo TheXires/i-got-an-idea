@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore'
 import React, {createContext, useEffect, useState} from 'react';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {Chat} from '../customTypes/chat';
+import {Chat, ChatMessage} from '../customTypes/chat';
 import {getUID} from '../services/auth';
 import {chatMessageConverter, getProfileData} from '../services/database';
 // import {createIdeaFaker} from '../services/database';
@@ -16,7 +16,7 @@ export const ChatContext = createContext({});
 
 const ChatProvider = (props: any) => {
   const [user, loading, error] = useAuthState(firebase.auth());
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [chats, setChats] = useState<any[]>(['test']);
   const [unsubs, setUnsubs] = useState<any[]>([]);
 
   //for creating fake data
@@ -26,21 +26,8 @@ const ChatProvider = (props: any) => {
   //     console.log('faked');
   //   }, 1000)
   // }, [])
-
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     AsyncStorage.getAllKeys().then(keys => {
-  //       keys.forEach(key => console.log('---------log---------:', key));
-  //     })
-  //   }, 5000)
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log(chats.length);
-  // }, [chats])
-
   useEffect(() => {
-    if (user == undefined || user == null || loading) {
+    if (user == undefined || loading) {
       return;
     }
 
@@ -51,8 +38,14 @@ const ChatProvider = (props: any) => {
 
         //check if local chat protocol exists
         if (local != undefined) {
-          setChats((old) => [...old, local]);
-          console.log('local', local);
+          // setChats([...chats, local]);
+          setChats((old) => {
+            console.log(old);
+            return [...old, 'hi'];
+          });
+          setTimeout(() => {
+            console.log('chats: ' + JSON.stringify(chats));
+          }, 1000);
 
           // setUnsubs([...unsubs, fs.collection('ideas').doc(pinnedIdea.ideaID).collection('chatmessages').
           //   orderBy('timestamp', 'desc').
@@ -62,50 +55,49 @@ const ChatProvider = (props: any) => {
           //     //no new docs loaded?
           //     if (snap.docs.length == 0) return;
 
-          //     const newChatArray = chats.slice();
+          //     const newChatArray = chats!.slice();
           //     const chatIndex = newChatArray.findIndex(c => c.pinnedIdea.ideaID == pinnedIdea.ideaID);
 
           //     if (chatIndex == -1) throw 'Chat Index must not be -1!';
 
           //     const messages = snap.docs.map(s => s.data());
           //     newChatArray[chatIndex].messages = messages;
-          //     newChatArray[chatIndex].lastSyncedMessageTimestamp = messages[messages.length - 1] != undefined ? messages[messages.length - 1].timestamp : firebase.firestore.Timestamp.now();
-          //     setChats(newChatArray);
+          //     newChatArray[chatIndex].lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
+          //     // setChats(newChatArray);
           //     saveToLocalStorage(newChatArray[chatIndex]);
           //   })])
         } else {
-          setUnsubs([...unsubs, fs.collection('ideas').doc(pinnedIdea.ideaID).collection('chatmessages').
-            orderBy('timestamp', 'asc').
-            withConverter(chatMessageConverter).onSnapshot(snap => {
-              const newChatArray = chats.slice();
-              const chatIndex = newChatArray.findIndex(c => c.pinnedIdea.ideaID == pinnedIdea.ideaID);
+          // setUnsubs([...unsubs, fs.collection('ideas').doc(pinnedIdea.ideaID).collection('chatmessages').
+          //   orderBy('timestamp', 'asc').
+          //   withConverter(chatMessageConverter).onSnapshot(snap => {
+          //     const newChatArray = chats!.slice();
+          //     const chatIndex = newChatArray.findIndex(c => c.pinnedIdea.ideaID == pinnedIdea.ideaID);
 
-              if (chatIndex != -1) {
-                const messages = snap.docs.map(s => s.data());
-                newChatArray[chatIndex].messages = messages;
-                newChatArray[chatIndex].lastSyncedMessageTimestamp = messages[messages.length - 1] != undefined ? messages[messages.length - 1].timestamp : firebase.firestore.Timestamp.now();
-                setChats(newChatArray);
-                saveToLocalStorage(newChatArray[chatIndex]);
-              } else {
-                const messages = snap.docs.map(s => s.data());
-                const lastSyncedMessageTimestamp = messages[messages.length - 1] != undefined ? messages[messages.length - 1].timestamp : firebase.firestore.Timestamp.now();
-                const obj = {
-                  pinnedIdea,
-                  lastSyncedMessageTimestamp,
-                  messages
-                };
-                newChatArray.push(obj)
-                setChats(newChatArray);
-                saveToLocalStorage(obj);
-              };
-            })])
+          //     if (chatIndex != -1) {
+          //       const messages = snap.docs.map(s => s.data());
+          //       newChatArray[chatIndex].messages = messages;
+          //       newChatArray[chatIndex].lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
+          //       // setChats(newChatArray);
+          //       saveToLocalStorage(newChatArray[chatIndex]);
+          //     } else {
+          //       const messages = snap.docs.map(s => s.data());
+          //       const lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
+          //       const obj = {
+          //         pinnedIdea,
+          //         lastSyncedMessageTimestamp,
+          //         messages
+          //       };
+          //       // setChats((old) => [...old, obj]);
+          //       saveToLocalStorage(obj);
+          //     };
+          //   })])
         }
       })
     }
     call();
     return (() => {
       unsubs.forEach(unsubMethod => {
-        unsubMethod();
+        // unsubMethod();
       })
     })
   }, [user, loading])
@@ -113,11 +105,15 @@ const ChatProvider = (props: any) => {
 
   return (
     <ChatContext.Provider value={{
-      chats
+      // chats
     }}>
       {props.children}
     </ChatContext.Provider>
   )
+}
+
+function getTimestampOrDefault(messages: ChatMessage[]) {
+  return messages[messages.length - 1] != undefined ? messages[messages.length - 1].timestamp : firebase.firestore.Timestamp.now();
 }
 
 async function fetchFromLocalStorage(ideaID: string): Promise<Chat | undefined> {
