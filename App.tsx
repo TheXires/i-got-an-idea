@@ -39,6 +39,7 @@ import CreateIdeaData from "./screens/CreateIdeaData";
 import CreateIdeaPlatforms from "./screens/CreateIdeaPlatforms";
 import CreateIdeaOverview from "./screens/CreateIdeaOverview";
 import ChatProvider from "./contexts/chatContext";
+import ProfileEdit from "./screens/ProfileEdit";
 import ChatDetails from "./screens/ChatDetails";
 
 
@@ -75,6 +76,7 @@ export default function App() {
                     <Stack.Screen name='Chat' component={Chat} />
                     <Stack.Screen name='ChatDetails' component={ChatDetails} />
                     <Stack.Screen name='Profile' component={Profile} />
+                    <Stack.Screen name='ProfileEdit' component={ProfileEdit} />
                     <Stack.Screen name='Settings' component={Settings} options={{title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{color: Color.FONT1}}>LogOut</Text></TouchableOpacity>)}} />
                     <Stack.Screen name='CreateIdea' component={CreateIdea} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaFrontend' component={CreateIdeaFrontend} options={{title: 'Meine Idee'}} />

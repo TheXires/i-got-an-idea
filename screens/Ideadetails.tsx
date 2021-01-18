@@ -7,6 +7,7 @@ import { Color } from '../customTypes/colors';
 import { Tag } from '../customTypes/tags';
 import { IdeaContext } from '../contexts/ideaContext';
 import { IdeaType } from '../customTypes/ideaType';
+import { set } from 'react-native-reanimated';
 
 // implements the detail view for an idea sreached by a given id
 const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => {
@@ -14,8 +15,13 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
   const [idea, setIdea] = useState<IdeaType>();
 
   useEffect(() => {
+    // TODO: hier muss die Datenbank Abfrage hin, um die Idee zu landen, wenn sie nicht im Context ist
     if (ideas !== undefined) {
+      let currentIdea = ideas.find((idea) => idea.id === route.params.id);
+      // currentIdea ? (setIdea(currentIdea)) : (setIdea(/* in firebase direkt nach der ideeID suchen */)) 
       setIdea(ideas.find((idea) => idea.id === route.params.id));
+    }else{
+
     }
   }, [ideas])
 
@@ -33,7 +39,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
         <Text style={styles.description}>{idea!.description}</Text>
 
         {/* shows tags the added to the idea, if there are no tags it shows nothing instead */}
-        {idea!.tags.length > 0 ? (
+        {idea.tags !== undefined && idea!.tags.length > 0 ? (
           <>
             <Text style={styles.h2}>Tags</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} >
@@ -50,7 +56,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
 
         {/* shows images the user uploaded to the idea, if there are no images it shows nothing instead */}
         {/* TODO: Bilder in groß anzeigen, wenn drauf geklickt wird */}
-        {idea!.imageURLs.length > 0 ? (
+        {idea.imageURLs !== undefined && idea!.imageURLs.length > 0 ? (
           <>
             <Text style={styles.h2}>Bilder</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} >
@@ -65,7 +71,6 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
         {/* Author */}
         <Text style={styles.h2}>Idee von</Text>
         <User userID={idea!.authorID} navigation={navigation} />
-        {/* TODO: Robi zu Robin machen (Buchstabe abgeschitten) */}
       </ScrollView>
     </View>
   )

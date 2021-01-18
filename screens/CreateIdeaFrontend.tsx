@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { IdeaFactory } from '../customTypes/ideaFactory';
@@ -14,6 +14,7 @@ const CreateIdeaFrontend = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     newIdea !== undefined && newIdea.getTags()?.includes(Tag.FRONTEND) && setSelected([true, false, false])
   }, []);
+
 
   return (
     <>

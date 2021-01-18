@@ -78,6 +78,13 @@ export class IdeaFactory {
         return this;
     }
 
+    addImageURL(imageURLs: string[]) {
+        if(this._imageURLs !== undefined){
+            this._imageURLs = [...this._imageURLs, ...imageURLs];
+        }
+        return this;
+    }
+
     /**
      * Use when no images are defined
      */
