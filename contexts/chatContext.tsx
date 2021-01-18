@@ -16,7 +16,7 @@ export const ChatContext = createContext({});
 
 const ChatProvider = (props: any) => {
   const [user, loading, error] = useAuthState(firebase.auth());
-  const [chats, setChats] = useState<any[]>(['test']);
+  const [chats, setChats] = useState<Chat[]>([]);
   const [unsubs, setUnsubs] = useState<any[]>([]);
 
   //for creating fake data
@@ -26,6 +26,9 @@ const ChatProvider = (props: any) => {
   //     console.log('faked');
   //   }, 1000)
   // }, [])
+
+  // useEffect(() => chats.forEach((c, i) => console.log(i, JSON.stringify(c)), [chats]));
+
   useEffect(() => {
     if (user == undefined || loading) {
       return;
@@ -38,66 +41,63 @@ const ChatProvider = (props: any) => {
 
         //check if local chat protocol exists
         if (local != undefined) {
-          // setChats([...chats, local]);
-          setChats((old) => {
-            console.log(old);
-            return [...old, 'hi'];
-          });
-          setTimeout(() => {
-            console.log('chats: ' + JSON.stringify(chats));
-          }, 1000);
+          local.messages = local.messages.map(message => {
+            message.timestamp = new firebase.firestore.Timestamp(message.timestamp.seconds, message.timestamp.nanoseconds);
+            return message;
+          })
+          setChats((old) => [...old, local]);
 
-          // setUnsubs([...unsubs, fs.collection('ideas').doc(pinnedIdea.ideaID).collection('chatmessages').
-          //   orderBy('timestamp', 'desc').
-          //   where('timestamp', '>', local.lastSyncedMessageTimestamp).
-          //   withConverter(chatMessageConverter).onSnapshot(snap => {
+          setUnsubs([...unsubs, fs.collection('ideas').doc(pinnedIdea.ideaID).collection('chatmessages').
+            orderBy('timestamp', 'desc').
+            where('timestamp', '>', local.lastSyncedMessageTimestamp).
+            withConverter(chatMessageConverter).onSnapshot(snap => {
 
-          //     //no new docs loaded?
-          //     if (snap.docs.length == 0) return;
+              //no new docs loaded?
+              if (snap.docs.length == 0) return;
 
-          //     const newChatArray = chats!.slice();
-          //     const chatIndex = newChatArray.findIndex(c => c.pinnedIdea.ideaID == pinnedIdea.ideaID);
+              const newChatArray = chats.slice();
+              const chatIndex = newChatArray.findIndex(c => c.pinnedIdea.ideaID == pinnedIdea.ideaID);
 
-          //     if (chatIndex == -1) throw 'Chat Index must not be -1!';
+              if (chatIndex == -1) throw 'Chat Index must not be -1!';
 
-          //     const messages = snap.docs.map(s => s.data());
-          //     newChatArray[chatIndex].messages = messages;
-          //     newChatArray[chatIndex].lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
-          //     // setChats(newChatArray);
-          //     saveToLocalStorage(newChatArray[chatIndex]);
-          //   })])
+              const messages = snap.docs.map(s => s.data());
+              newChatArray[chatIndex].messages = messages;
+              newChatArray[chatIndex].lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
+              // setChats(newChatArray);
+              saveToLocalStorage(newChatArray[chatIndex]);
+            })])
         } else {
-          // setUnsubs([...unsubs, fs.collection('ideas').doc(pinnedIdea.ideaID).collection('chatmessages').
-          //   orderBy('timestamp', 'asc').
-          //   withConverter(chatMessageConverter).onSnapshot(snap => {
-          //     const newChatArray = chats!.slice();
-          //     const chatIndex = newChatArray.findIndex(c => c.pinnedIdea.ideaID == pinnedIdea.ideaID);
+          setUnsubs([...unsubs, fs.collection('ideas').doc(pinnedIdea.ideaID).collection('chatmessages').
+            orderBy('timestamp', 'asc').
+            withConverter(chatMessageConverter).onSnapshot(snap => {
+              const newChatArray = chats.slice();
+              const chatIndex = newChatArray.findIndex(c => c.pinnedIdea.ideaID == pinnedIdea.ideaID);
 
-          //     if (chatIndex != -1) {
-          //       const messages = snap.docs.map(s => s.data());
-          //       newChatArray[chatIndex].messages = messages;
-          //       newChatArray[chatIndex].lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
-          //       // setChats(newChatArray);
-          //       saveToLocalStorage(newChatArray[chatIndex]);
-          //     } else {
-          //       const messages = snap.docs.map(s => s.data());
-          //       const lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
-          //       const obj = {
-          //         pinnedIdea,
-          //         lastSyncedMessageTimestamp,
-          //         messages
-          //       };
-          //       // setChats((old) => [...old, obj]);
-          //       saveToLocalStorage(obj);
-          //     };
-          //   })])
+              if (chatIndex != -1) {
+                const messages = snap.docs.map(s => s.data());
+                newChatArray[chatIndex].messages = messages;
+                newChatArray[chatIndex].lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
+                setChats(newChatArray);
+                saveToLocalStorage(newChatArray[chatIndex]);
+              } else {
+                const messages = snap.docs.map(s => s.data());
+                const lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
+                const obj = {
+                  pinnedIdea,
+                  lastSyncedMessageTimestamp,
+                  messages
+                };
+                setChats((old) => [...old, obj]);
+                saveToLocalStorage(obj);
+              };
+            })])
         }
       })
     }
     call();
     return (() => {
       unsubs.forEach(unsubMethod => {
-        // unsubMethod();
+        unsubMethod();
       })
     })
   }, [user, loading])
@@ -105,7 +105,7 @@ const ChatProvider = (props: any) => {
 
   return (
     <ChatContext.Provider value={{
-      // chats
+      chats
     }}>
       {props.children}
     </ChatContext.Provider>

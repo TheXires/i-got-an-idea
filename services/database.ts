@@ -284,7 +284,7 @@ async function sendChatMessage(message: ChatMessage) {
  */
 async function pinIdeaToChats(idea: IdeaType) {
     updateProfileData({
-        ideaChatsPinned: firebase.firestore.FieldValue.arrayUnion({
+        ideaChatsPinned: firebase.firestore.FieldValue.arrayUnion({//TODO wenn noch nicht existent wirft fehler
             ideaID: idea.id,
             name: idea.name,
             pictureURL: idea.imageURLs[0]

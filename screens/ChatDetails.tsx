@@ -19,7 +19,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
 
     // useEffect(() => {
     //     console.log(chat);
-        
+
     // }, [chat])
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
                 chat.messages.map(message => {
                     return (
                         <View key={message.id}>
-                            <Text>{message.content}</Text>
+                            <Text style={styles.foreignMessage}>{message.content}</Text>
                         </View>
                     )
                 })
@@ -126,6 +126,10 @@ const styles = StyleSheet.create({
         color: Color.FONT2,
         display: 'flex'
     },
+    foreignMessage: {
+        backgroundColor: Color.BACKGROUND3,
+        color: Color.FONT1,
+    }
 });
 
 export default ChatDetails;

@@ -5,6 +5,7 @@ import {Color} from '../customTypes/colors';
 import {Chat as ChatType} from '../customTypes/chat';
 import CustomSpinner from '../components/CustomSpinner';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import firebase from 'firebase/app';
 
 const Chat = ({ navigation }: { navigation: any }) => {
   const {chats}: {chats: ChatType[]} = useContext<any>(ChatContext);
@@ -12,25 +13,28 @@ const Chat = ({ navigation }: { navigation: any }) => {
 
     <View style={styles.container}>
       {chats !== undefined ? (
-        chats.map(c => {
+        chats.map(chat => {
           return (
-            <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: c.pinnedIdea.ideaID})} key={c.pinnedIdea.ideaID} style={styles.chatBox}>
-              <Image source={{uri: c.pinnedIdea.pictureURL}} style={styles.image} />
+            <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: chat.pinnedIdea.ideaID})} key={chat.pinnedIdea.ideaID} style={styles.chatBox}>
+              <Image source={{uri: chat.pinnedIdea.pictureURL}} style={styles.image} />
               <View style={styles.textBox}>
-                <Text style={styles.heading}>{c.pinnedIdea.name}</Text>
-                {c.messages.length > 0 ?
+                <Text style={styles.heading}>{chat.pinnedIdea.name}</Text>
+                {chat.messages?.length > 0 ?
                   <View style={styles.lastMessage}>
-                    <Text numberOfLines={1} style={styles.lastMessageText}>
-                      {c.messages[0].content}
-                    </Text>
-                    <Text style={styles.lastMessageDate}>
-                      {c.messages[0].timestamp.toDate().getDate()}.
-                      {c.messages[0].timestamp.toDate().getMonth() + 1}.
-                      {c.messages[0].timestamp.toDate().getFullYear()}
-                    </Text>
+                    {/* <Text style={styles.lastMessageDate}>
+                      {chat.messages[0].timestamp.toDate().getDate()}.
+                      {chat.messages[0].timestamp.toDate().getMonth() + 1}.
+                      {chat.messages[0].timestamp.toDate().getFullYear()}
+                    </Text> */}
                     <Text style={styles.lastMessageTime}>
-                      {c.messages[0].timestamp.toDate().getHours()}:
-                      {c.messages[0].timestamp.toDate().getMinutes()}
+                      {chat.messages[0].timestamp.toDate().getHours()}:
+                      {chat.messages[0].timestamp.toDate().getMinutes()}
+                    </Text>
+                    <Text style={styles.lastMessageAuthor}>
+                      {chat.messages[0].authorName}:
+                    </Text>
+                    <Text numberOfLines={1} style={styles.lastMessageText}>
+                      {chat.messages[0].content}
                     </Text>
                   </View>
                   :
@@ -38,9 +42,6 @@ const Chat = ({ navigation }: { navigation: any }) => {
                 }
               </View>
             </TouchableOpacity>
-            // <Text style={{color: 'white'}} key={c.pinnedIdea.ideaID}>
-            //   {JSON.stringify(c)}
-            // </Text>
           )
         })
       ) : (
@@ -90,8 +91,12 @@ const styles = StyleSheet.create({
     color: Color.FONT3,
   },
   lastMessageTime: {
-    marginLeft: 8,
     color: Color.FONT3,
+  },
+  lastMessageAuthor: {
+    marginLeft: 5,
+    marginRight: 5,
+    color: Color.FONT2,
   },
   lastMessageText: {
     marginRight: 8,
