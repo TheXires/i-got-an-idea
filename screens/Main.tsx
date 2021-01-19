@@ -34,7 +34,11 @@ const Main = ({ navigation }: { navigation: any }) => {
         <View style={{ flexDirection: 'row' }}>
           {/* TODO: hier muss noch jeweils die Funktionalität hinter dem Filter Button geschreiben werden.
                     Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
-          <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" />
+          <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" onPress={
+            () => {
+              navigation.navigate('ProfileEdit');
+            }
+          } />
           {oldestComesLast ? (
             <FontAwesome style={{ marginLeft: 25, color: Color.FONT1 }} onPress={() => {setOldestComesLast(false); setLoading(true)}} name="sort-alpha-asc" size={24} color="black" />
           ) : (

@@ -15,6 +15,8 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
   const [user, userLoading, userError] = useDocumentData<ProfileData>(getProfileData(route.params.id));
   const [ideas, ideaLoading, ideaError] = useCollectionData(getUserIdeas(userID));
 
+  // TODO: Error handling für userError und ideaError schreiben
+
   useEffect(() => {
     if (userLoading === false && user!.id !== undefined) {
       setUserID(user!.id);
@@ -29,8 +31,8 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
               {user.profilePictureURL !== '' ? (
                 <Image source={{uri: user.profilePictureURL}} style={styles.profileimage} />
               ) : (
-                  <Image source={profileplaceolder} style={styles.profileimage} />
-                )}
+                <Image source={profileplaceolder} style={styles.profileimage} />
+              )}
               <Text style={styles.name}>{user.name}</Text>
             </View>
             <View style={styles.lowerInnerContainer}>
@@ -41,6 +43,7 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
                 </>
               ) : (
                   <>
+                  {/* show nothing if there is no user description */}
                   </>
                 )}
 
@@ -51,6 +54,7 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
                 </>
               ) : (
                   <>
+                  {/* show nothing if there are no user skills */}
                   </>
                 )}
               
@@ -76,6 +80,7 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
                 </>
               ) : (
                 <>
+                  {/* Show CustomSpinner while loading ideas from firestore */}
                   <CustomSpinner />
                 </>
               )}
@@ -83,10 +88,10 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
           </>
         ) : (
             <>
+              {/* Show CustomSpinner while loading user from firestore */}
               <CustomSpinner />
             </>
           )}
-
       </ScrollView>
   )
 }
