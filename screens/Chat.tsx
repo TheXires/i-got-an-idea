@@ -5,7 +5,6 @@ import {Color} from '../customTypes/colors';
 import {Chat as ChatType} from '../customTypes/chat';
 import CustomSpinner from '../components/CustomSpinner';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import firebase from 'firebase/app';
 
 const Chat = ({ navigation }: { navigation: any }) => {
   const {chats}: {chats: ChatType[]} = useContext<any>(ChatContext);
@@ -21,20 +20,15 @@ const Chat = ({ navigation }: { navigation: any }) => {
                 <Text style={styles.heading}>{chat.pinnedIdea.name}</Text>
                 {chat.messages?.length > 0 ?
                   <View style={styles.lastMessage}>
-                    {/* <Text style={styles.lastMessageDate}>
-                      {chat.messages[0].timestamp.toDate().getDate()}.
-                      {chat.messages[0].timestamp.toDate().getMonth() + 1}.
-                      {chat.messages[0].timestamp.toDate().getFullYear()}
-                    </Text> */}
                     <Text style={styles.lastMessageTime}>
-                      {chat.messages[0].timestamp.toDate().getHours()}:
-                      {chat.messages[0].timestamp.toDate().getMinutes()}
+                      {chat.messages[chat.messages.length - 1].timestamp.toDate().getHours()}:
+                      {chat.messages[chat.messages.length - 1].timestamp.toDate().getMinutes()}
                     </Text>
                     <Text style={styles.lastMessageAuthor}>
-                      {chat.messages[0].authorName}:
+                      {chat.messages[chat.messages.length - 1].authorName}:
                     </Text>
                     <Text numberOfLines={1} style={styles.lastMessageText}>
-                      {chat.messages[0].content}
+                      {chat.messages[chat.messages.length - 1].content}
                     </Text>
                   </View>
                   :
