@@ -48,45 +48,45 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
     <>
       <View style={styles.container}>
         <ScrollView>
-        <Text style={styles.h1}>Name der Idee</Text>
-        {/* TODO: Prüfung hinzufügen, dass ein valider Name hinzugefügt wurde */}
-        <TextInput
-          style={styles.textInput}
-          onChangeText={text => newIdea.name(text.trim())}
-          placeholderTextColor={Color.FONT3}
-          placeholder='Name der Idee'
-        />
+          <Text style={styles.h1}>Name der Idee</Text>
+          {/* TODO: Prüfung hinzufügen, dass ein valider Name hinzugefügt wurde */}
+          <TextInput
+            style={styles.textInput}
+            onChangeText={text => newIdea.name(text.trim())}
+            placeholderTextColor={Color.FONT3}
+            placeholder='Name der Idee'
+          />
 
 
-        <Text style={styles.h1}>Beschreibung</Text>
-        {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
-        <TextInput
-          multiline={true}
-          style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
-          onChangeText={text => newIdea.description(text.trim())}
-          placeholderTextColor={Color.FONT3}
-          placeholder='Name der Idee'
-        />
+          <Text style={styles.h1}>Beschreibung</Text>
+          {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
+          <TextInput
+            multiline={true}
+            style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
+            onChangeText={text => newIdea.description(text.trim())}
+            placeholderTextColor={Color.FONT3}
+            placeholder='Name der Idee'
+          />
 
 
-        <Text style={styles.h1}>Bilder</Text>
-    	  {newIdea.getImageURLs() !== undefined && newIdea.getImageURLs()!.length > 0 ? (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-            {newIdea.getImageURLs()!.map((image) => { return (<CustomImage source={{ uri: image }} imgSize={200} key={image} />) })}
-          </ScrollView>
-        ) : (<></>) }
+          <Text style={styles.h1}>Bilder</Text>
+          {newIdea.getImageURLs() !== undefined && newIdea.getImageURLs()!.length > 0 ? (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+              {newIdea.getImageURLs()!.map((image) => { return (<CustomImage source={{ uri: image }} imgSize={200} key={image} />) })}
+            </ScrollView>
+          ) : (<></>) }
 
-        <View style={styles.addImage}>
-          <TouchableOpacity style={styles.addImageButton} onPress={() => {
-            // TODO: honzufügen von eigenen Bildern ermöglichen oder wenigstens von weiteren, unterschiedlichen zufälligen
-            // newIdea.addImageURL(['https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg']);
-            newIdea.addImageURL(['https://avatars3.githubusercontent.com/u/62450142?s=400&v=4']);
-            setReload(true);
-          }}>
-            <Ionicons name="ios-add" size={60} color={Color.FONT1} style={{ height: 62, width: 58}} />
-          </TouchableOpacity>
-          <Text style={styles.addImageText}>Bilder hinzufügen</Text>
-        </View>
+          <View style={styles.addImage}>
+            <TouchableOpacity style={styles.addImageButton} onPress={() => {
+              // TODO: honzufügen von eigenen Bildern ermöglichen oder wenigstens von weiteren, unterschiedlichen zufälligen
+              // newIdea.addImageURL(['https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg']);
+              newIdea.addImageURL(['https://avatars3.githubusercontent.com/u/62450142?s=400&v=4']);
+              setReload(true);
+            }}>
+              <Ionicons name="ios-add" size={60} color={Color.FONT1} style={{ height: 62, width: 58}} />
+            </TouchableOpacity>
+            <Text style={styles.addImageText}>Bilder hinzufügen</Text>
+          </View>
         </ScrollView>
       </View>
 
