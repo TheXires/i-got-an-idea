@@ -58,13 +58,13 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
       {/* Navigation Buttons */}
       <View style={styles.navigationbackground}>
         {/* previous */}
-        <TouchableOpacity style={[styles.button, styles.previous]} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
           <Text style={{ color: Color.FONT1 }}>Zur&uuml;ck</Text>
         </TouchableOpacity>
         
         {/* next */}
         <TouchableOpacity 
-          style={[styles.button, styles.next]}
+          style={styles.button}
           onPress={() => {
             setCompleted(true);
             navigation.navigate('Settings');
@@ -122,35 +122,25 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: Color.ACCENT
   },
-  
-  
-  
   navigationbackground: {
     width: '100%',
     height: '10%',
     backgroundColor: Color.BACKGROUND,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
     position: 'absolute',
     bottom: 0,
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: '3%',
-    paddingHorizontal: '8%',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
     backgroundColor: Color.ACCENT,
     borderRadius: 50,
-  },
-  next: {
-    position: 'relative',
-    marginRight: 15,
-  },
-  previous: {
-    position: 'relative',
-    marginLeft: 15,
-    marginRight: 'auto',
-  },
+  }
 })
 
 export default CreateIdeaOverview

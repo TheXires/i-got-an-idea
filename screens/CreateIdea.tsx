@@ -49,19 +49,21 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
       <View style={styles.container}>
         <ScrollView>
         <Text style={styles.h1}>Name der Idee</Text>
+        {/* TODO: Prüfung hinzufügen, dass ein valider Name hinzugefügt wurde */}
         <TextInput
           style={styles.textInput}
-          onChangeText={text => newIdea.name(text)}
+          onChangeText={text => newIdea.name(text.trim())}
           placeholderTextColor={Color.FONT3}
           placeholder='Name der Idee'
         />
 
 
         <Text style={styles.h1}>Beschreibung</Text>
+        {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
         <TextInput
           multiline={true}
           style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
-          onChangeText={text => newIdea.description(text)}
+          onChangeText={text => newIdea.description(text.trim())}
           placeholderTextColor={Color.FONT3}
           placeholder='Name der Idee'
         />
@@ -76,6 +78,7 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
 
         <View style={styles.addImage}>
           <TouchableOpacity style={styles.addImageButton} onPress={() => {
+            // TODO: honzufügen von eigenen Bildern ermöglichen oder wenigstens von weiteren, unterschiedlichen zufälligen
             // newIdea.addImageURL(['https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg']);
             newIdea.addImageURL(['https://avatars3.githubusercontent.com/u/62450142?s=400&v=4']);
             setReload(true);
@@ -89,10 +92,10 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
 
 
       {/* Navigation Buttons */}
-      <View style={styles.navigationbackground}>
+      <View style={[styles.navigationbackground, {justifyContent: 'flex-end'}]}>
         {/* next */}
         <TouchableOpacity 
-          style={[styles.button, styles.next]}
+          style={styles.button}
           onPress={() => navigation.navigate('CreateIdeaFrontend')}
         >
           <Text style={{ color: Color.FONT1 }}>Weiter</Text>
@@ -150,27 +153,19 @@ const styles = StyleSheet.create({
     backgroundColor: Color.BACKGROUND,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
     position: 'absolute',
     bottom: 0,
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: '3%',
-    paddingHorizontal: '8%',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
     backgroundColor: Color.ACCENT,
     borderRadius: 50,
-  },
-  next: {
-    position: 'relative',
-    marginLeft: 'auto',
-    marginRight: 15,
-  },
-  previous: {
-    position: 'relative',
-    marginLeft: 15,
-    marginRight: 'auto',
-  },
+  }
 })
 
 export default CreateIdea;
