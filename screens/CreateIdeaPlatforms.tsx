@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 15,
     fontWeight: 'bold',
-    color: Color.FONT2
+    color: Color.FONT2,
+    width: '100%'
   },
   selectionContainer: {
     marginBottom: '10%',

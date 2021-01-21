@@ -33,7 +33,8 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
         <ScrollView
             style={styles.container}
             ref={ref => {this.scrollView = ref}}
-            onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}>
+            onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
+        >
             {chat != undefined ? (
                 chat.messages.map(message => {
                     return (
@@ -41,7 +42,11 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
                             {message.authorID == user?.uid ?
                                 <Text style={styles.ownMessage}>{message.content}</Text>
                                 :
-                                <Text style={styles.foreignMessage}>{message.content}</Text>
+                                <View style={styles.foreignMessage}>
+                                    {/* <Text>{JSON.stringify(message)}</Text> */}
+                                    <Text style={styles.authorName}>{message.authorName}</Text>
+                                    <Text>{message.content}</Text>
+                                </View>
                             }
                         </View>
                     )
@@ -104,6 +109,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        height: '100%',
         flex: 1,
         backgroundColor: Color.BACKGROUND,
         padding: 10
@@ -113,7 +119,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 30
+        marginBottom: 30,
+        // position: 'absolute',
+        // bottom: 0
     },
     textInput: {
         width: '90%',
@@ -130,12 +138,20 @@ const styles = StyleSheet.create({
     foreignMessage: {
         backgroundColor: Color.BACKGROUND3,
         color: Color.FONT1,
-        padding: 10,
+        paddingLeft: 13,
+        paddingBottom: 13,
+        paddingRight: 13,
+        paddingTop: 4,
         borderBottomRightRadius: 25,
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
         marginBottom: 20,
         marginRight: 80
+    },
+    authorName: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: Color.FONT2
     },
     ownMessage: {
         backgroundColor: Color.BACKGROUND2,
