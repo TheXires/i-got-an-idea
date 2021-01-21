@@ -74,9 +74,9 @@ export default function App() {
                     <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
                     <Stack.Screen name='ProfileEdit' component={ProfileEdit} options={{headerShown: false}} />
                     <Stack.Screen name='Profile' component={Profile} />
-                    <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
+                    <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: ''}} />
                     <Stack.Screen name='Chat' component={Chat} />
-                    <Stack.Screen name='ChatDetails' component={ChatDetails} />
+                    <Stack.Screen name='ChatDetails' component={ChatDetails} options={{title: ''}}/>
                     <Stack.Screen name='Settings' component={Settings} options={{title: 'Einstellungen', headerRight: () => (<TouchableOpacity onPress={logOut} style={styles.button}><Text style={{color: Color.FONT1}}>LogOut</Text></TouchableOpacity>)}} />
                     <Stack.Screen name='CreateIdea' component={CreateIdea} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaFrontend' component={CreateIdeaFrontend} options={{title: 'Meine Idee'}} />
