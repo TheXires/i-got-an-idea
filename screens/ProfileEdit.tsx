@@ -5,7 +5,7 @@ import { SafeAreaView, StatusBar, StyleSheet, Text, View, Image, ScrollView, Tex
 import { Color } from '../customTypes/colors';
 import { ProfileData } from '../customTypes/profileData';
 import { getProfilePictureURL, getUID } from '../services/auth';
-import { getProfileData } from '../services/database';
+import { createProfileData, getProfileData } from '../services/database';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from 'firebase';
@@ -19,7 +19,7 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
     description: '',
     skills: [],
     blockedUsers: [],
-    id: 'string',
+    id: '',
     ideaChatsPinned: []
   });
   
@@ -31,12 +31,11 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
   }, [databaseLoading])
 
 
-
   useEffect(() => {
     if(!firebaseLoading){
       firebaseUser?.uid != undefined && (newUser.id = firebaseUser?.uid);
-      firebaseUser?.photoURL != undefined && (newUser.profilePictureURL = (firebaseUser!.photoURL?.substring(0, firebaseUser!.photoURL?.lastIndexOf('=')))?.concat('?sz=150'));
-      firebaseUser?.displayName != undefined && (newUser.id = firebaseUser?.displayName);
+      firebaseUser?.photoURL != undefined && firebaseUser .photoURL !== '' && firebaseUser.photoURL.includes('=') && (newUser.profilePictureURL = (firebaseUser!.photoURL?.substring(0, firebaseUser!.photoURL?.lastIndexOf('=')))?.concat('?sz=150'));
+      firebaseUser?.displayName != undefined && (newUser.name = firebaseUser?.displayName);
     }
   }, [firebaseLoading])
 
@@ -47,12 +46,19 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
         
         {/* Header */}
         <View style={styles.header}>
+          {/* Headertitle */}
           <Text style={{fontSize:18, color: Color.FONT1, fontWeight: 'bold', marginHorizontal: 15}}>
             Profil 
           </Text>
-
+          {/* Header Skip-Button */}
           <TouchableOpacity activeOpacity={0.8} onPress={() => {
-            
+            newUser.id != '' ? (
+              console.log(newUser),
+              createProfileData(newUser),
+              navigation.navigate('Main')
+            ) : (
+              navigation.navigate('Main')
+            )
           }}>
             <Text style={{fontSize:12, color: Color.FONT2, fontWeight: 'bold', marginHorizontal: 15}}>
               &Uuml;berspringen &gt;
@@ -62,25 +68,25 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
 
 
         {/* Body */}
-        <View>
+        <ScrollView style={styles.body}>
           {newUser?.profilePictureURL && newUser.profilePictureURL !== '' ? (
-            <Image source={{uri: newUser.profilePictureURL}} style={styles.profileimage} />
+            <Image source={{uri: newUser.profilePictureURL}} style={[styles.profileimage, {marginTop: 15}]} />
           ) : (
-            <Image source={profileplaceolder} style={styles.profileimage} />
+            <Image source={profileplaceolder} style={[styles.profileimage, {marginTop: 0}]} />
           )}
-          <Text style={styles.name}>{newUser?.name} Test</Text>
+          <Text style={styles.name}>{newUser?.name}</Text>
 
           {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
           <Text style={styles.h1}>Beschreibung</Text>
           <TextInput
             multiline={true}
-            style={[{ height: 250, textAlignVertical: "top"}]}
+            style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
             onChangeText={text => newUser.description = text.trim()}
             placeholderTextColor={Color.FONT3}
             placeholder='Erz&auml;hle etwas &uuml;ber dich...'
           />
 
-        </View>
+        </ScrollView>
       </View>
 
       {/* Navigation Buttons */}
@@ -99,8 +105,8 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
+    flex: 1,
     alignItems: 'center',
     backgroundColor: Color.BACKGROUND,
   },
@@ -112,10 +118,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   body: {
-    flex: 1,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
     width: '100%',
+    padding: 15,
   },
   h1: {
     marginBottom: 10,
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
     color: Color.ACCENT,
     fontSize: 21,
     width: '100%',
-    textAlign: 'center',
+    // textAlign: 'center',
     fontWeight: 'bold'
   },
   textInput: {
