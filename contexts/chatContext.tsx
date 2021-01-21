@@ -128,7 +128,8 @@ const ChatProvider = (props: any) => {
 
   return (
     <ChatContext.Provider value={{
-      chats
+      chats,
+      chatAmount: pinnedIdeas?.length
     }}>
       {props.children}
     </ChatContext.Provider>
