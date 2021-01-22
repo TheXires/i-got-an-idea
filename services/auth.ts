@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app';
 import * as Google from 'expo-google-app-auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let currentAuthObject;
 
@@ -41,6 +42,11 @@ async function loginWithGoogle(): Promise<void> {
  * Logs out from the current session
  */
 function logOut(): void {
+    try {
+        AsyncStorage.removeItem('firstLogin');
+    } catch (error) {
+        alert('Fehler beim speichern des Loginstatus!')
+    }
     firebase.auth().signOut();
 }
 

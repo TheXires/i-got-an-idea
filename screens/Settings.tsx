@@ -11,6 +11,7 @@ const Settings = ({ navigation }: { navigation: any }) => {
       <ScrollView>
         <View>
           {/* TODO: Einstellungsmöglichkeiten hier einfügen */}
+          {/* TODO: Local Cache löschen */}
         </View>
       </ScrollView>
       <Footer navigation={navigation} />

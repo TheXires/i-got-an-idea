@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Button } from 'react-native';
+import { StyleSheet, View, StatusBar, ScrollView, SafeAreaView, Button,  } from 'react-native';
 
 import Idea from '../components/Idea';
 
@@ -12,12 +12,15 @@ import { IdeaType } from '../customTypes/ideaType';
 import { getUID } from '../services/auth';
 import FloatingActionButton from '../components/FloatingActionButton';
 import CustomSpinner from '../components/CustomSpinner';
+import { FlatList } from 'react-native-gesture-handler';
 
 const Main = ({ navigation }: { navigation: any }) => {
   const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
   const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast; 
   const {loadMoreEntries} = useContext<any>(IdeaContext);
   const {limitReached} = useContext<any>(IdeaContext);
+
+  // const [showFilter, setShowFilter] = useState(false)
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +39,7 @@ const Main = ({ navigation }: { navigation: any }) => {
                     Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
           <Ionicons style={{ marginLeft: 15, color: Color.FONT1 }} name="funnel-sharp" size={24} color="black" onPress={
             () => {
-              navigation.navigate('ProfileEdit');
+              // setShowFilter(!showFilter);
             }
           } />
           {oldestComesLast ? (
@@ -56,25 +59,29 @@ const Main = ({ navigation }: { navigation: any }) => {
 
       {/* Body */}
       <View style={styles.body}>
-        <ScrollView>
-          {/* Ideas from context get rendered here */}
-          {ideas !== undefined ? (
-            ideas.map(idea => {
-              return (
+        {ideas !== undefined ? (
+          <FlatList 
+            data={ideas}
+            keyExtractor={idea => idea.id!}
+            renderItem={(idea) => (
                 <Idea
                   navigation={navigation}
-                  key={idea.id}
-                  idea={idea}
-                />)
-            })
-          ) : (<></>)}
-          {loading && <CustomSpinner />}
+                  key={idea.item.id}
+                  idea={idea.item}
+                />
+            )}
+            onEndReached={() => {
+              setLoading(true);
+              loadMoreEntries();
+            }}
+            onEndReachedThreshold={0.55}
+            ListFooterComponent={loading ? <CustomSpinner /> : <></>}
+            // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
+            // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
+          />
+        ) : (<></>)}
 
-            {/* TODO: erreichen der unteren kannte muss durch funktion errechnet werden. 
-                      https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
-                      https://reactnative.dev/docs/scrollview */}
-          {limitReached ? (<></>) : <Button title="MEHR!!" onPress={() => { setLoading(true); loadMoreEntries()}}></Button> }
-        </ScrollView>
+
 
         <FloatingActionButton navigation={navigation} />
 

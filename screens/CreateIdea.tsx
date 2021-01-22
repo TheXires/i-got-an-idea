@@ -57,7 +57,6 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
             placeholder='Name der Idee'
           />
 
-
           <Text style={styles.h1}>Beschreibung</Text>
           {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
           <TextInput

@@ -4,8 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { Color } from '../customTypes/colors';
 
 const Radiobuttons = ({selected, setSelected}: {selected: boolean[], setSelected: any}) => {
-  // TODO: component noch losgelöster machen, indem einfach die Anzahl der Knöpfe und der name dieser (Array) übergeben wird und dann alles hier mit einer for-schleife erstellt wird
-  
   return (
     <View style={styles.selectionContainer}>
 
