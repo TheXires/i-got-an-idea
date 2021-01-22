@@ -1,17 +1,19 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, ScrollView, View } from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
+import {StyleSheet, Text, ScrollView, View} from 'react-native';
 
 import CustomImage from '../components/CustomImage';
 import User from '../components/User';
-import { Color } from '../customTypes/colors';
-import { Tag } from '../customTypes/tags';
-import { IdeaContext } from '../contexts/ideaContext';
-import { IdeaType } from '../customTypes/ideaType';
-import { set } from 'react-native-reanimated';
+import {Color} from '../customTypes/colors';
+import {Tag} from '../customTypes/tags';
+import {IdeaContext} from '../contexts/ideaContext';
+import {IdeaType} from '../customTypes/ideaType';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
+import {Ionicons} from '@expo/vector-icons';
+import {pinIdeaToChats} from '../services/database';
 // implements the detail view for an idea sreached by a given id
-const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => {
-  const { ideas }: { ideas: IdeaType[] } = useContext<any>(IdeaContext);
+const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
+  const {ideas}: {ideas: IdeaType[]} = useContext<any>(IdeaContext);
   const [idea, setIdea] = useState<IdeaType>();
 
   useEffect(() => {
@@ -20,7 +22,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
       let currentIdea = ideas.find((idea) => idea.id === route.params.id);
       // currentIdea ? (setIdea(currentIdea)) : (setIdea(/* in firebase direkt nach der ideeID suchen */)) 
       setIdea(ideas.find((idea) => idea.id === route.params.id));
-    }else{
+    } else {
 
     }
   }, [ideas])
@@ -31,7 +33,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.innerContainer}>
+      <ScrollView>
         {/* name of the idea as heading */}
         <Text style={styles.h1}>{idea!.name}</Text>
 
@@ -44,7 +46,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
             <Text style={styles.h2}>Tags</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} >
               <View style={styles.tagContainer}>
-                {idea!.tags.map((tag) => { return (<Text style={styles.tag} key={Tag[tag]}>#{Tag[tag]}</Text>) })}
+                {idea!.tags.map((tag) => {return (<Text style={styles.tag} key={Tag[tag]}>#{Tag[tag]}</Text>)})}
               </View>
             </ScrollView>
           </>
@@ -60,7 +62,7 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
           <>
             <Text style={styles.h2}>Bilder</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-              {idea!.imageURLs.map((image) => { return (<CustomImage source={{ uri: image }} imgSize={200} key={image} />) })}
+              {idea!.imageURLs.map((image) => {return (<CustomImage source={{uri: image}} imgSize={200} key={image} />)})}
             </ScrollView>
           </>
         ) : (
@@ -72,16 +74,18 @@ const Ideadetails = ({ navigation, route }: { navigation: any, route: any }) => 
         <Text style={styles.h2}>Idee von</Text>
         <User userID={idea!.authorID} navigation={navigation} />
       </ScrollView>
+      <TouchableOpacity style={styles.chatButton} onPress={() => {navigation.navigate('Chat'); pinIdeaToChats(idea);}}>
+        <Ionicons name="md-chatbox-ellipses" size={24} style={{color: Color.BACKGROUND}} />
+        <Text style={{color: Color.BACKGROUND, marginLeft: 10}}>Chat starten</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  innerContainer: {
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    flex: 1
   },
   h1: {
     marginTop: 10,
@@ -119,6 +123,17 @@ const styles = StyleSheet.create({
     paddingVertical: '8%',
     overflow: 'hidden',
     color: Color.ACCENT
+  },
+  chatButton: {
+    padding: 10,
+    borderRadius: 25,
+    backgroundColor: Color.ACCENT,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    position: 'relative',
+    bottom: 10
   }
 });
 

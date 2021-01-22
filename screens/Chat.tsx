@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {StyleSheet, Text, View, Image} from 'react-native'
 import {ChatContext} from '../contexts/chatContext';
 import {Color} from '../customTypes/colors';
@@ -6,49 +6,56 @@ import {Chat as ChatType} from '../customTypes/chat';
 import CustomSpinner from '../components/CustomSpinner';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const Chat = ({ navigation }: { navigation: any }) => {
-  const {chats}: {chats: ChatType[]} = useContext<any>(ChatContext);
+const Chat = ({navigation}: {navigation: any}) => {
+  const {chats, chatAmount}: {chats: ChatType[], chatAmount: number} = useContext<any>(ChatContext);
+
+  // useEffect(() => {
+  //   console.log(chats);
+    
+  // }, [chats])
+
   return (
 
     <View style={styles.container}>
-      {chats !== undefined ? (
-        chats.map(chat => {
-          return (
-            <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: chat.pinnedIdea.ideaID})} key={chat.pinnedIdea.ideaID} style={styles.chatBox}>
-              <Image source={{uri: chat.pinnedIdea.pictureURL}} style={styles.image} />
-              <View style={styles.textBox}>
-                <Text style={styles.heading}>{chat.pinnedIdea.name}</Text>
-                {chat.messages?.length > 0 ?
-                  <View style={styles.lastMessage}>
-                    <Text style={styles.lastMessageTime}>
-                      {chat.messages[chat.messages.length - 1].timestamp.toDate().getHours()}:
+      {chatAmount > 0 ?
+        <View>
+          {/* {console.log('\n')} */}
+          {chats !== undefined ? (
+            chats.map(chat => {
+              // console.log('rendering');
+              return (
+                <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: chat.pinnedIdea.ideaID})} key={chat.pinnedIdea.ideaID} style={styles.chatBox}>
+                  <Image source={{uri: chat.pinnedIdea.pictureURL}} style={styles.image} />
+                  <View style={styles.textBox}>
+                    <Text style={styles.heading}>{chat.pinnedIdea.name}</Text>
+                    {chat.messages?.length > 0 ?
+                      <View style={styles.lastMessage}>
+                        <Text style={styles.lastMessageTime}>
+                          {chat.messages[chat.messages.length - 1].timestamp.toDate().getHours()}:
                       {chat.messages[chat.messages.length - 1].timestamp.toDate().getMinutes()}
+                        </Text>
+                        <Text style={styles.lastMessageAuthor}>
+                          {chat.messages[chat.messages.length - 1].authorName}:
                     </Text>
-                    <Text style={styles.lastMessageAuthor}>
-                      {chat.messages[chat.messages.length - 1].authorName}:
-                    </Text>
-                    <Text numberOfLines={1} style={styles.lastMessageText}>
-                      {chat.messages[chat.messages.length - 1].content}
-                    </Text>
+                        <Text numberOfLines={1} style={styles.lastMessageText}>
+                          {chat.messages[chat.messages.length - 1].content}
+                        </Text>
+                      </View>
+                      :
+                      <></>
+                    }
                   </View>
-                  :
-                  <></>
-                }
-              </View>
-            </TouchableOpacity>
-          )
-        })
-      ) : (
-          <CustomSpinner />
-        )}
-      {/* <Button title="Neue Chat Nachricht!" onPress={() => sendChatMessage({
-        ideaID: 'LRt2WVP7CC0lSHRj9KbP',
-        authorID: getUID(),
-        authorName: 'Felix',
-        authorProfilePictureURL: getProfilePictureURL(),
-        timestamp: firebase.firestore.Timestamp.now(),
-        content: 'Coole Nachricht, bro!'
-      })}></Button> */}
+                </TouchableOpacity>
+              )
+            })
+          ) : (
+              <CustomSpinner />
+            )}
+        </View>
+        :
+        <Text style={{color: Color.FONT1, width: '100%', textAlign: 'center'}}>Noch keine Chats vorhanden</Text>
+      }
+
     </View>
   )
 }
@@ -71,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 15,
     justifyContent: 'space-around',
+    width: '100%'
   },
   heading: {
     color: Color.FONT1,
