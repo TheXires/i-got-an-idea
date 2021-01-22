@@ -59,7 +59,6 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
                     placeholderTextColor={Color.FONT3}
                 />
                 <Ionicons onPress={chatSubmit} name="ios-send" size={24} color={Color.ACCENT} />
-
             </View>
         </ScrollView>
     )

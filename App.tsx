@@ -2,7 +2,7 @@
 import * as firebase from "firebase/app";
 import './services/firebaseInitializer'
 import 'firebase/auth';
-import {logOut} from './services/auth';
+import {getUID, logOut} from './services/auth';
 
 // Firebase Hooks
 import {useAuthState} from 'react-firebase-hooks/auth';
@@ -23,7 +23,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {LogBox} from 'react-native';
 LogBox.ignoreLogs(['Setting a timer']);
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {Color} from "./customTypes/colors";
 import Ideadetails from "./screens/Ideadetails";
@@ -41,6 +41,8 @@ import CreateIdeaOverview from "./screens/CreateIdeaOverview";
 import ChatProvider from "./contexts/chatContext";
 import ProfileEdit from "./screens/ProfileEdit";
 import ChatDetails from "./screens/ChatDetails";
+import { getProfileData } from "./services/database";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 // creating stack for navigation
@@ -49,13 +51,48 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [user, loading, error] = useAuthState(firebase.auth());
+  
+  const [firstLogin, setFirstLogin] = useState(true);
+
+// TODO: local storage variable für existierenden Nutzer muss durch das ausloggen wieder gelöscht werden.
+//        sonst wird der nächste Nutzer der sich einloggt automatisch weitergeleitet, obwohl er vielleicht gar nicht existiert.
+
+  useEffect(() => {
+    async function getUserExists(){
+      try {
+        let localLoginState = await AsyncStorage.getItem('firstLogin');
+        console.log(localLoginState);
+        
+        setFirstLogin(localLoginState != undefined && localLoginState === 'false' ? (false) : (true));
+      } catch (error) {
+        alert('Fehler beim lesen des Loginstatus!');
+      }
+    }
+    getUserExists();
+  }, [user])
+
+  useEffect(() => {  
+    async function getDBUser(){
+      if(user != undefined && firstLogin === true){
+        let userExists: boolean = (await getProfileData(getUID()).get()).exists;
+        if(userExists){
+          try {
+            await AsyncStorage.setItem('firstLogin', 'false');
+          } catch (error) {
+            alert('Fehler beim speichern des Loginstatus!');
+          }
+        }
+        setFirstLogin(!userExists);
+      }
+    } 
+    getDBUser();
+  }, [loading, user, firstLogin])
 
   if (error) {
     return <Text>{error}</Text>
   }
 
   if (loading) {
-    // TODO: muss noch durch etwas zum Design passendem ersetzt werden
     return <SplashScreen />;
   }
 
@@ -71,8 +108,10 @@ export default function App() {
                 </>
               ) : (
                   <>
-                    <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
-                    <Stack.Screen name='ProfileEdit' component={ProfileEdit} options={{headerShown: false}} />
+                    {firstLogin ? (
+                      <Stack.Screen name='ProfileEdit' component={ProfileEdit} options={{headerShown: false}} />
+                    ) : (null)}
+                    <Stack.Screen name='Main' component={Main} options={{headerShown: false}} /> 
                     <Stack.Screen name='Profile' component={Profile} />
                     <Stack.Screen name='Ideadetails' component={Ideadetails} options={{title: '', headerRight: () => (<TouchableOpacity style={styles.button}><Text style={{color: Color.FONT1}}>Chat starten</Text></TouchableOpacity>)}} />
                     <Stack.Screen name='Chat' component={Chat} />

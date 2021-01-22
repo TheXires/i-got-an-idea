@@ -17,9 +17,8 @@ function login({navigation}: {navigation: any}) {
           <Image style={styles.logo} source={icon} />
           <View style={styles.buttons}>
 
-            {/* loginbuttons of diverent prviders */}
+            {/* loginbuttons of diverent prviders can be added here */}
             <Loginbutton provider={'Google'} />
-            <Loginbutton provider={'GitHub'} />
           </View>
 
           {/* Fotercomponent */}

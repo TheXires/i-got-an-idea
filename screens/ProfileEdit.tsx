@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { SafeAreaView, StatusBar, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-// import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { StatusBar, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { ProfileData } from '../customTypes/profileData';
-import { getProfilePictureURL, getUID } from '../services/auth';
+import { getUID } from '../services/auth';
 import { createProfileData, getProfileData } from '../services/database';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from 'firebase';
+import { Ionicons } from '@expo/vector-icons';
 
-const ProfileEdit = ({ navigation }: { navigation: any }) => {
+import update from 'immutability-helper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const ProfileEdit = ({ navigation, setFirstLogin }: { navigation: any, setFirstLogin: any }) => {
   const [databaseUser, databaseLoading, databaseError] = useDocumentData<ProfileData>(getProfileData(getUID()));
   const [firebaseUser, firebaseLoading, firebaseError] = useAuthState(firebase.auth());
   const [newUser, setNewUser] = useState<ProfileData>({
@@ -22,14 +25,7 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
     id: '',
     ideaChatsPinned: []
   });
-  
-  useEffect(() => {
-    // Welchen Fehler gibt es, wenn der Nutzer nicht existiert? Und was sind andere Fehler?
-    // TODO: noch genauer gucken wann der nutzer noch nicht existiert und
-    //       dann auch verhindern, dass der Nuter wieder auf diese Seite zurück kann, wenn er sie einmal verlassen hat 
-    !databaseLoading && databaseError && /* userError == 'nutzer existiert nicht' && navigation.navigate('Main') && */ alert(databaseError)
-  }, [databaseLoading])
-
+  const [userSkill, setUserSkill] = useState('');
 
   useEffect(() => {
     if(!firebaseLoading){
@@ -53,8 +49,8 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
           {/* Header Skip-Button */}
           <TouchableOpacity activeOpacity={0.8} onPress={() => {
             newUser.id != '' ? (
-              console.log(newUser),
               createProfileData(newUser),
+              AsyncStorage.setItem('firstLogin', 'false'),
               navigation.navigate('Main')
             ) : (
               navigation.navigate('Main')
@@ -68,24 +64,53 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
 
 
         {/* Body */}
-        <ScrollView style={styles.body}>
-          {newUser?.profilePictureURL && newUser.profilePictureURL !== '' ? (
-            <Image source={{uri: newUser.profilePictureURL}} style={[styles.profileimage, {marginTop: 15}]} />
-          ) : (
-            <Image source={profileplaceolder} style={[styles.profileimage, {marginTop: 0}]} />
-          )}
-          <Text style={styles.name}>{newUser?.name}</Text>
+        <ScrollView>
+          <View style={styles.body}>
+            <View style={styles.user}>
+              {newUser?.profilePictureURL && newUser.profilePictureURL !== '' ? (
+                <Image source={{uri: newUser.profilePictureURL}} style={[styles.profileimage, {marginTop: 15}]} />
+              ) : (
+                <Image source={profileplaceolder} style={[styles.profileimage, {marginTop: 0}]} />
+              )}
+              <Text style={styles.name}>{newUser?.name}</Text>
+            </View>
 
-          {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
-          <Text style={styles.h1}>Beschreibung</Text>
-          <TextInput
-            multiline={true}
-            style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
-            onChangeText={text => newUser.description = text.trim()}
-            placeholderTextColor={Color.FONT3}
-            placeholder='Erz&auml;hle etwas &uuml;ber dich...'
-          />
 
+            {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
+            <Text style={styles.h1}>Beschreibung</Text>
+            <TextInput
+              multiline={true}
+              style={[styles.textInput, {height: 150, textAlignVertical: "top", marginBottom: 30}]}
+              onChangeText={text => newUser.description = text.trim()}
+              placeholderTextColor={Color.FONT3}
+              placeholder='Erz&auml;hle etwas &uuml;ber dich...'
+            />
+
+            {/* TODO: Prüfung hinzufügen, dass valide Tags hinzugefügt wurden (z.B. min 3 Zeichen) */}
+            <Text style={styles.h1}>Skill</Text>
+            <View style={styles.row}>
+              <TextInput
+                style={[styles.textInput, {marginRight: 0, width: '85%'}]}
+                onChangeText={text => setUserSkill(text.trim())}
+                placeholderTextColor={Color.FONT3}
+                placeholder='Erz&auml;hle etwas &uuml;ber dich...'
+              />
+              <TouchableOpacity activeOpacity={.7} style={{marginRight: 0, marginLeft: 'auto'}} onPress={() => {                
+                setNewUser(update(newUser, {skills: {$push: [userSkill]}}));
+              }}>
+                <Ionicons name="ios-add-circle" size={48} color={Color.FONT2} />
+              </TouchableOpacity>
+            </View>
+            {newUser.skills.length > 0 ? (
+              <>
+                {newUser.skills.map((skill) => { return(
+                  <View style={styles.tagcontainer} key={skill}>
+                    <Text style={styles.tag} key={skill}>&#x2022; {skill}</Text>
+                  </View>
+                )})}
+              </>
+            ) : (<></>)}
+          </View>
         </ScrollView>
       </View>
 
@@ -121,6 +146,16 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 15,
   },
+  user: {
+    width: '100%',
+    marginBottom: 15,
+    alignItems: 'center'
+  },
+  row: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   h1: {
     marginBottom: 10,
     fontSize: 17,
@@ -128,7 +163,7 @@ const styles = StyleSheet.create({
     color: Color.FONT1
   },
   profileimage: {
-    marginBottom: 20,
+    marginBottom: 10,
     width: 150,
     height: 150,
     borderRadius: 100
@@ -136,12 +171,9 @@ const styles = StyleSheet.create({
   name: {
     color: Color.ACCENT,
     fontSize: 21,
-    width: '100%',
-    // textAlign: 'center',
     fontWeight: 'bold'
   },
   textInput: {
-    marginBottom: 20,
     padding: 10,
     height: 40,
     borderColor: Color.BACKGROUND3,
@@ -149,7 +181,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     color: Color.FONT2
   },
+  tagcontainer: {
 
+  },
+  tag: {
+    padding: 5,
+    marginLeft: 10,
+    fontSize: 15,
+    color: Color.ACCENT
+  },
 
 
   navigationbackground: {

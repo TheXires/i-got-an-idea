@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import icon from '../assets/spinner.gif';
+import CustomSpinner from '../components/CustomSpinner';
+import { Color } from '../customTypes/colors';
 
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <Image source={icon} />
+      <CustomSpinner />
     </View>
   )
 }
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: Color.BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
   }

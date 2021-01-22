@@ -67,7 +67,7 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
           style={styles.button}
           onPress={() => {
             setCompleted(true);
-            navigation.navigate('Settings');
+            navigation.navigate('Main');
           }}
         >
           <Text style={{ color: Color.FONT1 }}>Idee erstellen</Text>

@@ -4,6 +4,7 @@ import { Color } from '../customTypes/colors';
 import ideaplaceholder from '../assets/ideaplaceholder.jpg';
 import { Tag } from '../customTypes/tags';
 import { IdeaType } from '../customTypes/ideaType';
+import { FlatList } from 'react-native-gesture-handler';
 
 const Idea = ({ navigation, idea }: { navigation: any, idea: IdeaType }) => {
 
@@ -26,13 +27,18 @@ const Idea = ({ navigation, idea }: { navigation: any, idea: IdeaType }) => {
           <Text numberOfLines={4} style={styles.description}>{idea.description}</Text>
         </TouchableOpacity>
 
-        {/* tags */}
-        {/* TODO: Tags werden am Ende abgeschnitten und können nicht ganz durch gescrolled werden */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.tagContainer}>
-            {idea.tags.map((tag) => { return (<Text style={styles.tag} key={Tag[tag]}>#{Tag[tag]}</Text>) })}
-          </View>
-        </ScrollView>
+        <View style={styles.tagContainer}>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false} 
+            data={idea.tags}
+            keyExtractor={tag => Tag[tag]}
+            renderItem={tag => (
+              <Text style={styles.tag}>#{Tag[tag.item]}</Text>
+            )}
+          />
+        </View>
+
       </View>
     </View>
   )
@@ -63,18 +69,14 @@ const styles = StyleSheet.create({
     color: Color.FONT3,
   },
   tagContainer: {
-    marginLeft: 0,
-    marginRight: 'auto',
+    marginRight: 100,
     marginTop: 'auto',
     marginBottom: 10,
     marginVertical: 5,
-    flexDirection: 'row',
-    overflow: 'hidden'
   },
   tag: {
     marginRight: 20,
     paddingVertical: '8%',
-    overflow: 'hidden',
     color: Color.FONT2
   },
   image: {

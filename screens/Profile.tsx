@@ -84,6 +84,11 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
                   <CustomSpinner />
                 </>
               )}
+
+
+              {!ideaLoading ? (
+                <></>
+              ) : (<></>)}
             </View>
           </>
         ) : (
@@ -120,7 +125,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   profileimage: {
-    marginBottom: 20,
+    marginBottom: 10,
     width: 150,
     height: 150,
     borderRadius: 100

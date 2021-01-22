@@ -81,6 +81,7 @@ export class IdeaFactory {
     addImageURL(imageURLs: string[]) {
         if(this._imageURLs !== undefined){
             this._imageURLs = [...this._imageURLs, ...imageURLs];
+            this._imageURLs = imageURLs.filter((img, index, self) => index === self.indexOf(img));
         }
         return this;
     }

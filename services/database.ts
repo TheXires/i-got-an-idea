@@ -394,7 +394,3 @@ export const chatMessageConverter = {
         return data as ChatMessage;
     }
 };
-// function sanitizeProfilePictureURL(url) {
-//     // TODO: needed?
-//     // https://lh3.googleusercontent.com/a-/AOh14GjTQVmEk-kWD1fKnagm2W7U6wyEKUx_S0yFV1IQGg=s200-p-k-no-mo
-// }

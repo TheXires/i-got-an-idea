@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { getProfileData } from '../services/database';
 import { ProfileData } from '../customTypes/profileData';
+import profileplaceolder from '../assets/profileplaceholder.jpg';
 import CustomSpinner from './CustomSpinner';
 
 const User = ({ navigation, userID }: { navigation: any, userID: string }) => {
@@ -18,7 +19,12 @@ const User = ({ navigation, userID }: { navigation: any, userID: string }) => {
       <View style={styles.container}>
         {(loading === false && user !== undefined) ? (
           <>
-            <Image source={{ uri: user.profilePictureURL }} style={styles.profileimage} />
+            <Image style={styles.profileimage} source={
+              user.profilePictureURL !== '' ? (
+                { uri: user.profilePictureURL } 
+              ) : ( 
+                profileplaceolder
+            )}/>
             <Text style={styles.name}>{user.name}</Text>
           </>
         ) : (
