@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { IdeaFactory } from '../customTypes/ideaFactory';

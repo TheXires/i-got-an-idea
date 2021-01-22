@@ -5,7 +5,6 @@ import { ideaCreationContext } from '../contexts/ideaCreationContext';
 import { Color } from '../customTypes/colors'
 import { IdeaFactory } from '../customTypes/ideaFactory';
 import { Tag } from '../customTypes/tags';
-import { createIdea } from '../services/database';
 
 const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);

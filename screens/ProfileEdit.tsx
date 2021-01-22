@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import update from 'immutability-helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileEdit = ({ navigation, setFirstLogin }: { navigation: any, setFirstLogin: any }) => {
+const ProfileEdit = ({ navigation }: { navigation: any }) => {
   const [databaseUser, databaseLoading, databaseError] = useDocumentData<ProfileData>(getProfileData(getUID()));
   const [firebaseUser, firebaseLoading, firebaseError] = useAuthState(firebase.auth());
   const [newUser, setNewUser] = useState<ProfileData>({
