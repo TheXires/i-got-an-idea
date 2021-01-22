@@ -184,7 +184,7 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
  * @param idea The idea to create
  * @returns a promise which resolves when the data has been written
  */
-async function createIdea(idea: IdeaType) {//TODO: initialwerte für den chat setzen + erste Nachricht schreiben
+async function createIdea(idea: IdeaType) {
     if (idea.authorID == undefined) {
         idea.authorID = getUID();
     }
@@ -333,6 +333,12 @@ const profileDataConverter = {
         if (data.id != undefined) {
             delete data.id;
         }
+        if (data.ideaChatsPinned.length == 0) {
+            console.log('Deleting');
+            
+            delete (data as any).ideaChatsPinned;
+        }
+        
         return data;
     },
 
@@ -341,6 +347,9 @@ const profileDataConverter = {
         data.blockedUsers = Object.keys(data.blockedUsers).map((userKey: any) => {
             return {id: userKey, name: data.blockedUsers[userKey]} as BlockedUser;
         })
+        if (data.ideaChatsPinned == undefined) {
+            data.ideaChatsPinned = [];
+        }
         data.id = snapshot.id;
         return data as ProfileData;
     }
