@@ -30,31 +30,34 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
 
 
     return (//TODO: Chat Senden Leiste nach unten sticken
-        <ScrollView
-            style={styles.container}
-            ref={ref => {this.scrollView = ref}}
-            onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
-        >
-            {chat != undefined ? (
-                chat.messages.map(message => {
-                    return (
-                        <View key={message.id}>
-                            {message.authorID == user?.uid ?
-                                <Text style={styles.ownMessage}>{message.content}</Text>
-                                :
-                                <View style={styles.foreignMessage}>
-                                    {/* <Text>{JSON.stringify(message)}</Text> */}
-                                    <Text style={styles.authorName}>{message.authorName}</Text>
-                                    <Text>{message.content}</Text>
+        <View style={{height: '100%'}}>
+            <ScrollView
+                style={styles.container}
+                ref={ref => {this.scrollView = ref}}
+                onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
+            >
+                {chat != undefined ?
+                    chat.messages.length > 0 ?
+                        chat.messages.map(message => {
+                            return (
+                                <View key={message.id}>
+                                    {message.authorID == user?.uid ?
+                                        <Text style={styles.ownMessage}>{message.content}</Text>
+                                        :
+                                        <View style={styles.foreignMessage}>
+                                            {/* <Text>{JSON.stringify(message)}</Text> */}
+                                            <Text style={styles.authorName}>{message.authorName}</Text>
+                                            <Text>{message.content}</Text>
+                                        </View>
+                                    }
                                 </View>
-                            }
-                        </View>
-                    )
-                })
-            ) : (
+                            )
+                        }) :
+                        <Text style={{color: Color.FONT1, width: '100%', textAlign: 'center'}}>Noch keine Nachrichten vorhanden</Text>
+                    :
                     <CustomSpinner />
-                )}
-
+                }
+            </ScrollView>
             <View style={styles.sendBox}>
                 <TextInput
                     style={styles.textInput}
@@ -66,7 +69,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
                 <Ionicons onPress={chatSubmit} name="ios-send" size={24} color={Color.ACCENT} />
 
             </View>
-        </ScrollView>
+        </View>
     )
 
     function chatSubmit() {
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 30,
+        marginBottom: 15,
         // position: 'absolute',
         // bottom: 0
     },
