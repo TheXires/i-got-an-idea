@@ -23,13 +23,13 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
         if (chats.length > 0) {
             const chat = chats.find((chat) => chat.pinnedIdea.ideaID === route.params.id);
             if (chat != undefined) {
-                setChat(chat);
+                setChat(chat);//TODO: Blocked user filtern
             }
         }
     }, [chats])
 
 
-    return (
+    return (//TODO: Chat Senden Leiste nach unten sticken
         <ScrollView
             style={styles.container}
             ref={ref => {this.scrollView = ref}}

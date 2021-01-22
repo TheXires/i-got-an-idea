@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {StyleSheet, Text, View, Image} from 'react-native'
 import {ChatContext} from '../contexts/chatContext';
 import {Color} from '../customTypes/colors';
@@ -8,13 +8,21 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Chat = ({navigation}: {navigation: any}) => {
   const {chats, chatAmount}: {chats: ChatType[], chatAmount: number} = useContext<any>(ChatContext);
+
+  // useEffect(() => {
+  //   console.log(chats);
+    
+  // }, [chats])
+
   return (
 
     <View style={styles.container}>
       {chatAmount > 0 ?
         <View>
+          {/* {console.log('\n')} */}
           {chats !== undefined ? (
             chats.map(chat => {
+              // console.log('rendering');
               return (
                 <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: chat.pinnedIdea.ideaID})} key={chat.pinnedIdea.ideaID} style={styles.chatBox}>
                   <Image source={{uri: chat.pinnedIdea.pictureURL}} style={styles.image} />
@@ -70,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 15,
     justifyContent: 'space-around',
+    width: '100%'
   },
   heading: {
     color: Color.FONT1,

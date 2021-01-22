@@ -18,7 +18,7 @@ export const ChatContext = createContext({});
 const ChatProvider = (props: any) => {
   const [user, loading, error] = useAuthState(firebase.auth());
   const [pinnedIdeas, setPinnedIdeas] = useState<PinnedChat[]>()
-  const [dummyChats, setDummyChats] = useState<Chat[]>();//chats for saving local stored chat protocols, serves as base for normal chats
+  const [localChats, setLocalChats] = useState<Chat[]>();//chats for saving local stored chat protocols, serves as base for normal chats
   const [chats, setChats] = useState<Chat[]>();
   const [unsubs, setUnsubs] = useState<any[]>([]);
 
@@ -36,7 +36,7 @@ const ChatProvider = (props: any) => {
     }
 
     getProfileData(getUID()).onSnapshot(snap => {
-      if (pinnedIdeas !== snap.data()?.ideaChatsPinned) {
+      if (pinnedIdeas != snap.data()?.ideaChatsPinned) {
         setPinnedIdeas(snap.data()?.ideaChatsPinned);
       }
     });
@@ -50,7 +50,9 @@ const ChatProvider = (props: any) => {
         return;
       }
 
-      pinnedIdeas.forEach(async pinnedIdea => {
+      let newLocalChats: Chat[] = [];
+
+      await Promise.all(pinnedIdeas.map(async pinnedIdea => {
         const local = await fetchFromLocalStorage(pinnedIdea.ideaID);
 
         //check if local chat protocol exists
@@ -60,61 +62,47 @@ const ChatProvider = (props: any) => {
             return message;
           })
           local.lastSyncedMessageTimestamp = new firebase.firestore.Timestamp(local.lastSyncedMessageTimestamp.seconds, local.lastSyncedMessageTimestamp.nanoseconds);
-          setDummyChats((old) => {
-            if (old != undefined) {
-              return [...old, local]
-            } else {
-              return [local]
-            }
-          });
+          newLocalChats.push(local);
         } else {
           const newChat: Chat = {
             pinnedIdea: pinnedIdea,
             messages: [],
             lastSyncedMessageTimestamp: new firebase.firestore.Timestamp(0, 0)
           }
-          setDummyChats((old) => {
-            if (old != undefined) {
-              return [...old, newChat]
-            } else {
-              return [newChat]
-            }
-          });
+          newLocalChats.push(newChat);
         }
-      });
+      }))
+      setLocalChats(newLocalChats);
     }
     call();
   }, [pinnedIdeas])
 
   useEffect(() => {
-    if (dummyChats == undefined || pinnedIdeas == undefined || pinnedIdeas.length > dummyChats.length) {
+    if (localChats == undefined || pinnedIdeas == undefined || pinnedIdeas.length > localChats.length) {
       return;
     }
-    dummyChats.forEach((dummyChat) => {
-      const unsub = fs.collection('ideas').doc(dummyChat.pinnedIdea.ideaID).collection('chatmessages').
+    setChats([...localChats]);
+    
+    localChats.forEach((localChat) => {
+      const unsub = fs.collection('ideas').doc(localChat.pinnedIdea.ideaID).collection('chatmessages').
         orderBy('timestamp', 'asc').
-        where('timestamp', '>', dummyChat.lastSyncedMessageTimestamp).
+        where('timestamp', '>', localChat.lastSyncedMessageTimestamp).
         withConverter(chatMessageConverter).
         onSnapshot(snap => {
 
           //no new docs loaded?
-          if (snap.docs.length == 0) {
-            if (chats == undefined) {
-              setChats([...dummyChats]);//TODO: Eigene Effects für initial und update
+          if (snap.docs.length > 0) {
+            let messages = snap.docs.map(s => s.data());
+            const lastIndex = messages.findIndex(m => m.id == localChat.messages[localChat.messages.length - 1]?.id)
+
+            if (lastIndex != -1) {
+              messages = messages.slice(lastIndex + 1, messages.length)
             }
-            return
-          };
-          
-          let messages = snap.docs.map(s => s.data());
-          const lastIndex = messages.findIndex(m => m.id == dummyChat.messages[dummyChat.messages.length - 1]?.id)
-          
-          if (lastIndex != -1) {
-            messages = messages.slice(lastIndex + 1, messages.length)
+            localChat.messages = localChat.messages.concat(messages);
+            localChat.lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
+            saveToLocalStorage(localChat);
+            setChats([...localChats]);//destructuring to trigger change detection
           }
-          dummyChat.messages = dummyChat.messages.concat(messages);
-          dummyChat.lastSyncedMessageTimestamp = getTimestampOrDefault(messages);
-          saveToLocalStorage(dummyChat);
-          setChats([...dummyChats]);//destructuring to trigger change detection
         })
       setUnsubs([...unsubs, unsub]);
     })
@@ -123,7 +111,7 @@ const ChatProvider = (props: any) => {
         unsubMethod();
       })
     })
-  }, [dummyChats])
+  }, [localChats])
 
 
   return (
