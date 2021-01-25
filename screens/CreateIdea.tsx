@@ -14,6 +14,7 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
   
   useEffect(() => {
     navigation.addListener('beforeRemove', (e: any) => {
+      // TODO: funktioniert soweit, wenn man false einträgt. Aber duch 'finished' fehlen daten zum erstellen der Idee. Hier muss die Asynchronität nochmal überprüft werden
       if(!finished){
       // if(false){
         // Prevent default behavior of leaving the screen
