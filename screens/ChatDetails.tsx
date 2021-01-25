@@ -7,13 +7,17 @@ import CustomSpinner from '../components/CustomSpinner';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import firebase from 'firebase/app';
 import {Ionicons} from '@expo/vector-icons';
-import {sendChatMessage} from '../services/database';
+import {getProfileData, sendChatMessage} from '../services/database';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useDocumentData} from 'react-firebase-hooks/firestore';
+import {getUID} from '../services/auth';
+import {ProfileData} from '../customTypes/profileData';
 
 const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
     const [user, loading, error] = useAuthState(firebase.auth());
     const {chats}: {chats: Chat[]} = useContext<any>(ChatContext);
     const [chat, setChat] = useState<Chat>();
+    const [profileData, l, e] = useDocumentData(getProfileData(getUID()));
 
     const [currentChatMessage, setCurrentChatMessage] = useState('');
 
@@ -23,7 +27,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
         if (chats.length > 0) {
             const chat = chats.find((chat) => chat.pinnedIdea.ideaID === route.params.id);
             if (chat != undefined) {
-                setChat(chat);//TODO: Blocked user filtern
+                setChat(chat);
             }
         }
     }, [chats])
@@ -40,17 +44,20 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
                     chat.messages.length > 0 ?
                         chat.messages.map(message => {
                             return (
-                                <View key={message.id}>
-                                    {message.authorID == user?.uid ?
-                                        <Text style={styles.ownMessage}>{message.content}</Text>
-                                        :
-                                        <View style={styles.foreignMessage}>
-                                            {/* <Text>{JSON.stringify(message)}</Text> */}
-                                            <Text style={styles.authorName}>{message.authorName}</Text>
-                                            <Text>{message.content}</Text>
-                                        </View>
-                                    }
-                                </View>
+                                ((profileData as ProfileData)?.blockedUsers.find(u => u.id == message.authorID)) == undefined ?
+                                    <View key={message.id}>
+                                        {message.authorID == user?.uid ?
+                                            <Text style={styles.ownMessage}>{message.content}</Text>
+                                            :
+                                            <View style={styles.foreignMessage}>
+                                                {/* <Text>{JSON.stringify(message)}</Text> */}
+                                                <Text style={styles.authorName}>{message.authorName}</Text>
+                                                <Text>{message.content}</Text>
+                                            </View>
+                                        }
+                                    </View>
+                                    ://TODO: Blocked user überprüfen
+                                    <></>
                             )
                         }) :
                         <Text style={{color: Color.FONT1, width: '100%', textAlign: 'center'}}>Noch keine Nachrichten vorhanden</Text>
