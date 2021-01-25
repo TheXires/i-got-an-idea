@@ -134,7 +134,7 @@ async function fetchFromLocalStorage(ideaID: string): Promise<Chat | undefined> 
     let value = jsonValue != null ? JSON.parse(jsonValue) : null;
     return (value as Chat);
   } catch (e) {
-    alert('Error while reading chat messages from local storage: ' + e);//TODO: wenn leer wahrscheinlich auch error
+    alert('Error while reading chat messages from local storage: ' + e);
   }
 }
 

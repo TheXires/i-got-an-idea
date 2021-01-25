@@ -3,10 +3,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Color } from '../customTypes/colors';
 
-const FloatingActionButton = ({navigation}: {navigation: any}) => {
+const FloatingActionButton = ({navigation, next, icon}: {navigation: any, next: string, icon: any}) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('CreateIdea')} style={styles.container}>
-      <Ionicons name="ios-add" size={40} color={Color.FONT1} style={{ height: 42, width: 38 }} />
+    <TouchableOpacity onPress={() => navigation.navigate(next)} style={styles.container}>
+      {icon}
     </TouchableOpacity>
   )
 }

@@ -8,6 +8,7 @@ const IdeaCreationProvider = (props: any) => {
   const [newIdea, setNewIdea] = useState(new IdeaFactory);
   const [completed, setCompleted] = useState(false);
   const [discard, setDiscard] = useState(false);
+  const [finished, setFinished] = useState(false);
   
   useEffect(() => {
     newIdea.with()
@@ -19,10 +20,10 @@ const IdeaCreationProvider = (props: any) => {
   useEffect(() => {
     if (completed){
       try{
-        console.log('called: ', newIdea);
-        
         createIdea(newIdea.buildWithChecks());
         setNewIdea(new IdeaFactory);
+        setFinished(true);
+        setCompleted(false);
       }catch(e){
         alert(e);
         return;
@@ -39,7 +40,9 @@ const IdeaCreationProvider = (props: any) => {
     <ideaCreationContext.Provider value={{
       newIdea,
       setCompleted,
-      setDiscard
+      setDiscard,
+      finished,
+      setFinished
     }}>
       {props.children}
     </ideaCreationContext.Provider>

@@ -8,32 +8,41 @@ import CustomImage from '../components/CustomImage';
 
 const CreateIdea = ({ navigation }: { navigation: any }) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
+  const {finished, setFinished}: {finished: boolean, setFinished: any} = useContext<any>(ideaCreationContext)
   const { setDiscard }: { setDiscard: any } = useContext<any>(ideaCreationContext);
   const [reload, setReload] = useState(false);
   
   useEffect(() => {
     navigation.addListener('beforeRemove', (e: any) => {
-      // Prevent default behavior of leaving the screen
-      e.preventDefault();
-
-      // Prompt the user before leaving the screen
-      Alert.alert(
-        '\u00c4nderungen verwerfen?',
-        'Dadurch gehen alle \u00c4nderungen verloren m\u00fcssen und m\u00f6glicherweise erneut eingeben werden!',
-        [
-          { text: "Bleiben", style: 'cancel', onPress: () => {} },
-          {
-            text: 'Verwefen',
-            style: 'destructive',
-            // If the user confirmed, then we dispatch the action we blocked earlier
-            // This will continue the action that had triggered the removal of the screen
-            onPress: () => {
-              setDiscard(true);
-              navigation.dispatch(e.data.action)
+      if(!finished){
+      // if(false){
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+  
+        // Prompt the user before leaving the screen
+        Alert.alert(
+          '\u00c4nderungen verwerfen?',
+          'Dadurch gehen alle \u00c4nderungen verloren m\u00fcssen und m\u00f6glicherweise erneut eingeben werden!',
+          [
+            { text: "Bleiben", style: 'cancel', onPress: () => {} },
+            {
+              text: 'Verwefen',
+              style: 'destructive',
+              // If the user confirmed, then we dispatch the action we blocked earlier
+              // This will continue the action that had triggered the removal of the screen
+              onPress: () => {
+                setDiscard(true);
+                console.log('test1');
+                
+                setFinished(false);
+                console.log('test2');
+                
+                navigation.dispatch(e.data.action)
+              },
             },
-          },
-        ]
-      );
+          ]
+        );
+      }
     })
   }, [navigation]);
   
@@ -77,7 +86,7 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
 
           <View style={styles.addImage}>
             <TouchableOpacity style={styles.addImageButton} onPress={() => {
-              // TODO: honzufügen von eigenen Bildern ermöglichen oder wenigstens von weiteren, unterschiedlichen zufälligen
+              // TODO: hinzufügen von eigenen Bildern ermöglichen oder wenigstens von weiteren, unterschiedlichen zufälligen
               // newIdea.addImageURL(['https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg']);
               newIdea.addImageURL(['https://avatars3.githubusercontent.com/u/62450142?s=400&v=4']);
               setReload(true);

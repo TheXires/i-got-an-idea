@@ -9,6 +9,7 @@ import { Tag } from '../customTypes/tags';
 const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const { setCompleted }: { setCompleted: any } = useContext<any>(ideaCreationContext);
+  const { setFinished }: {setFinished: any} = useContext<any>(ideaCreationContext);
 
   console.log(newIdea);
   
@@ -25,6 +26,7 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
           {/* shows tags the added to the idea, if there are no tags it shows nothing instead */}
           {newIdea.getTags() !== undefined && newIdea.getTags()!.length > 0 ? (
             <>
+            {console.log('called')}
               <Text style={styles.h2}>Tags</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} >
                 <View style={styles.tagContainer}>
@@ -51,21 +53,24 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
               <></>
             )
           }
+          {/* Bottom-Spacer */}
+          <View style={{marginBottom:'20%'}}></View>
         </ScrollView>
       </View>
 
       {/* Navigation Buttons */}
-      <View style={styles.navigationbackground}>
+      <View style={[styles.navigationbackground, {justifyContent: 'flex-end'}]}>
         {/* previous */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
           <Text style={{ color: Color.FONT1 }}>Zur&uuml;ck</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         
         {/* next */}
         <TouchableOpacity 
           style={styles.button}
           onPress={() => {
             setCompleted(true);
+            setFinished(true);
             navigation.navigate('Main');
           }}
         >
@@ -80,9 +85,11 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // paddingBottom: 50,
+    // marginBottom: '20%',
   },
   innerContainer: {
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   h1: {
     marginTop: 10,
@@ -113,7 +120,6 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     marginVertical: 5,
     flexDirection: 'row',
-    overflow: 'hidden'
   },
   tag: {
     marginRight: 20,
@@ -124,7 +130,7 @@ const styles = StyleSheet.create({
   navigationbackground: {
     width: '100%',
     height: '10%',
-    backgroundColor: Color.BACKGROUND,
+    // backgroundColor: Color.BACKGROUND,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

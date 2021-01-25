@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { StatusBar, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { ProfileData } from '../customTypes/profileData';
-import { getUID } from '../services/auth';
-import { createProfileData, getProfileData } from '../services/database';
+import { createProfileData } from '../services/database';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from 'firebase';
@@ -14,7 +12,6 @@ import update from 'immutability-helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileEdit = ({ navigation }: { navigation: any }) => {
-  const [databaseUser, databaseLoading, databaseError] = useDocumentData<ProfileData>(getProfileData(getUID()));
   const [firebaseUser, firebaseLoading, firebaseError] = useAuthState(firebase.auth());
   const [newUser, setNewUser] = useState<ProfileData>({
     profilePictureURL: '',
@@ -33,7 +30,13 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
       firebaseUser?.photoURL != undefined && firebaseUser .photoURL !== '' && firebaseUser.photoURL.includes('=') && (newUser.profilePictureURL = (firebaseUser!.photoURL?.substring(0, firebaseUser!.photoURL?.lastIndexOf('=')))?.concat('?sz=150'));
       firebaseUser?.displayName != undefined && (newUser.name = firebaseUser?.displayName);
     }
-  }, [firebaseLoading])
+  }, [firebaseLoading]);
+
+  useEffect(() => {
+    if(firebaseError != undefined){
+      alert('Bei der Verbindung zu Server ist eine Fehler aufgetreten!');
+    }
+  }, [firebaseError]);
 
   return (
     <>
@@ -111,6 +114,8 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
               </>
             ) : (<></>)}
           </View>
+          {/* Bottom-Spacer */}
+          <View style={{marginBottom:'20%'}}></View>
         </ScrollView>
       </View>
 

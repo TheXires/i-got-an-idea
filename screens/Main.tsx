@@ -79,11 +79,13 @@ const Main = ({ navigation }: { navigation: any }) => {
             // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
             // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
           />
-        ) : (<></>)}
+        ) : (<>
+        <CustomSpinner />
+        </>)}
 
 
 
-        <FloatingActionButton navigation={navigation} />
+        <FloatingActionButton navigation={navigation} next='CreateIdea' icon={<Ionicons name="ios-add" size={40} color={Color.FONT1} style={{ height: 42, width: 38 }} />} />
 
       </View>
     </SafeAreaView>

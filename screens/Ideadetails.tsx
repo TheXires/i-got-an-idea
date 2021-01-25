@@ -11,6 +11,8 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {Ionicons} from '@expo/vector-icons';
 import {pinIdeaToChats} from '../services/database';
+import FloatingActionButton from '../components/FloatingActionButton';
+
 // implements the detail view for an idea sreached by a given id
 const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
   const {ideas}: {ideas: IdeaType[]} = useContext<any>(IdeaContext);
@@ -50,10 +52,7 @@ const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
               </View>
             </ScrollView>
           </>
-        ) : (
-            <>
-            </>
-          )}
+        ) : (<></>)}
 
 
         {/* shows images the user uploaded to the idea, if there are no images it shows nothing instead */}
@@ -73,11 +72,12 @@ const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
         {/* Author */}
         <Text style={styles.h2}>Idee von</Text>
         <User userID={idea!.authorID} navigation={navigation} />
+        {/* Bottom-Spacer */}
+        <View style={{marginBottom:'20%'}}></View>
       </ScrollView>
-      <TouchableOpacity style={styles.chatButton} onPress={() => {navigation.navigate('Chat'); pinIdeaToChats(idea);}}>
-        <Ionicons name="md-chatbox-ellipses" size={24} style={{color: Color.BACKGROUND}} />
-        <Text style={{color: Color.BACKGROUND, marginLeft: 10}}>Chat starten</Text>
-      </TouchableOpacity>
+      
+      {/* pin Idea to chats */}
+      <FloatingActionButton navigation={navigation} next='Chat' icon={<Ionicons name="chatbubbles-sharp" size={35} color={Color.FONT1} style={{ height: 37, width: 35 }} />} />
     </View>
   )
 }
