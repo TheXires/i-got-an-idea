@@ -58,7 +58,6 @@ const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
 
 
         {/* shows images the user uploaded to the idea, if there are no images it shows nothing instead */}
-        {/* TODO: Bilder in groß anzeigen, wenn drauf geklickt wird */}
         {idea.imageURLs !== undefined && idea!.imageURLs.length > 0 ? (
           <>
             <Text style={styles.h2}>Bilder</Text>

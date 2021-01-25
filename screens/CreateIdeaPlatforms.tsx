@@ -18,7 +18,6 @@ const CreateIdeaPlatforms = ({navigation}: {navigation: any}) => {
   return (
     <>
       <View style={styles.container}>
-        {/* TODO: Fortschrittsanzeige noch hinzufügen */}
         <Text style={{ color: Color.FONT3, marginBottom: 10 }}>
           Bitte w&auml;hle die Plattformen aus, f&uuml;r die die Idee umgesetzt werden soll.
         </Text>

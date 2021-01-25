@@ -82,7 +82,6 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
             </View>
 
 
-            {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
             <Text style={styles.h1}>Beschreibung</Text>
             <TextInput
               multiline={true}
@@ -92,7 +91,6 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
               placeholder='Erz&auml;hle etwas &uuml;ber dich...'
             />
 
-            {/* TODO: Prüfung hinzufügen, dass valide Tags hinzugefügt wurden (z.B. min 3 Zeichen) */}
             <Text style={styles.h1}>Skill</Text>
             <View style={styles.row}>
               <TextInput
@@ -122,11 +120,21 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
         </ScrollView>
       </View>
 
+      {/* TODO: Prüfen ob hier Profil richtig erstellt wird */}
       {/* Navigation Buttons */}
       <View style={[styles.navigationbackground, {justifyContent: 'flex-end'}]}>
         {/* next */}
         <TouchableOpacity 
           style={[styles.button]} 
+          onPress={() => {
+            newUser.id != '' ? (
+              createProfileData(newUser),
+              AsyncStorage.setItem('firstLogin', 'false'),
+              navigation.navigate('Main')
+            ) : (
+              navigation.navigate('Main')
+            )
+          }}
         >
           <Text style={{ color: Color.FONT1 }}>Weiter</Text>
         </TouchableOpacity>

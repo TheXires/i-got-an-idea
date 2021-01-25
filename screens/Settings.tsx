@@ -9,7 +9,6 @@ const Settings = ({ navigation }: { navigation: any }) => {
     <View style={styles.container}>
       <ScrollView>
         <View>
-          {/* TODO: Einstellungsmöglichkeiten hier einfügen */}
           {/* TODO: Local Cache löschen */}
         </View>
       </ScrollView>

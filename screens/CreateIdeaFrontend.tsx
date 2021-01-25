@@ -19,9 +19,9 @@ const CreateIdeaFrontend = ({ navigation }: { navigation: any }) => {
   return (
     <>
       <View style={styles.container}>
-        {/* TODO: Fortschrittsanzeige noch hinzufügen */}
         <MaterialCommunityIcons name="monitor-clean" size={120} color={Color.FONT2} style={{ marginBottom: 50, marginTop: 150}} />
         <Text style={{ color: Color.FONT3 }}>
+          {/* TODO: hier muss noch der richtige Text eingefügt werden ... */}
           Hier muss noch der richtige Text eingef&uuml;gt werden ...
         </Text>
 

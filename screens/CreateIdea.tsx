@@ -17,6 +17,7 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
   
   useEffect(() => {
     navigation.addListener('beforeRemove', (e: any) => {
+      // TODO: funktioniert soweit, wenn man false einträgt. Aber duch 'finished' fehlen daten zum erstellen der Idee. Hier muss die Asynchronität nochmal überprüft werden
       if(!finished){
       // if(false){
         // Prevent default behavior of leaving the screen
@@ -61,7 +62,6 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
       <View style={styles.container}>
         <ScrollView>
           <Text style={styles.h1}>Name der Idee</Text>
-          {/* TODO: Prüfung hinzufügen, dass ein valider Name hinzugefügt wurde */}
           <TextInput
             style={styles.textInput}
             onChangeText={text => newIdea.name(text.trim())}
@@ -70,7 +70,6 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
           />
 
           <Text style={styles.h1}>Beschreibung</Text>
-          {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
           <TextInput
             multiline={true}
             style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}
