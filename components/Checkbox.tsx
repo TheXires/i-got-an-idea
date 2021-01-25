@@ -3,6 +3,10 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Color } from '../customTypes/colors';
 
+/**
+ * Custom checkboy type.
+ * The param current means which index the tag in the enum has the current button is referring to
+ */
 const Checkbox = ({selected, setSelected, current, name}: {selected: boolean[], setSelected: any, current: number, name: string}) => {
   return (
     <TouchableOpacity 

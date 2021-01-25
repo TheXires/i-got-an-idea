@@ -4,6 +4,10 @@ import { createIdea } from '../services/database';
 
 export const ideaCreationContext = createContext({});
 
+/**
+ * Context to store the different values which occur during the idea creation process
+ * across different components
+ */
 const IdeaCreationProvider = (props: any) => {
   const [newIdea, setNewIdea] = useState(new IdeaFactory);
   const [completed, setCompleted] = useState(false);

@@ -58,6 +58,23 @@ async function updateProfileData(user: ProfileData) {
 }
 
 /**
+ * Updates the profile data to add the user to the blocked list
+ * 
+ * Unimplemented for time reasons
+ * 
+ * @param user User to block
+ */
+// async function blockUser(user: ProfileData) {
+//     try {
+//         return await fs.collection('profileData').doc(getUID()).withConverter(profileDataConverter).update({
+//             blockedUsers: firebase.firestore.FieldValue.arrayUnion({user})
+//         });
+//     } catch (error) {
+//         alert("Error while updating profile data. Make sure to call on existing profile!" + JSON.stringify(error));
+//     }
+// }
+
+/**
  * Fetches the profile data. Does'nt include ideas the user created.
  * The current users ID can be retrieved by auth.js -> getUID()
  * 
@@ -114,7 +131,7 @@ function getUserIdeas(userID: string) {
 function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined, limit = 20) {
 
 
-    if (filters.length > 10) {
+    if (filters.length > 10) {//this is a limitation from firestore
         alert('Searching with more than 10 tags at a time is not possible!');
         throw 'Searching with more than 10 tags at a time is not possible!';
     }
@@ -148,6 +165,7 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
                 .limit(limit)
                 .withConverter(ideaConverter);
         }
+
         //for exact search if needed any time:
         // return fs.collection('ideas')
         //     .
@@ -317,7 +335,8 @@ export {
     getUserIdeas, getIdeas, createIdea, updateIdea,
     sendChatMessage,
     pinIdeaToChats, unpinIdeaFromChats,
-    getIdeaByID
+    getIdeaByID,
+    // blockUser
     // createIdeaFaker
 }
 
@@ -335,10 +354,10 @@ const profileDataConverter = {
         }
         if (data.ideaChatsPinned.length == 0) {
             console.log('Deleting');
-            
+
             delete (data as any).ideaChatsPinned;
         }
-        
+
         return data;
     },
 

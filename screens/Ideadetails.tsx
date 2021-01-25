@@ -13,7 +13,9 @@ import {Ionicons} from '@expo/vector-icons';
 import {pinIdeaToChats} from '../services/database';
 import FloatingActionButton from '../components/FloatingActionButton';
 
-// implements the detail view for an idea sreached by a given id
+/**
+ * Implements the detail view for an idea sreached by a given id
+ */
 const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
   const {ideas}: {ideas: IdeaType[]} = useContext<any>(IdeaContext);
   const [idea, setIdea] = useState<IdeaType>();

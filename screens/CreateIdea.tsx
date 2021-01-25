@@ -6,6 +6,9 @@ import { ideaCreationContext } from '../contexts/ideaCreationContext';
 import { IdeaFactory } from '../customTypes/ideaFactory';
 import CustomImage from '../components/CustomImage';
 
+/**
+ * Initial page of the idea cration process
+ */
 const CreateIdea = ({ navigation }: { navigation: any }) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const {finished, setFinished}: {finished: boolean, setFinished: any} = useContext<any>(ideaCreationContext)

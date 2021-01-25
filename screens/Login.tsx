@@ -21,7 +21,7 @@ function login({navigation}: {navigation: any}) {
             <Loginbutton provider={'Google'} />
           </View>
 
-          {/* Fotercomponent */}
+          {/* Footercomponent */}
           <Footer navigation={navigation} />
         </ImageBackground>
       </View>

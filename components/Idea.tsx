@@ -6,6 +6,10 @@ import { Tag } from '../customTypes/tags';
 import { IdeaType } from '../customTypes/ideaType';
 import { FlatList } from 'react-native-gesture-handler';
 
+/**
+ * An idea component which can display one idea with a brief overview
+ * 
+ */
 const Idea = ({ navigation, idea }: { navigation: any, idea: IdeaType }) => {
 
   // TouchableOpacitys are around the Image as well as the name and description, but not around

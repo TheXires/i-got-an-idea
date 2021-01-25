@@ -13,6 +13,9 @@ import {useDocumentData} from 'react-firebase-hooks/firestore';
 import {getUID} from '../services/auth';
 import {ProfileData} from '../customTypes/profileData';
 
+/**
+ * Shows a chat in detail and allows to send messages to it
+ */
 const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
     const [user, loading, error] = useAuthState(firebase.auth());
     const {chats}: {chats: Chat[]} = useContext<any>(ChatContext);
@@ -33,7 +36,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
     }, [chats])
 
 
-    return (//TODO: Chat Senden Leiste nach unten sticken
+    return (
         <View style={{height: '100%'}}>
             <ScrollView
                 style={styles.container}
@@ -50,13 +53,12 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
                                             <Text style={styles.ownMessage}>{message.content}</Text>
                                             :
                                             <View style={styles.foreignMessage}>
-                                                {/* <Text>{JSON.stringify(message)}</Text> */}
                                                 <Text style={styles.authorName}>{message.authorName}</Text>
                                                 <Text>{message.content}</Text>
                                             </View>
                                         }
                                     </View>
-                                    ://TODO: Blocked user überprüfen
+                                    :
                                     <></>
                             )
                         }) :
@@ -129,8 +131,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 15,
-        // position: 'absolute',
-        // bottom: 0
     },
     textInput: {
         width: '90%',

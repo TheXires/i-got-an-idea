@@ -11,16 +11,18 @@ import {chatMessageConverter, getProfileData} from '../services/database';
 
 const fs = firebase.firestore();
 
-// AsyncStorage.clear();
-
 export const ChatContext = createContext({});
 
+/**
+ * This context provides the children with an object containing all chats structured by the given interfaces.
+ * This doesn't correspond 1:1 with the database structure
+ */
 const ChatProvider = (props: any) => {
   const [user, loading, error] = useAuthState(firebase.auth());
-  const [pinnedIdeas, setPinnedIdeas] = useState<PinnedChat[]>()
+  const [pinnedIdeas, setPinnedIdeas] = useState<PinnedChat[]>()//chats the user has pinned and therefore should be displayed
   const [localChats, setLocalChats] = useState<Chat[]>();//chats for saving local stored chat protocols, serves as base for normal chats
-  const [chats, setChats] = useState<Chat[]>();
-  const [unsubs, setUnsubs] = useState<any[]>([]);
+  const [chats, setChats] = useState<Chat[]>();//the actual chats object
+  const [unsubs, setUnsubs] = useState<any[]>([]);//database listener unsub methods for preventing memory leaks
 
   //for creating fake data
   // useEffect(() => {
@@ -30,6 +32,7 @@ const ChatProvider = (props: any) => {
   // }, [])
 
 
+  //fetching the ideas the user has pinned
   useEffect(() => {
     if (user == undefined || loading) {
       return;
@@ -42,6 +45,7 @@ const ChatProvider = (props: any) => {
     });
   }, [user, loading])
 
+  //prepearing the chats the user has pinned, adding locally saved messages
   useEffect(() => {
     const call = async () => {
       //iterate all pinned chats
@@ -77,6 +81,7 @@ const ChatProvider = (props: any) => {
     call();
   }, [pinnedIdeas])
 
+  //activating listeners according to all chats the user has pinned, depending on locally saved data
   useEffect(() => {
     if (localChats == undefined || pinnedIdeas == undefined || pinnedIdeas.length > localChats.length) {
       return;
@@ -124,6 +129,11 @@ const ChatProvider = (props: any) => {
   )
 }
 
+/**
+ * Gets the last recieved timestamp or now as default
+ * 
+ * @param messages the chats messages array
+ */
 function getTimestampOrDefault(messages: ChatMessage[]) {
   return messages[messages.length - 1] != undefined ? messages[messages.length - 1].timestamp : firebase.firestore.Timestamp.now();
 }

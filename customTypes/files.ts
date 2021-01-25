@@ -1,3 +1,5 @@
+//declaring file types as TS modules
+
 declare module "*.png" {
     const value: any;
     export default value;

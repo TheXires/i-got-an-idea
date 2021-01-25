@@ -3,6 +3,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Color } from '../customTypes/colors';
 
+/**
+ * A button with aboulute position used in various screens
+ * 
+ */
 const FloatingActionButton = ({navigation, next, icon}: {navigation: any, next: string, icon: any}) => {
   return (
     <TouchableOpacity onPress={() => navigation.navigate(next)} style={styles.container}>

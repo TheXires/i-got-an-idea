@@ -7,6 +7,9 @@ import { ProfileData } from '../customTypes/profileData';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
 import CustomSpinner from './CustomSpinner';
 
+/**
+ * A small component to list user profiles
+ */
 const User = ({ navigation, userID }: { navigation: any, userID: string }) => {
   const [user, loading, error] = useDocumentData<ProfileData>(getProfileData(userID));
 

@@ -6,23 +6,19 @@ import {Chat as ChatType} from '../customTypes/chat';
 import CustomSpinner from '../components/CustomSpinner';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
+/**
+ * Screen for chat overview
+ */
 const Chat = ({navigation}: {navigation: any}) => {
   const {chats, chatAmount}: {chats: ChatType[], chatAmount: number} = useContext<any>(ChatContext);
-
-  // useEffect(() => {
-  //   console.log(chats);
-    
-  // }, [chats])
 
   return (
 
     <View style={styles.container}>
       {chatAmount > 0 ?
         <View>
-          {/* {console.log('\n')} */}
           {chats !== undefined ? (
             chats.map(chat => {
-              // console.log('rendering');
               return (
                 <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: chat.pinnedIdea.ideaID})} key={chat.pinnedIdea.ideaID} style={styles.chatBox}>
                   <Image source={{uri: chat.pinnedIdea.pictureURL}} style={styles.image} />

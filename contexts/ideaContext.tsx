@@ -7,17 +7,17 @@ import {getIdeas} from "../services/database";
 
 export const IdeaContext = createContext({});
 
+/**
+ * Context for caching ideas which were fetched from the DB
+ */
 const IdeaProvider = (props: any) => {
   const [user, loading, error] = useAuthState(firebase.auth());
-  const [ideas, setIdeas] = useState<IdeaType[]>();
-  const [oldestComesLast, setOldestComesLast] = useState(true);
-  const [filters, setFilters] = useState<Tag[]>();
-  const [lastQueriedSnapshot, setLastQueriedSnapshot] = useState<firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined>(undefined);
-  const [limitReached, setLimitReached] = useState(false);
+  const [ideas, setIdeas] = useState<IdeaType[]>();//ideas in an array
+  const [oldestComesLast, setOldestComesLast] = useState(true);//sorting direction
+  const [filters, setFilters] = useState<Tag[]>();//filters to apply
+  const [lastQueriedSnapshot, setLastQueriedSnapshot] = useState<firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined>(undefined);//for pagination
+  const [limitReached, setLimitReached] = useState(false);//tells if the last item available was fetched from the DB
 
-
-
-  // Initial load
   useEffect(() => {
     if (user == undefined || user == null || loading) {
       return;
@@ -28,11 +28,12 @@ const IdeaProvider = (props: any) => {
 
     getIdeas(oldestComesLast, filters, undefined).get().then(snap => {
       var ret: IdeaType[] = [];
+      setLimitReached(false);
       snap.forEach(idea => {
         ret.push(idea.data());
         setLastQueriedSnapshot(idea);
       });
-      if (ret != undefined && ret.length > 0) {
+      if (ret != undefined) {
         setIdeas(ret);
       } else {
         setLimitReached(true);
@@ -41,32 +42,28 @@ const IdeaProvider = (props: any) => {
   }, [oldestComesLast, filters, user, loading]);
 
 
-  // pagination load
+  /**
+   * Load more entries with pagination
+   */
   const loadMoreEntries = () => {
-    if (loading == false && user == null) {
+    if (loading == false && user == null && !limitReached) {
       return;
     }
 
     getIdeas(oldestComesLast, filters, lastQueriedSnapshot).get().then(snap => {
       var ret: IdeaType[] = [];
+      setLimitReached(false);
       snap.forEach(idea => {
         ret.push(idea.data());
         setLastQueriedSnapshot(idea);
       });
-      if (ret != undefined && ret.length > 0 && ideas != undefined) {
+      if (ret != undefined && ideas != undefined) {
         setIdeas(ideas.concat(ret));
       } else {
         setLimitReached(true);
       }
     });
   }
-
-
-  // const fetchIdeasOnce = async () => {
-  //   const data = await getIdeas(oldestComesLast, filters).get();
-  //   const ideas = data.docs.map(doc => doc.data());
-  //   setIdeas(ideas);
-  // }
 
   return (
     <IdeaContext.Provider value={{

@@ -10,6 +10,9 @@ import {getProfileData} from '../services/database';
 import {ProfileData} from '../customTypes/profileData';
 import CustomSpinner from '../components/CustomSpinner';
 
+/**
+ * Screen to show user profiles
+ */
 const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
   const [userID, setUserID] = useState('');
   const [user, userLoading, userError] = useDocumentData<ProfileData>(getProfileData(route.params.id));

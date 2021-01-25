@@ -11,6 +11,9 @@ import { Ionicons } from '@expo/vector-icons';
 import update from 'immutability-helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+/**
+ * Screen to edit profile information
+ */
 const ProfileEdit = ({ navigation }: { navigation: any }) => {
   const [firebaseUser, firebaseLoading, firebaseError] = useAuthState(firebase.auth());
   const [newUser, setNewUser] = useState<ProfileData>({

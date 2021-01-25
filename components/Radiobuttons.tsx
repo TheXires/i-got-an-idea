@@ -3,6 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Color } from '../customTypes/colors';
 
+/**
+ * A custom radio button component
+ */
 const Radiobuttons = ({selected, setSelected}: {selected: boolean[], setSelected: any}) => {
   return (
     <View style={styles.selectionContainer}>

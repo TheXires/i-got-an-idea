@@ -3,6 +3,9 @@ import { StyleSheet, View, Image } from 'react-native';
 import CustomSpinner from '../components/CustomSpinner';
 import { Color } from '../customTypes/colors';
 
+/**
+ * loading/splashscreen
+ */
 const SplashScreen = () => {
   return (
     <View style={styles.container}>

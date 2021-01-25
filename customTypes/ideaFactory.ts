@@ -2,6 +2,10 @@ import firebase from 'firebase/app';
 import {getUID} from '../services/auth';
 import {IdeaType} from './ideaType';
 import {Tag} from './tags';
+
+/**
+ * Helper class to build a new idea
+ */
 export class IdeaFactory {
     private _authorID?: string;
     private _creationTimestamp?: firebase.firestore.Timestamp;
