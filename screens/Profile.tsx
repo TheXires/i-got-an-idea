@@ -24,6 +24,7 @@ const Profile = ({ route, navigation }: { route: any, navigation: any }) => {
   }, [user])
 
   return (
+    // TODO: floating action button, um nutzer zu blockieren, wenn eigenes Profil dann profilbearbeiten Button
       <ScrollView style={styles.container}>
         {(userLoading === false && user !== undefined) ? (
           <>

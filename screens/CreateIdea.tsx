@@ -58,7 +58,6 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
       <View style={styles.container}>
         <ScrollView>
           <Text style={styles.h1}>Name der Idee</Text>
-          {/* TODO: Prüfung hinzufügen, dass ein valider Name hinzugefügt wurde */}
           <TextInput
             style={styles.textInput}
             onChangeText={text => newIdea.name(text.trim())}
@@ -67,7 +66,6 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
           />
 
           <Text style={styles.h1}>Beschreibung</Text>
-          {/* TODO: Prüfung hinzufügen, dass eine valide Beschreibung hinzugefügt wurde (z.B. min 5 Wörter) */}
           <TextInput
             multiline={true}
             style={[styles.textInput, { height: 250, textAlignVertical: "top"}]}

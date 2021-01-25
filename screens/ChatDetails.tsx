@@ -33,7 +33,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
     }, [chats])
 
 
-    return (//TODO: Chat Senden Leiste nach unten sticken
+    return (
         <View style={{height: '100%'}}>
             <ScrollView
                 style={styles.container}
