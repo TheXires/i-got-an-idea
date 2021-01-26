@@ -18,51 +18,51 @@ const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
   return (
     <>
       <View style={styles.container}>
-        <FontAwesome5 name="server" size={120} color={Color.FONT2} style={{marginBottom: 50, marginTop: 150}} />
+        <FontAwesome5 name="server" size={120} color={Color.FONT2} />
         <Text style={styles.textParagraph}>
           Wird zur Umsetzung der Idee ein Server benötigt?
 
           Dies ist z.B. der Fall, wenn mindestens einer der Folgenden Punke erfüllt wird:
         </Text>
         <Text style={styles.textParagraph}>
-        - Kommunikation zwischen mehreren Geräten
+          - Kommunikation zwischen mehreren Geräten
         </Text>
         <Text style={styles.textParagraph}>
-        - Geräteübergreifende Datenspeicherung
+          - Geräteübergreifende Datenspeicherung
         </Text>
         <Text style={styles.textParagraph}>
-        - Datensynchronisation
+          - Datensynchronisation
         </Text>
         <Text style={styles.textParagraph}>
-        - Kooperatives Zusammenarbeiten
+          - Kooperatives Zusammenarbeiten
         </Text>
         <Text style={styles.textParagraph}>
-        - Verarbeitung von Daten aus mehreren Quellen
+          - Verarbeitung von Daten aus mehreren Quellen
         </Text>
 
-      {/* Row with radiobuttons */}
-      <Radiobuttons selected={selected} setSelected={setSelected} />
-    </View>
+        {/* Row with radiobuttons */}
+        <Radiobuttons selected={selected} setSelected={setSelected} />
+      </View>
 
       {/* Navigation Buttons */}
-  <View style={styles.navigationbackground}>
-    {/* previous */}
-    <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-      <Text style={{color: Color.FONT1}}>Zur&uuml;ck</Text>
-    </TouchableOpacity>
+      <View style={styles.navigationbackground}>
+        {/* previous */}
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+          <Text style={{color: Color.FONT1}}>Zur&uuml;ck</Text>
+        </TouchableOpacity>
 
-    {/* next */}
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => {
-        // adds or delets the current tag 
-        selected[0] ? newIdea.addTags([Tag.BACKEND]) : newIdea.tags(newIdea.getTags()!.filter((tag) => tag !== Tag.BACKEND))
-        navigation.navigate('CreateIdeaData');
-      }}
-    >
-      <Text style={{color: Color.FONT1}}>Weiter</Text>
-    </TouchableOpacity>
-  </View>
+        {/* next */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            // adds or delets the current tag 
+            selected[0] ? newIdea.addTags([Tag.BACKEND]) : newIdea.tags(newIdea.getTags()!.filter((tag) => tag !== Tag.BACKEND))
+            navigation.navigate('CreateIdeaData');
+          }}
+        >
+          <Text style={{color: Color.FONT1}}>Weiter</Text>
+        </TouchableOpacity>
+      </View>
     </>
   )
 }
@@ -71,10 +71,10 @@ const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 57,
-    padding: 15
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   selectionContainer: {
     marginTop: 30,
