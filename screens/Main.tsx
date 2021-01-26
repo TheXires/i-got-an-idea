@@ -63,7 +63,7 @@ const Main = ({navigation}: {navigation: any}) => {
           <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
-
+      {/*TODO: Prototyp kopieren */}
       {/* Body */}
       <View style={styles.body}>
         {showFilter ?
@@ -143,8 +143,7 @@ const Main = ({navigation}: {navigation: any}) => {
     const tags: Tag[] = [];
     filters.forEach((filterActive, index) => {
       if (filterActive) {
-        const t = Object.keys(Tag)[index];
-        tags.push(Tag[t]);
+        tags.push(index);
       }
     })
     setContextFilters(tags)
