@@ -153,12 +153,13 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
     } else {
         if (offset != undefined) {
             return fs.collection('ideas')
-                .where('tags', 'array-contains-any', filters)
-                .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
-                .startAfter(offset)
-                .limit(limit)
-                .withConverter(ideaConverter);
+            .where('tags', 'array-contains-any', filters)
+            .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
+            .startAfter(offset)
+            .limit(limit)
+            .withConverter(ideaConverter);
         } else {
+            console.log(filters);
             return fs.collection('ideas')
                 .where('tags', 'array-contains-any', filters)
                 .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')

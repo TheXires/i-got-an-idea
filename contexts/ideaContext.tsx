@@ -18,6 +18,7 @@ const IdeaProvider = (props: any) => {
   const [lastQueriedSnapshot, setLastQueriedSnapshot] = useState<firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined>(undefined);//for pagination
   const [limitReached, setLimitReached] = useState(false);//tells if the last item available was fetched from the DB
 
+
   useEffect(() => {
     if (user == undefined || user == null || loading) {
       return;
