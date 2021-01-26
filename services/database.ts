@@ -155,11 +155,11 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
     } else {
         if (offset != undefined) {
             return fs.collection('ideas')
-            .where('tags', 'array-contains-any', filters)
-            .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
-            .startAfter(offset)
-            .limit(limit)
-            .withConverter(ideaConverter);
+                .where('tags', 'array-contains-any', filters)
+                .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
+                .startAfter(offset)
+                .limit(limit)
+                .withConverter(ideaConverter);
         } else {
             console.log(filters);
             return fs.collection('ideas')
@@ -272,12 +272,12 @@ async function updateIdea(idea: IdeaType) {
  * 
  * @param id The ID to query for
  */
-async function getIdeaByID(id: string) {
+function getIdeaByID(id: string) {
     if (id == undefined) {
         throw 'The idea ID can\'t be undefined: ' + id;
     }
     try {
-        return await fs.collection('ideas').doc(id).withConverter(ideaConverter);
+        return fs.collection('ideas').doc(id).withConverter(ideaConverter);
     } catch (error) {
         alert("Error while updating a idea." + JSON.stringify(error));
     }

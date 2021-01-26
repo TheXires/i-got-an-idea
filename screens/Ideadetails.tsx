@@ -10,7 +10,7 @@ import {IdeaType} from '../customTypes/ideaType';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {Ionicons} from '@expo/vector-icons';
-import {pinIdeaToChats} from '../services/database';
+import {getIdeaByID, pinIdeaToChats} from '../services/database';
 import FloatingActionButton from '../components/FloatingActionButton';
 
 /**
@@ -21,15 +21,26 @@ const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
   const [idea, setIdea] = useState<IdeaType>();
 
   useEffect(() => {
-    // TODO: hier muss die Datenbank Abfrage hin, um die Idee zu landen, wenn sie nicht im Context ist
-    if (ideas !== undefined) {
-      let currentIdea = ideas.find((idea) => idea.id === route.params.id);
-      // currentIdea ? (setIdea(currentIdea)) : (setIdea(/* in firebase direkt nach der ideeID suchen */)) 
-      setIdea(ideas.find((idea) => idea.id === route.params.id));
-    } else {
-
-    }
+    call();
   }, [ideas])
+
+  useEffect(() => {
+    call();
+  }, [route.params.id])
+
+  async function call() {
+    if (ideas != undefined) {
+      let currentIdea = ideas.find((idea) => idea.id === route.params.id);
+      if (currentIdea != undefined) {
+        setIdea(currentIdea)
+      } else {
+        const fetchedIdea = (await getIdeaByID(route.params.id)?.get())?.data()
+        if (fetchedIdea != undefined) {
+          setIdea(fetchedIdea)
+        }
+      }
+    }
+  }
 
   if (idea === undefined) {
     return <View><Text>Loading...</Text></View>
