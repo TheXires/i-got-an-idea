@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ideaCreationContext } from '../contexts/ideaCreationContext';
 import { IdeaFactory } from '../customTypes/ideaFactory';
 import CustomImage from '../components/CustomImage';
+import BottomNavigation from '../components/BottomNavigation';
 
 /**
  * Initial page of the idea cration process
@@ -14,6 +15,9 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
   const { setDiscard }: { setDiscard: any } = useContext<any>(ideaCreationContext);
   const { getFinished, setFinished }: { getFinished: any, setFinished: any } = useContext<any>(ideaCreationContext);
   const [reload, setReload] = useState(false);
+
+  console.log('CreateIdea: ', newIdea);
+  
 
   useEffect(() => {
     navigation.addListener('beforeRemove', (e: any) => {
@@ -95,17 +99,16 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
         </ScrollView>
       </View>
 
-
       {/* Navigation Buttons */}
-      <View style={[styles.navigationbackground, {justifyContent: 'flex-end'}]}>
-        {/* next */}
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={() => navigation.navigate('CreateIdeaFrontend')}
-        >
-          <Text style={{ color: Color.FONT1 }}>Weiter</Text>
-        </TouchableOpacity>
-      </View>
+      <BottomNavigation
+        navigation={navigation}
+        buttonLeft={false} 
+        buttonTextLeft=''
+        buttonFunctionLeft={() => null}
+        buttonTextRight='Weiter'
+        buttonFunctionRight={() => navigation.navigate('CreateIdeaFrontend')}
+      />
+      
     </>
   )
 }
@@ -151,26 +154,19 @@ const styles = StyleSheet.create({
   addImageText: {
     marginTop: 20,
     color: Color.FONT3
-  },
-  navigationbackground: {
-    width: '100%',
-    height: '10%',
-    backgroundColor: Color.BACKGROUND,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    position: 'absolute',
-    bottom: 0,
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    backgroundColor: Color.ACCENT,
-    borderRadius: 50,
   }
 })
 
 export default CreateIdea;
+
+
+// {/* Navigation Buttons */}
+// <View style={[styles.navigationbackground, {justifyContent: 'flex-end'}]}>
+// {/* next */}
+// <TouchableOpacity 
+//   style={styles.button}
+//   onPress={() => navigation.navigate('CreateIdeaFrontend')}
+// >
+//   <Text style={{ color: Color.FONT1 }}>Weiter</Text>
+// </TouchableOpacity>
+// </View>

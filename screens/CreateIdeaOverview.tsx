@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import BottomNavigation from '../components/BottomNavigation';
 import CustomImage from '../components/CustomImage';
 import { ideaCreationContext } from '../contexts/ideaCreationContext';
 import { Color } from '../customTypes/colors'
@@ -10,6 +11,8 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const { completed }: { completed: any } = useContext<any>(ideaCreationContext);
   
+  console.log('CreateIdeaOverview: ', newIdea);
+
   return (
     <>
       <View style={styles.container}>
@@ -54,23 +57,17 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
       </View>
 
       {/* Navigation Buttons */}
-      <View style={[styles.navigationbackground, {justifyContent: 'flex-end'}]}>
-        {/* previous */}
-        {/* <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-          <Text style={{ color: Color.FONT1 }}>Zur&uuml;ck</Text>
-        </TouchableOpacity> */}
-        
-        {/* next */}
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={() => {
-            completed();
-            navigation.navigate('Main');
-          }}
-        >
-          <Text style={{ color: Color.FONT1 }}>Idee erstellen</Text>
-        </TouchableOpacity>
-      </View>
+      <BottomNavigation 
+        navigation={navigation}
+        buttonLeft={true}
+        buttonTextLeft='Zur&uuml;ck'
+        buttonFunctionLeft={() => navigation.goBack()}
+        buttonTextRight='Idee erstellen'
+        buttonFunctionRight={() => {
+          completed();
+          navigation.navigate('Main');
+        }}
+      />
     </>
   )
 }
@@ -79,8 +76,6 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingBottom: 50,
-    // marginBottom: '20%',
   },
   innerContainer: {
     paddingHorizontal: 15,
@@ -120,25 +115,6 @@ const styles = StyleSheet.create({
     paddingVertical: '8%',
     overflow: 'hidden',
     color: Color.ACCENT
-  },
-  navigationbackground: {
-    width: '100%',
-    height: '10%',
-    // backgroundColor: Color.BACKGROUND,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    position: 'absolute',
-    bottom: 0,
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    backgroundColor: Color.ACCENT,
-    borderRadius: 50,
   }
 })
 
