@@ -8,10 +8,7 @@ import { Tag } from '../customTypes/tags';
 
 const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
-  const { setCompleted }: { setCompleted: any } = useContext<any>(ideaCreationContext);
-  const { setFinished }: {setFinished: any} = useContext<any>(ideaCreationContext);
-
-  console.log(newIdea);
+  const { completed }: { completed: any } = useContext<any>(ideaCreationContext);
   
   return (
     <>
@@ -26,7 +23,6 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
           {/* shows tags the added to the idea, if there are no tags it shows nothing instead */}
           {newIdea.getTags() !== undefined && newIdea.getTags()!.length > 0 ? (
             <>
-            {console.log('called')}
               <Text style={styles.h2}>Tags</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} >
                 <View style={styles.tagContainer}>
@@ -68,8 +64,7 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
         <TouchableOpacity 
           style={styles.button}
           onPress={() => {
-            setCompleted(true);
-            setFinished(true);
+            completed();
             navigation.navigate('Main');
           }}
         >

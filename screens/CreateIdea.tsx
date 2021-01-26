@@ -11,15 +11,13 @@ import CustomImage from '../components/CustomImage';
  */
 const CreateIdea = ({ navigation }: { navigation: any }) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
-  const {finished, setFinished}: {finished: boolean, setFinished: any} = useContext<any>(ideaCreationContext)
   const { setDiscard }: { setDiscard: any } = useContext<any>(ideaCreationContext);
+  const { getFinished, setFinished }: { getFinished: any, setFinished: any } = useContext<any>(ideaCreationContext);
   const [reload, setReload] = useState(false);
-  
+
   useEffect(() => {
     navigation.addListener('beforeRemove', (e: any) => {
-      // TODO: funktioniert soweit, wenn man false einträgt. Aber duch 'finished' fehlen daten zum erstellen der Idee. Hier muss die Asynchronität nochmal überprüft werden
-      if(!finished){
-      // if(false){
+      if(!getFinished()){
         // Prevent default behavior of leaving the screen
         e.preventDefault();
   
@@ -36,16 +34,13 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
               // This will continue the action that had triggered the removal of the screen
               onPress: () => {
                 setDiscard(true);
-                console.log('test1');
-                
-                setFinished(false);
-                console.log('test2');
-                
                 navigation.dispatch(e.data.action)
               },
             },
           ]
         );
+      }else{
+        setFinished(false);
       }
     })
   }, [navigation]);

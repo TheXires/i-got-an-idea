@@ -61,7 +61,7 @@ export default function App() {
     async function getUserExists(){
       try {
         let localLoginState = await AsyncStorage.getItem('firstLogin');
-        console.log(localLoginState);
+        // console.log(localLoginState);
         
         setFirstLogin(localLoginState != undefined && localLoginState === 'false' ? (false) : (true));
       } catch (error) {

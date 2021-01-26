@@ -353,7 +353,7 @@ const profileDataConverter = {
             delete data.id;
         }
         if (data.ideaChatsPinned.length == 0) {
-            console.log('Deleting');
+            // console.log('Deleting');
 
             delete (data as any).ideaChatsPinned;
         }
