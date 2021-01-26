@@ -21,9 +21,9 @@ const CreateIdeaData = ({ navigation }: { navigation: any }) => {
   return (
     <>
       <View style={styles.container}>
-        <FontAwesome name="table" size={120} color={Color.FONT2} style={{ marginBottom: 50, marginTop: 150 }} />
+        <FontAwesome name="table" size={120} color={Color.FONT2} style={{ marginBottom: 50 }} />
         <Text style={{ color: Color.FONT3 }}>
-          Wird zur Umsetzung der Idee die Speicherung, Sortierung oder Aufarbeitung von Daten benötigt?
+          Wird zur Umsetzung der Idee die Speicherung, Sortierung oder Aufarbeitung von Daten ben&ouml;tigt?
         </Text>
         
         {/* Row with radiobuttons */}
@@ -51,9 +51,9 @@ const CreateIdeaData = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
+    height: '100%',
+    marginTop: '10%',
     alignItems: 'center',
-    paddingHorizontal: 57,
     padding: 15
   }
 })

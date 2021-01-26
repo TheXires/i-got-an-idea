@@ -32,7 +32,7 @@ const Main = ({navigation}: {navigation: any}) => {
   const [filters, setFilters] = useState([false, false, false, false, false, false, false, false, false, false]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar />
 
       {/* Header */}
@@ -41,8 +41,7 @@ const Main = ({navigation}: {navigation: any}) => {
           <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" onPress={
             () => {
               setShowFilter(!showFilter);
-            }
-          } />
+          }} />
           {oldestComesLast ? (
             <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(false)}} name="sort-alpha-asc" size={24} color="black" />
           ) : (
@@ -60,7 +59,7 @@ const Main = ({navigation}: {navigation: any}) => {
       {/*TODO: Balsamiq Prototyp kopieren */}
       {/* Body */}
       <View style={styles.body}>
-        {showFilter ?
+        {showFilter ? (
           <View style={styles.filterBox}>
             <View style={styles.filterContainer}>
               <View style={styles.filterColumn}>
@@ -103,7 +102,7 @@ const Main = ({navigation}: {navigation: any}) => {
               </View>
             }
           </View>
-          :
+        ) : (
           <></>
         }
         {contextLoading ? <CustomSpinner /> : <></>}
@@ -113,6 +112,7 @@ const Main = ({navigation}: {navigation: any}) => {
               data={ideas}
               keyExtractor={idea => idea.id!}
               renderItem={(idea) => (
+                // show one idea
                 <Idea
                   navigation={navigation}
                   key={idea.item.id}
@@ -138,7 +138,7 @@ const Main = ({navigation}: {navigation: any}) => {
         <FloatingActionButton navigation={navigation} next='CreateIdea' icon={<Ionicons name="ios-add" size={40} color={Color.FONT1} style={{height: 42, width: 38}} />} />
 
       </View>
-    </SafeAreaView>
+    </View>
   )
 
   function applyFilters() {
