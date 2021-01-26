@@ -33,10 +33,7 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
                 </View>
               </ScrollView>
             </>
-          ) : (
-              <>
-              </>
-            )}
+          ) : (<></>)}
 
 
           {/* shows images the user uploaded to the idea, if there are no images it shows nothing instead */}

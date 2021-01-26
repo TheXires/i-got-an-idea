@@ -1,5 +1,5 @@
 export enum Color {
-  ACCENT = '#D84315',
+  ACCENT = '#67CC35', // D84315
   ERROR = '#ff0000',
   BACKGROUND = '#19222D',
   BACKGROUND2 = '#1E2835',

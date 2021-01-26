@@ -7,6 +7,7 @@ import { ideaCreationContext} from '../contexts/ideaCreationContext';
 import Radiobuttons from '../components/Radiobuttons';
 import { Tag } from '../customTypes/tags';
 import BottomNavigation from '../components/BottomNavigation';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
   const {newIdea}: {newIdea: IdeaFactory} = useContext<any>(ideaCreationContext);
@@ -21,31 +22,20 @@ const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
   return (
     <>
       <View style={styles.container}>
-        <FontAwesome5 name="server" size={120} color={Color.FONT2} style={{marginBottom: 50, marginTop: 150}} />
-        <Text style={styles.textParagraph}>
-          Wird zur Umsetzung der Idee ein Server benötigt?
-
-          Dies ist z.B. der Fall, wenn mindestens einer der Folgenden Punke erfüllt wird:
-        </Text>
-        <Text style={styles.textParagraph}>
-        - Kommunikation zwischen mehreren Geräten
-        </Text>
-        <Text style={styles.textParagraph}>
-        - Geräteübergreifende Datenspeicherung
-        </Text>
-        <Text style={styles.textParagraph}>
-        - Datensynchronisation
-        </Text>
-        <Text style={styles.textParagraph}>
-        - Kooperatives Zusammenarbeiten
-        </Text>
-        <Text style={styles.textParagraph}>
-        - Verarbeitung von Daten aus mehreren Quellen
+        <FontAwesome5 name="server" size={120} color={Color.FONT2} style={{marginBottom: 50}} />
+        <Text style={{color: Color.FONT3}}>
+          Wird zur Umsetzung der Idee ein Server ben&ouml;tigt? Dies ist z.B. der Fall, wenn mindestens einer der Folgenden Punke erf&uuml;llt wird.{"\n"}
+          {"\n"}          
+          &#x2022; Kommunikation zwischen mehreren Ger&auml;ten{"\n"}
+          &#x2022; Ger&auml;te&uuml;bergreifende Datenspeicherung{"\n"}
+          &#x2022; Datensynchronisation{"\n"}
+          &#x2022; Kooperatives Zusammenarbeiten{"\n"}
+          &#x2022; Verarbeitung von Daten aus mehreren Quellen{"\n"}
         </Text>
 
-      {/* Row with radiobuttons */}
-      <Radiobuttons selected={selected} setSelected={setSelected} />
-    </View>
+        {/* Row with radiobuttons */}
+        <Radiobuttons selected={selected} setSelected={setSelected} />
+     </View>
 
       {/* Navigation Buttons */}
       <BottomNavigation
@@ -68,16 +58,15 @@ const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
+    height: '100%',
+    marginTop: '10%',
     alignItems: 'center',
-    paddingHorizontal: 57,
     padding: 15
   },
   textParagraph: {
     color: Color.FONT3,
-    textAlign: 'left',
     width: '100%'
   }
 })
 
-export default CreateIdeaBackend
+export default CreateIdeaBackend;

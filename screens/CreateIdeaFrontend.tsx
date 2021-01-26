@@ -22,9 +22,9 @@ const CreateIdeaFrontend = ({ navigation }: { navigation: any }) => {
   return (
     <>
       <View style={styles.container}>
-        <MaterialCommunityIcons name="monitor-clean" size={120} color={Color.FONT2} style={{ marginBottom: 50, marginTop: 150}} />
+        <MaterialCommunityIcons name="monitor-clean" size={120} color={Color.FONT2} style={{ marginBottom: 50 }} />
         <Text style={{ color: Color.FONT3 }}>
-          Benötigt die Idee eine sichtbare Oberfläche die das Bedienen und das Anzeigen von Informationen ermöglicht?
+          Ben&ouml;tigt die Idee eine sichtbare Oberfl&auml;che die das Bedienen und das Anzeigen von Informationen erm&ouml;glicht?
         </Text>
 
         {/* Row with radiobuttons */}
@@ -51,9 +51,9 @@ const CreateIdeaFrontend = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
+    height: '100%',
+    marginTop: '10%',
     alignItems: 'center',
-    paddingHorizontal: 57,
     padding: 15
   }
 })

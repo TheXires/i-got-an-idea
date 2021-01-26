@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View, StatusBar, SafeAreaView, Text} from 'react-native';
+import {StyleSheet, View, StatusBar, Text} from 'react-native';
 
 import Idea from '../components/Idea';
 
@@ -30,30 +30,30 @@ const Main = ({navigation}: {navigation: any}) => {
   const [filters, setFilters] = useState([false, false, false, false, false, false, false, false, false, false]);
 
   const [loading, setLoading] = useState(true);
+  const [sorting, setSorting] = useState(false);
 
   useEffect(() => {
-    ideas !== undefined && setLoading(false);
+    if(ideas !== undefined){
+      setLoading(false),
+      setSorting(false);
+    }
   }, [ideas])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar />
 
       {/* Header */}
       <View style={styles.header}>
         <View style={{flexDirection: 'row'}}>
-          {/* TODO: hier muss noch jeweils die Funktionalität hinter dem Filter Button geschreiben werden.
-                    Es dürfen allerfings maximal 10 Filter ausgewählt werden */}
-          <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" onPress={
-            () => {
+          <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" onPress={() => {
               setShowFilter(!showFilter);
-            }
-          } />
+          }} />
           {oldestComesLast ? (
-            <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(false); setLoading(true)}} name="sort-alpha-asc" size={24} color="black" />
+            <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(false); setSorting(true)}} name="sort-alpha-asc" size={24} color="black" />
           ) : (
-              <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(true); setLoading(true)}} name="sort-alpha-desc" size={24} color="black" />
-            )}
+            <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(true); setSorting(true)}} name="sort-alpha-desc" size={24} color="black" />
+          )}
         </View>
 
         {/* Header Buttons on the top right */}
@@ -63,10 +63,10 @@ const Main = ({navigation}: {navigation: any}) => {
           <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
-      {/*TODO: Prototyp kopieren */}
+
       {/* Body */}
       <View style={styles.body}>
-        {showFilter ?
+        {showFilter ? (
           <View style={styles.filterBox}>
             <View style={styles.filterContainer}>
               <View style={styles.filterColumn}>
@@ -103,15 +103,23 @@ const Main = ({navigation}: {navigation: any}) => {
               <Text style={styles.filterButton}>Filtern</Text>
             </TouchableOpacity>
           </View>
-          :
+        ) : (
           <></>
-        }
+        )}
+
+        {/* showing spinner while sorting */}
+        {sorting ? (
+          <CustomSpinner />
+        ) : (<></>)}
+
+        {/* show all ideas */}
         {ideas !== undefined ? (
           ideas.length > 0 ?
             <FlatList
               data={ideas}
               keyExtractor={idea => idea.id!}
               renderItem={(idea) => (
+                // show one idea
                 <Idea
                   navigation={navigation}
                   key={idea.item.id}
@@ -136,7 +144,7 @@ const Main = ({navigation}: {navigation: any}) => {
         <FloatingActionButton navigation={navigation} next='CreateIdea' icon={<Ionicons name="ios-add" size={40} color={Color.FONT1} style={{height: 42, width: 38}} />} />
 
       </View>
-    </SafeAreaView>
+    </View>
   )
 
   function applyFilters() {
