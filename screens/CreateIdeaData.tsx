@@ -23,8 +23,7 @@ const CreateIdeaData = ({ navigation }: { navigation: any }) => {
       <View style={styles.container}>
         <FontAwesome name="table" size={120} color={Color.FONT2} style={{ marginBottom: 50, marginTop: 150 }} />
         <Text style={{ color: Color.FONT3 }}>
-          {/* TODO: hier muss noch der richtige Text eingefügt werden ... */}
-          Hier muss noch der richtige Text eingef&uuml;gt werden ...
+          Wird zur Umsetzung der Idee die Speicherung, Sortierung oder Aufarbeitung von Daten benötigt?
         </Text>
         
         {/* Row with radiobuttons */}
