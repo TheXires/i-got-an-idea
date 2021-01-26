@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import update from 'immutability-helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BottomNavigation from '../components/BottomNavigation';
 
 /**
  * Screen to edit profile information
@@ -81,7 +82,6 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
               <Text style={styles.name}>{newUser?.name}</Text>
             </View>
 
-
             <Text style={styles.h1}>Beschreibung</Text>
             <TextInput
               multiline={true}
@@ -120,25 +120,23 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
         </ScrollView>
       </View>
 
-      {/* TODO: Prüfen ob hier Profil richtig erstellt wird */}
       {/* Navigation Buttons */}
-      <View style={[styles.navigationbackground, {justifyContent: 'flex-end'}]}>
-        {/* next */}
-        <TouchableOpacity 
-          style={[styles.button]} 
-          onPress={() => {
-            newUser.id != '' ? (
-              createProfileData(newUser),
-              AsyncStorage.setItem('firstLogin', 'false'),
-              navigation.navigate('Main')
-            ) : (
-              navigation.navigate('Main')
-            )
-          }}
-        >
-          <Text style={{ color: Color.FONT1 }}>Weiter</Text>
-        </TouchableOpacity>
-      </View>
+      <BottomNavigation
+        navigation={navigation}
+        buttonLeft={false}
+        buttonTextLeft=''
+        buttonFunctionLeft={() => null}
+        buttonTextRight='Weiter'
+        buttonFunctionRight={() => {
+          newUser.id != '' ? (
+            createProfileData(newUser),
+            AsyncStorage.setItem('firstLogin', 'false'),
+            navigation.navigate('Main')
+          ) : (
+            navigation.navigate('Main')
+          )
+        }}
+      />
     </>
   )
 }
@@ -205,27 +203,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 15,
     color: Color.ACCENT
-  },
-
-
-  navigationbackground: {
-    width: '100%',
-    height: '10%',
-    backgroundColor: Color.BACKGROUND,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    position: 'absolute',
-    bottom: 0,
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    backgroundColor: Color.ACCENT,
-    borderRadius: 50,
   }
 });
 

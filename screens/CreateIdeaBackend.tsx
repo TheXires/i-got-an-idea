@@ -1,15 +1,18 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Color} from '../customTypes/colors';
-import {FontAwesome5} from '@expo/vector-icons';
-import {IdeaFactory} from '../customTypes/ideaFactory';
-import {ideaCreationContext} from '../contexts/ideaCreationContext';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Color } from '../customTypes/colors';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { IdeaFactory } from '../customTypes/ideaFactory';
+import { ideaCreationContext} from '../contexts/ideaCreationContext';
 import Radiobuttons from '../components/Radiobuttons';
-import {Tag} from '../customTypes/tags';
+import { Tag } from '../customTypes/tags';
+import BottomNavigation from '../components/BottomNavigation';
 
 const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
   const {newIdea}: {newIdea: IdeaFactory} = useContext<any>(ideaCreationContext);
   const [selected, setSelected] = useState([false, false, true]);
+
+  console.log('CreateIdeaBackend: ', newIdea);
 
   useEffect(() => {
     newIdea !== undefined && newIdea.getTags()!.includes(Tag.BACKEND) && setSelected([true, false, false])
@@ -45,24 +48,18 @@ const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
       </View>
 
       {/* Navigation Buttons */}
-      <View style={styles.navigationbackground}>
-        {/* previous */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-          <Text style={{color: Color.FONT1}}>Zur&uuml;ck</Text>
-        </TouchableOpacity>
-
-        {/* next */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            // adds or delets the current tag 
-            selected[0] ? newIdea.addTags([Tag.BACKEND]) : newIdea.tags(newIdea.getTags()!.filter((tag) => tag !== Tag.BACKEND))
-            navigation.navigate('CreateIdeaData');
-          }}
-        >
-          <Text style={{color: Color.FONT1}}>Weiter</Text>
-        </TouchableOpacity>
-      </View>
+      <BottomNavigation
+        navigation={navigation} 
+        buttonLeft={true}
+        buttonTextLeft='Zur&uuml;ck'
+        buttonFunctionLeft={() => navigation.goBack()}
+        buttonTextRight='Weiter'
+        buttonFunctionRight={() => {
+          // adds or delets the current tag 
+          selected[0] ? newIdea.addTags([Tag.BACKEND]) : newIdea.tags(newIdea.getTags()!.filter((tag) => tag !== Tag.BACKEND))
+          navigation.navigate('CreateIdeaData');
+        }}
+      />
     </>
   )
 }
@@ -75,37 +72,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  selectionContainer: {
-    marginTop: 30,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  radioButtons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 5
-  },
-  navigationbackground: {
-    width: '100%',
-    height: '10%',
-    backgroundColor: Color.BACKGROUND,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    position: 'absolute',
-    bottom: 0,
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    backgroundColor: Color.ACCENT,
-    borderRadius: 50,
   },
   textParagraph: {
     color: Color.FONT3,
