@@ -7,7 +7,6 @@ import { ideaCreationContext} from '../contexts/ideaCreationContext';
 import Radiobuttons from '../components/Radiobuttons';
 import { Tag } from '../customTypes/tags';
 import BottomNavigation from '../components/BottomNavigation';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
   const {newIdea}: {newIdea: IdeaFactory} = useContext<any>(ideaCreationContext);
@@ -67,6 +66,6 @@ const styles = StyleSheet.create({
     color: Color.FONT3,
     width: '100%'
   }
-})
+});
 
 export default CreateIdeaBackend;

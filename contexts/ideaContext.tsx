@@ -17,13 +17,14 @@ const IdeaProvider = (props: any) => {
   const [filters, setFilters] = useState<Tag[]>();//filters to apply
   const [lastQueriedSnapshot, setLastQueriedSnapshot] = useState<firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined>(undefined);//for pagination
   const [limitReached, setLimitReached] = useState(false);//tells if the last item available was fetched from the DB
+  const [contextLoading, setContextLoading] = useState(true)
 
 
   useEffect(() => {
     if (user == undefined || user == null || loading) {
       return;
     }
-
+    setContextLoading(true);
 
     setLastQueriedSnapshot(undefined);
 
@@ -39,6 +40,7 @@ const IdeaProvider = (props: any) => {
       } else {
         setLimitReached(true);
       }
+      setContextLoading(false);
     });
   }, [oldestComesLast, filters, user, loading]);
 
@@ -50,6 +52,7 @@ const IdeaProvider = (props: any) => {
     if (loading == false && user == null && !limitReached) {
       return;
     }
+    setContextLoading(true);
 
     getIdeas(oldestComesLast, filters, lastQueriedSnapshot).get().then(snap => {
       var ret: IdeaType[] = [];
@@ -63,6 +66,7 @@ const IdeaProvider = (props: any) => {
       } else {
         setLimitReached(true);
       }
+      setContextLoading(false);
     });
   }
 
@@ -72,7 +76,8 @@ const IdeaProvider = (props: any) => {
       oldestComesLast: [oldestComesLast, setOldestComesLast],
       filters: [filters, setFilters],
       loadMoreEntries,
-      limitReached
+      limitReached,
+      contextLoading
     }}>
       {props.children}
     </IdeaContext.Provider>

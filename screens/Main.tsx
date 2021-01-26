@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View, StatusBar, Text} from 'react-native';
+import {StyleSheet, View, StatusBar, SafeAreaView, Text, ScrollView, RefreshControl} from 'react-native';
 
 import Idea from '../components/Idea';
 
@@ -21,6 +21,7 @@ import {Tag} from '../customTypes/tags';
  */
 const Main = ({navigation}: {navigation: any}) => {
   const {ideas}: {ideas: IdeaType[]} = useContext<any>(IdeaContext);
+  const {contextLoading}: {contextLoading: boolean} = useContext<any>(IdeaContext);
   const setContextFilters = useContext<any>(IdeaContext).filters[1];
   const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast;
   const {loadMoreEntries} = useContext<any>(IdeaContext);
@@ -29,16 +30,6 @@ const Main = ({navigation}: {navigation: any}) => {
   const [showFilter, setShowFilter] = useState(false)
   const [filters, setFilters] = useState([false, false, false, false, false, false, false, false, false, false]);
 
-  const [loading, setLoading] = useState(true);
-  const [sorting, setSorting] = useState(false);
-
-  useEffect(() => {
-    if(ideas !== undefined){
-      setLoading(false),
-      setSorting(false);
-    }
-  }, [ideas])
-
   return (
     <View style={styles.container}>
       <StatusBar />
@@ -46,14 +37,15 @@ const Main = ({navigation}: {navigation: any}) => {
       {/* Header */}
       <View style={styles.header}>
         <View style={{flexDirection: 'row'}}>
-          <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" onPress={() => {
+          <Ionicons style={{marginLeft: 15, color: Color.FONT1}} name="funnel-sharp" size={24} color="black" onPress={
+            () => {
               setShowFilter(!showFilter);
           }} />
           {oldestComesLast ? (
-            <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(false); setSorting(true)}} name="sort-alpha-asc" size={24} color="black" />
+            <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(false)}} name="sort-alpha-asc" size={24} color="black" />
           ) : (
-            <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(true); setSorting(true)}} name="sort-alpha-desc" size={24} color="black" />
-          )}
+              <FontAwesome style={{marginLeft: 25, color: Color.FONT1}} onPress={() => {setOldestComesLast(true)}} name="sort-alpha-desc" size={24} color="black" />
+            )}
         </View>
 
         {/* Header Buttons on the top right */}
@@ -63,7 +55,7 @@ const Main = ({navigation}: {navigation: any}) => {
           <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
-
+      {/*TODO: Balsamiq Prototyp kopieren */}
       {/* Body */}
       <View style={styles.body}>
         {showFilter ? (
@@ -99,18 +91,19 @@ const Main = ({navigation}: {navigation: any}) => {
               </View>
 
             </View>
-            <TouchableOpacity onPress={applyFilters}>
-              <Text style={styles.filterButton}>Filtern</Text>
-            </TouchableOpacity>
+            {filters.filter(f => f == true).length < 11 ?
+              <TouchableOpacity onPress={applyFilters}>
+                <Text style={styles.filterButton}>Filtern</Text>
+              </TouchableOpacity>
+              :
+              <View>
+                <Text style={styles.deactivatedFilterButton}>Maximal 10 Filter gleichzeitig</Text>
+              </View>
+            }
           </View>
         ) : (
           <></>
         )}
-
-        {/* showing spinner while sorting */}
-        {sorting ? (
-          <CustomSpinner />
-        ) : (<></>)}
 
         {/* show all ideas */}
         {ideas !== undefined ? (
@@ -127,11 +120,12 @@ const Main = ({navigation}: {navigation: any}) => {
                 />
               )}
               onEndReached={() => {
-                setLoading(true);
                 loadMoreEntries();
               }}
               onEndReachedThreshold={0.55}
-              ListFooterComponent={loading && !limitReached ? <CustomSpinner /> : <></>}
+              ListFooterComponent={contextLoading && !limitReached ? <CustomSpinner /> : <></>}
+              refreshing={contextLoading}
+              onRefresh={() => loadMoreEntries()}
             // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
             // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
             />
@@ -207,6 +201,15 @@ const styles = StyleSheet.create({
   filterButton: {
     padding: 8,
     backgroundColor: Color.ACCENT,
+    color: Color.FONT1,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    borderRadius: 10
+  },
+  deactivatedFilterButton: {
+    padding: 8,
+    borderColor: Color.ACCENT,
+    borderWidth: 3,
     color: Color.FONT1,
     textAlign: 'center',
     fontWeight: 'bold',
