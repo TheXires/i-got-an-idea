@@ -99,7 +99,9 @@ function getUserIdeas(userID: string) {
     if (userID === null || userID === null) {
         throw "The userID is invalid: " + typeof userID;
     }
-    return fs.collection('ideas').where('authorID', '==', userID).withConverter(ideaConverter);
+    return fs.collection('ideas').where('authorID', '==', userID).
+        orderBy('creationTimestamp', 'desc').
+        withConverter(ideaConverter);
 }
 
 /**
