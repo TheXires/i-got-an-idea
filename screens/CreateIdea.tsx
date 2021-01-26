@@ -85,7 +85,7 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
             <TouchableOpacity style={styles.addImageButton} onPress={() => {
               // TODO: hinzufügen von eigenen Bildern ermöglichen oder wenigstens von weiteren, unterschiedlichen zufälligen
               // newIdea.addImageURL(['https://pbs.twimg.com/profile_images/823569976342773760/c2RLAG7h_400x400.jpg']);
-              newIdea.addImageURL(['https://avatars3.githubusercontent.com/u/62450142?s=400&v=4']);
+              newIdea.addImageURL([`http://placeimg.com/640/480?random=${Math.round(Math.random() * 10000)}`]);
               setReload(true);
             }}>
               <Ionicons name="ios-add" size={60} color={Color.FONT1} style={{ height: 62, width: 58}} />

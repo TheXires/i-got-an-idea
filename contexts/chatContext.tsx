@@ -7,7 +7,6 @@ import {Chat, ChatMessage} from '../customTypes/chat';
 import {PinnedChat} from '../customTypes/profileData';
 import {getUID} from '../services/auth';
 import {chatMessageConverter, getProfileData} from '../services/database';
-// import {createIdeaFaker} from '../services/database';
 
 const fs = firebase.firestore();
 
@@ -23,14 +22,6 @@ const ChatProvider = (props: any) => {
   const [localChats, setLocalChats] = useState<Chat[]>();//chats for saving local stored chat protocols, serves as base for normal chats
   const [chats, setChats] = useState<Chat[]>();//the actual chats object
   const [unsubs, setUnsubs] = useState<any[]>([]);//database listener unsub methods for preventing memory leaks
-
-  //for creating fake data
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     createIdeaFaker();
-  //   }, 1000)
-  // }, [])
-
 
   //fetching the ideas the user has pinned
   useEffect(() => {

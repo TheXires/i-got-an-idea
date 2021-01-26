@@ -77,8 +77,8 @@ const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
         <View style={{marginBottom:'20%'}}></View>
       </ScrollView>
       
-      {/* pin Idea to chats */}
-      <FloatingActionButton navigation={navigation} next='Chat' icon={<Ionicons name="chatbubbles-sharp" size={35} color={Color.FONT1} style={{ height: 37, width: 35 }} />} />
+      {/* pin Idea to chats*/}
+      <FloatingActionButton onPress={() => pinIdeaToChats(idea)} navigation={navigation} next='Chat' icon={<Ionicons name="chatbubbles-sharp" size={35} color={Color.FONT1} style={{ height: 37, width: 35 }} />} />
     </View>
   )
 }
