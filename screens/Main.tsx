@@ -22,6 +22,7 @@ import {Tag} from '../customTypes/tags';
 const Main = ({navigation}: {navigation: any}) => {
   const {ideas}: {ideas: IdeaType[]} = useContext<any>(IdeaContext);
   const {contextLoading}: {contextLoading: boolean} = useContext<any>(IdeaContext);
+  const {contextLoadingMoreEntries}: {contextLoadingMoreEntries: boolean} = useContext<any>(IdeaContext);
   const setContextFilters = useContext<any>(IdeaContext).filters[1];
   const [oldestComesLast, setOldestComesLast] = useContext<any>(IdeaContext).oldestComesLast;
   const {loadMoreEntries} = useContext<any>(IdeaContext);
@@ -105,6 +106,7 @@ const Main = ({navigation}: {navigation: any}) => {
           :
           <></>
         }
+        {contextLoading ? <CustomSpinner /> : <></>}
         {ideas !== undefined ? (
           ideas.length > 0 ?
             <FlatList
@@ -121,17 +123,17 @@ const Main = ({navigation}: {navigation: any}) => {
                 loadMoreEntries();
               }}
               onEndReachedThreshold={0.55}
-              ListFooterComponent={contextLoading && !limitReached ? <CustomSpinner /> : <></>}
+              ListFooterComponent={contextLoadingMoreEntries ? <CustomSpinner /> : <></>}
               refreshing={contextLoading}
-              onRefresh={() => loadMoreEntries()}
+              onRefresh={() => {loadMoreEntries(); console.log('test')}}
             // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
             // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
             />
             :
             <Text style={{color: Color.FONT1, textAlign: 'center', padding: 10}}>Keine Einträge gefunden!</Text>
-        ) : (<>
-          <CustomSpinner />
-        </>)}
+        ) : (
+            <>{/* <CustomSpinner /> */}</>
+          )}
 
         <FloatingActionButton navigation={navigation} next='CreateIdea' icon={<Ionicons name="ios-add" size={40} color={Color.FONT1} style={{height: 42, width: 38}} />} />
 
