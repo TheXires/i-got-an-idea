@@ -9,7 +9,6 @@ import {useDocumentData} from 'react-firebase-hooks/firestore';
 import {getProfileData} from '../services/database';
 import {ProfileData} from '../customTypes/profileData';
 import CustomSpinner from '../components/CustomSpinner';
-import {getUID} from '../services/auth';
 
 /**
  * Screen to show user profiles
@@ -19,16 +18,23 @@ const Profile = ({route, navigation}: {route: any, navigation: any}) => {
   const [user, userLoading, userError] = useDocumentData<ProfileData>(getProfileData(route.params.id));
   const [ideas, ideaLoading, ideaError] = useCollectionData(getUserIdeas(userID));
 
-  // TODO: Error handling für userError und ideaError schreiben
-
   useEffect(() => {
     if (userLoading === false && user!.id !== undefined) {
       setUserID(user!.id);
     }
-  }, [user])
+  }, [user]);
+
+  useEffect(() => {
+    if(userError){
+      alert(userError);
+    }
+    if(ideaError){
+      alert(ideaError);
+    }
+  }, [userError, ideaError]);
 
   return (
-    // TODO: floating action button, um nutzer zu blockieren, wenn eigenes Profil dann profilbearbeiten Button
+    // TODO: floating action button, um eigenes Profil zu bearbeiten
     <ScrollView style={styles.container}>
       {(userLoading === false && user !== undefined) ? (
         <>

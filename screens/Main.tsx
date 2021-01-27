@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View, StatusBar, SafeAreaView, Text, ScrollView, RefreshControl, Button} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {StyleSheet, View, StatusBar, SafeAreaView, Text } from 'react-native';
 
 import Idea from '../components/Idea';
 
@@ -108,35 +108,7 @@ const Main = ({navigation}: {navigation: any}) => {
         }
         {contextLoading ? <CustomSpinner /> : <></>}
 
-        {/* ***************************************************************************** */}
-        {/* ***************************************************************************** */}
-        {/* ***************************************************************************** */}
-
-        <ScrollView>
-          {/* Ideas from context get rendered here */}
-          {ideas !== undefined ? (
-            ideas.map(idea => {
-              return (
-                <Idea
-                  navigation={navigation}
-                  key={idea.id}
-                  idea={idea}
-                />)
-            })
-          ) : (<></>)}
-          {contextLoading && <CustomSpinner />}
-            {/* TODO: erreichen der unteren kannte muss durch funktion errechnet werden. 
-                      https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
-                      https://reactnative.dev/docs/scrollview */}
-          {limitReached ? (<></>) : <Button title="MEHR!!" onPress={() => { loadMoreEntries() }}></Button> }
-        </ScrollView>
-
-        {/* ***************************************************************************** */}
-        {/* ***************************************************************************** */}
-        {/* ***************************************************************************** */}
-
-
-        {/* {ideas !== undefined ? (
+        {ideas !== undefined ? (
           ideas.length > 0 ?
             <FlatList
               data={ideas}
@@ -162,7 +134,7 @@ const Main = ({navigation}: {navigation: any}) => {
             <Text style={{color: Color.FONT1, textAlign: 'center', padding: 10}}>Keine Einträge gefunden!</Text>
         ) : (
             <></>
-        )} */}
+        )}
 
         <FloatingActionButton 
           onPress={() => {navigation.navigate('CreateIdea')}} 
