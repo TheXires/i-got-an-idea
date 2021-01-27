@@ -60,9 +60,7 @@ export default function App() {
   useEffect(() => {
     async function getUserExists(){
       try {
-        let localLoginState = await AsyncStorage.getItem('firstLogin');
-        // console.log(localLoginState);
-        
+        let localLoginState = await AsyncStorage.getItem('firstLogin');        
         setFirstLogin(localLoginState != undefined && localLoginState === 'false' ? (false) : (true));
       } catch (error) {
         alert('Fehler beim lesen des Loginstatus!');

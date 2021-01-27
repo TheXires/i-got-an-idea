@@ -161,7 +161,6 @@ function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.
                 .limit(limit)
                 .withConverter(ideaConverter);
         } else {
-            console.log(filters);
             return fs.collection('ideas')
                 .where('tags', 'array-contains-any', filters)
                 .orderBy("creationTimestamp", oldestComesLast ? 'desc' : 'asc')
@@ -356,8 +355,6 @@ const profileDataConverter = {
             delete data.id;
         }
         if (data.ideaChatsPinned.length == 0) {
-            // console.log('Deleting');
-
             delete (data as any).ideaChatsPinned;
         }
 

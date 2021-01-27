@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
-import spinner from '../assets/spinner.gif';
+import CustomSpinner from './CustomSpinner';
 
 /**
  * Shows an image with the original aspectratio but a given hight
@@ -31,8 +31,8 @@ const CustomImage = ({source , imgSize}: {source: any, imgSize: number}) => {
   }
 
   return (
-    <View>
-      <Image source={spinner} style={{marginRight: 15, width: imgSize, height: imgSize, borderRadius: 20}} />
+    <View style={{marginRight: 15, justifyContent: 'center', width: imgSize, height: imgSize }}>
+      <CustomSpinner />
     </View>
   );
 }

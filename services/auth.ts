@@ -34,7 +34,6 @@ async function loginWithGoogle(): Promise<void> {
         }
     } catch (err) {
         alert("Fehler im Login Prozess. Bitte stelle sicher, dass du den Chrome Browser installiert hast! " + JSON.stringify(err));
-        // console.log("err:", err);
     }
 }
 

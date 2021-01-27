@@ -14,10 +14,7 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const { setDiscard }: { setDiscard: any } = useContext<any>(ideaCreationContext);
   const { getFinished, setFinished }: { getFinished: any, setFinished: any } = useContext<any>(ideaCreationContext);
-  const [reload, setReload] = useState(false);
-
-  console.log('CreateIdea: ', newIdea);
-  
+  const [reload, setReload] = useState(false);  
 
   useEffect(() => {
     navigation.addListener('beforeRemove', (e: any) => {
