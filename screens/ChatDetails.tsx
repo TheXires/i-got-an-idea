@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 15,
+        paddingHorizontal: 20
     },
     textInput: {
         width: '90%',

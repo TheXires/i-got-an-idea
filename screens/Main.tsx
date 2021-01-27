@@ -57,7 +57,6 @@ const Main = ({navigation}: {navigation: any}) => {
           <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
-      {/*TODO: Balsamiq Prototyp kopieren */}
       {/* Body */}
       <View style={styles.body}>
         {showFilter ?
@@ -126,10 +125,11 @@ const Main = ({navigation}: {navigation: any}) => {
               ListFooterComponent={contextLoadingMoreEntries ? <CustomSpinner /> : <></>}
               refreshing={contextLoading}
               onRefresh={() => {loadMoreEntries(); console.log('test')}}
-            // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
-            // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
-            />
-            :
+              // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
+              // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
+              />
+              :
+              //TODO: logs entfernen
             <Text style={{color: Color.FONT1, textAlign: 'center', padding: 10}}>Keine Einträge gefunden!</Text>
         ) : (
             <>{/* <CustomSpinner /> */}</>
