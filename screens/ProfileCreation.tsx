@@ -2,19 +2,20 @@ import React, {useEffect, useState} from 'react'
 import {StatusBar, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import {Color} from '../customTypes/colors';
 import {ProfileData} from '../customTypes/profileData';
-import {updateProfileData} from '../services/database';
+import {createProfileData} from '../services/database';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import firebase from 'firebase';
 import {Ionicons} from '@expo/vector-icons';
 
 import update from 'immutability-helper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomNavigation from '../components/BottomNavigation';
 
 /**
  * Screen to edit profile information
  */
-const ProfileEdit = ({navigation}: {navigation: any}) => {
+const ProfileCreation = ({navigation}: {navigation: any}) => {
   const [firebaseUser, firebaseLoading, firebaseError] = useAuthState(firebase.auth());
   const [newUser, setNewUser] = useState<ProfileData>({
     profilePictureURL: '',
@@ -49,20 +50,21 @@ const ProfileEdit = ({navigation}: {navigation: any}) => {
         {/* Header */}
         <View style={styles.header}>
           {/* Headertitle */}
-          <Text style={{fontSize: 18, color: Color.FONT1, fontWeight: 'bold', marginHorizontal: 15, width: '60%'}}>
-            Profil bearbeiten
+          <Text style={{fontSize: 18, color: Color.FONT1, fontWeight: 'bold', marginHorizontal: 15, width: '100%'}}>
+            Profil erstellen
           </Text>
           {/* Header Skip-Button */}
           <TouchableOpacity activeOpacity={0.8} onPress={() => {
             newUser.id != '' ? (
-              updateProfileData(newUser),
-              navigation.navigate('Profile', {id: newUser.id})
+              createProfileData(newUser),
+              AsyncStorage.setItem('firstLogin', 'false'),
+              navigation.navigate('Main')
             ) : (
-                navigation.navigate('Profile', {id: newUser.id})
+                navigation.navigate('Main')
               )
           }}>
             <Text style={{fontSize: 12, color: Color.FONT2, fontWeight: 'bold', marginHorizontal: 15}}>
-              Abbrechen &gt;
+              &Uuml;berspringen &gt;
             </Text>
           </TouchableOpacity>
         </View>
@@ -126,13 +128,14 @@ const ProfileEdit = ({navigation}: {navigation: any}) => {
         buttonLeft={false}
         buttonTextLeft=''
         buttonFunctionLeft={() => null}
-        buttonTextRight='Fertig'
+        buttonTextRight='Weiter'
         buttonFunctionRight={() => {
           newUser.id != '' ? (
-            updateProfileData(newUser),
-            navigation.navigate('Profile', {id: newUser.id})
+            createProfileData(newUser),
+            AsyncStorage.setItem('firstLogin', 'false'),
+            navigation.navigate('Main')
           ) : (
-            navigation.navigate('Profile', {id: newUser.id})
+              navigation.navigate('Main')
             )
         }}
       />
@@ -207,4 +210,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProfileEdit;
+export default ProfileCreation;

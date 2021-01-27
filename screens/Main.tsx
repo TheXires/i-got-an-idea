@@ -124,7 +124,7 @@ const Main = ({navigation}: {navigation: any}) => {
               onEndReachedThreshold={0.55}
               ListFooterComponent={contextLoadingMoreEntries ? <CustomSpinner /> : <></>}
               refreshing={contextLoading}
-              onRefresh={() => {loadMoreEntries(); console.log('test')}}
+              onRefresh={() => {loadMoreEntries()}}
               // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
               // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
               />
@@ -132,7 +132,7 @@ const Main = ({navigation}: {navigation: any}) => {
               //TODO: logs entfernen
             <Text style={{color: Color.FONT1, textAlign: 'center', padding: 10}}>Keine Einträge gefunden!</Text>
         ) : (
-            <>{/* <CustomSpinner /> */}</>
+            <></>
           )}
 
         <FloatingActionButton navigation={navigation} next='CreateIdea' icon={<Ionicons name="ios-add" size={40} color={Color.FONT1} style={{height: 42, width: 38}} />} />

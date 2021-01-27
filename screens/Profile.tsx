@@ -9,6 +9,8 @@ import {useDocumentData} from 'react-firebase-hooks/firestore';
 import {getProfileData} from '../services/database';
 import {ProfileData} from '../customTypes/profileData';
 import CustomSpinner from '../components/CustomSpinner';
+import {FontAwesome} from '@expo/vector-icons';
+import FloatingActionButton from '../components/FloatingActionButton';
 import {getUID} from '../services/auth';
 
 /**
@@ -28,87 +30,98 @@ const Profile = ({route, navigation}: {route: any, navigation: any}) => {
   }, [user])
 
   return (
-    // TODO: floating action button, um nutzer zu blockieren, wenn eigenes Profil dann profilbearbeiten Button
-    <ScrollView style={styles.container}>
-      {(userLoading === false && user !== undefined) ? (
-        <>
-          <View style={styles.upperInnerContainer}>
-            {user.profilePictureURL !== '' ? (
-              <Image source={{uri: user.profilePictureURL}} style={styles.profileimage} />
-            ) : (
-                <Image source={profileplaceolder} style={styles.profileimage} />
-              )}
-            <Text style={styles.name}>{user.name}</Text>
-          </View>
-          <View style={styles.lowerInnerContainer}>
-            {user.description.length > 0 ? (
-              <>
-                <Text style={styles.h2}>Beschreibung</Text>
-                <Text style={styles.description}>{user.description}</Text>
-              </>
-            ) : (
-                <>
-                  {/* show nothing if there is no user description */}
-                </>
-              )}
-
-            {user.skills.length > 0 ? (
-              <>
-                <Text style={styles.h2}>Skills</Text>
-                {user.skills.map((skill) => {return (<Text style={styles.skills} key={skill}>&#x2022; {skill}</Text>)})}
-              </>
-            ) : (
-                <>
-                  {/* show nothing if there are no user skills */}
-                </>
-              )}
-
-            {!ideaLoading ? (
-              <>
-                {(ideas !== undefined && ideas!.length > 0) ? (
-                  <>
-                    <Text style={styles.h2}>Ideen</Text>
-                    {ideas!.map((idea: any) => {
-                      return (
-                        <Idea
-                          navigation={navigation}
-                          key={idea.id}
-                          idea={idea}
-                        />)
-                    })}
-                  </>
-                ) : (
-                    <>
-                      {/* If there are no ideas or its undefind, nothing needs to be rendered */}
-                      {ideaError != undefined ?
-                        <Text style={{color: Color.FONT1}}>{JSON.stringify(ideaError)}</Text>
-                        // <Text style={{color: Color.FONT1}}>{JSON.stringify(getUserIdeas(getUID()).get())}</Text>
-                        :
-                        <></>
-                      }
-                    </>
-                  )}
-              </>
-            ) : (
-                <>
-                  {/* Show CustomSpinner while loading ideas from firestore */}
-                  <CustomSpinner />
-                </>
-              )}
-
-
-            {!ideaLoading ? (
-              <></>
-            ) : (<></>)}
-          </View>
-        </>
-      ) : (
+    <>
+      <ScrollView style={styles.container}>
+        {(userLoading === false && user !== undefined) ? (
           <>
-            {/* Show CustomSpinner while loading user from firestore */}
-            <CustomSpinner />
+            <View style={styles.upperInnerContainer}>
+              {user.profilePictureURL !== '' ? (
+                <Image source={{uri: user.profilePictureURL}} style={styles.profileimage} />
+              ) : (
+                  <Image source={profileplaceolder} style={styles.profileimage} />
+                )}
+              <Text style={styles.name}>{user.name}</Text>
+            </View>
+            <View style={styles.lowerInnerContainer}>
+              {user.description.length > 0 ? (
+                <>
+                  <Text style={styles.h2}>Beschreibung</Text>
+                  <Text style={styles.description}>{user.description}</Text>
+                </>
+              ) : (
+                  <>
+                    {/* show nothing if there is no user description */}
+                  </>
+                )}
+
+              {user.skills.length > 0 ? (
+                <>
+                  <Text style={styles.h2}>Skills</Text>
+                  {user.skills.map((skill) => {return (<Text style={styles.skills} key={skill}>&#x2022; {skill}</Text>)})}
+                </>
+              ) : (
+                  <>
+                    {/* show nothing if there are no user skills */}
+                  </>
+                )}
+
+              {!ideaLoading ? (
+                <>
+                  {(ideas !== undefined && ideas!.length > 0) ? (
+                    <>
+                      <Text style={styles.h2}>Ideen</Text>
+                      {ideas!.map((idea: any) => {
+                        return (
+                          <Idea
+                            navigation={navigation}
+                            key={idea.id}
+                            idea={idea}
+                          />)
+                      })}
+                    </>
+                  ) : (
+                      <>
+                        {/* If there are no ideas or its undefind, nothing needs to be rendered */}
+                        {ideaError != undefined ?
+                          <Text style={{color: Color.FONT1}}>{JSON.stringify(ideaError)}</Text>
+                          // <Text style={{color: Color.FONT1}}>{JSON.stringify(getUserIdeas(getUID()).get())}</Text>
+                          :
+                          <></>
+                        }
+                      </>
+                    )}
+                </>
+              ) : (
+                  <>
+                    {/* Show CustomSpinner while loading ideas from firestore */}
+                    <CustomSpinner />
+                  </>
+                )}
+
+
+              {!ideaLoading ? (
+                <></>
+              ) : (<></>)}
+            </View>
           </>
-        )}
-    </ScrollView>
+        ) : (
+            <>
+              {/* Show CustomSpinner while loading user from firestore */}
+              <CustomSpinner />
+            </>
+          )}
+      </ScrollView>
+      {/* TODO: floating action button, um nutzer zu blockieren, wenn eigenes Profil dann profilbearbeiten Button */}
+      {user?.id == getUID() ?
+        <FloatingActionButton
+          onPress={() => navigation.navigate('ProfileEdit')}
+          navigation={navigation}
+          icon={<FontAwesome name="user" size={24} color="white" />}
+        />
+        :
+        <></>
+      }
+    </>
   )
 }
 
