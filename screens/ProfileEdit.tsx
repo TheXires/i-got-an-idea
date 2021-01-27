@@ -54,12 +54,8 @@ const ProfileEdit = ({navigation}: {navigation: any}) => {
           </Text>
           {/* Header Skip-Button */}
           <TouchableOpacity activeOpacity={0.8} onPress={() => {
-            newUser.id != '' ? (
-              updateProfileData(newUser),
-              navigation.navigate('Profile', {id: newUser.id})
-            ) : (
-                navigation.navigate('Profile', {id: newUser.id})
-              )
+            if (newUser.id != '') updateProfileData(newUser)
+            navigation.navigate('Profile', {id: newUser.id})
           }}>
             <Text style={{fontSize: 12, color: Color.FONT2, fontWeight: 'bold', marginHorizontal: 15}}>
               Abbrechen &gt;
@@ -128,12 +124,8 @@ const ProfileEdit = ({navigation}: {navigation: any}) => {
         buttonFunctionLeft={() => null}
         buttonTextRight='Fertig'
         buttonFunctionRight={() => {
-          newUser.id != '' ? (
-            updateProfileData(newUser),
-            navigation.navigate('Profile', {id: newUser.id})
-          ) : (
-            navigation.navigate('Profile', {id: newUser.id})
-            )
+          if (newUser.id != '') updateProfileData(newUser)
+          navigation.navigate('Profile', {id: newUser.id})
         }}
       />
     </>

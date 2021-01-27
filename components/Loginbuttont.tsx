@@ -4,11 +4,11 @@ import {Color} from '../customTypes/colors';
 import {loginWithGoogle} from '../services/auth';
 
 
-function Loginbutton({provider}: {provider: string}) {  
+function Loginbutton() {  
   return (
     <View>
       <TouchableOpacity onPress={loginWithGoogle} style={styles.button} activeOpacity={0.9}>
-        <Text style={{color: Color.FONT2, fontWeight: 'bold'}}>Login mit {provider}</Text>
+      <Text style={{color: Color.FONT1, fontWeight: 'bold', textAlign: 'center', width: '100%'}}>Login mit Google</Text>
       </TouchableOpacity>
     </View>
   )
@@ -17,11 +17,9 @@ function Loginbutton({provider}: {provider: string}) {
 const styles = StyleSheet.create({
   button: {
     marginBottom: 15,
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    textAlign: 'center',
+    marginHorizontal: 100,
     paddingVertical: 13,
-    paddingHorizontal: 100,
+    paddingHorizontal: 10,
     backgroundColor: Color.BACKGROUND,
     borderRadius: 50
   }
