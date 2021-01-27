@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
   navigationbackground: {
     width: '100%',
     height: '10%',
-    backgroundColor: Color.BACKGROUND,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
