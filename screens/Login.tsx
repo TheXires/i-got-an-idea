@@ -1,10 +1,9 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Image, View} from 'react-native';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import Footer from '../components/Footer';
 
 
 import login_img from '../assets/login_img.jpg';
-import icon from '../assets/icon.png';
 import {Color} from '../customTypes/colors';
 import Loginbutton from '../components/Loginbuttont';
 
@@ -14,12 +13,15 @@ function login({navigation}: {navigation: any}) {
       <ImageBackground source={login_img} style={styles.image}>
 
         {/* Logo of the app */}
-        <Image style={styles.logo} source={icon} />
+        <Text style={styles.logo}>i{'\n'}
+        got{'\n'}
+        an{'\n'}
+        idea{'\n'}
+        </Text>
         <View style={styles.buttons}>
 
           {/* loginbuttons of diverent prviders can be added here */}
           <Loginbutton />
-          {/*TODO: style anpassen */}
         </View>
 
         {/* Footercomponent */}
@@ -47,12 +49,10 @@ const styles = StyleSheet.create({
     marginBottom: 50
   },
   logo: {
-    width: 120,
-    height: 120,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: 80,
-    marginBottom: 'auto'
+    fontSize: 80,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: Color.FONT1
   }
 });
 

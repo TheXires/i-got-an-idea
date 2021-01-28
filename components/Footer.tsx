@@ -31,7 +31,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-around',
   },
   text: {
-    color: Color.ACCENT,
+    color: Color.FONT1,
     textDecorationLine: 'underline'
   }
 })
