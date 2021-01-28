@@ -28,7 +28,6 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
 
 
   useEffect(() => {
-    console.log('called');
     
     if(firebaseUser != undefined){
       setUser(firebaseUser);
@@ -49,7 +48,6 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
 
   return (
     <>
-      {console.log('called in')}
       <View style={styles.container}>
         <StatusBar />
         
