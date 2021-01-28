@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, { useContext } from 'react'
 import {StyleSheet, Text, View, Image} from 'react-native'
 import {ChatContext} from '../contexts/chatContext';
 import {Color} from '../customTypes/colors';

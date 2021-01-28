@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View, StatusBar, SafeAreaView, Text, ScrollView, RefreshControl} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {StyleSheet, View, StatusBar, SafeAreaView, Text } from 'react-native';
 
 import Idea from '../components/Idea';
 
@@ -57,6 +57,7 @@ const Main = ({navigation}: {navigation: any}) => {
           <Ionicons style={{marginRight: 15, color: Color.FONT1}} onPress={() => navigation.navigate('Settings')} name="settings-sharp" size={24} color="black" />
         </View>
       </View>
+
       {/* Body */}
       <View style={styles.body}>
         {showFilter ?
@@ -106,6 +107,7 @@ const Main = ({navigation}: {navigation: any}) => {
           <></>
         }
         {contextLoading ? <CustomSpinner /> : <></>}
+
         {ideas !== undefined ? (
           ideas.length > 0 ?
             <FlatList
@@ -123,20 +125,16 @@ const Main = ({navigation}: {navigation: any}) => {
               }}
               onEndReachedThreshold={0.55}
               ListFooterComponent={contextLoadingMoreEntries ? <CustomSpinner /> : <></>}
-              refreshing={contextLoading}
-              onRefresh={() => {loadMoreEntries()}}
-              // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
-              // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
-              />
+            />
               :
-              //TODO: logs entfernen
             <Text style={{color: Color.FONT1, textAlign: 'center', padding: 10}}>Keine Einträge gefunden!</Text>
-        ) : (
-            <></>
-          )}
+        ) : (<></>)}
 
-        <FloatingActionButton navigation={navigation} next='CreateIdea' icon={<Ionicons name="ios-add" size={40} color={Color.FONT1} style={{height: 42, width: 38}} />} />
-
+        <FloatingActionButton 
+          onPress={() => {navigation.navigate('CreateIdea')}} 
+          navigation={navigation}
+          icon={<Ionicons name="ios-add" size={40} color={Color.FONT1} style={{height: 42, width: 38}} />} 
+        />
       </View>
     </SafeAreaView>
   )

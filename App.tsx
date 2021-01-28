@@ -52,18 +52,12 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [user, loading, error] = useAuthState(firebase.auth());
-  
   const [firstLogin, setFirstLogin] = useState(true);
-
-// TODO: local storage variable für existierenden Nutzer muss durch das ausloggen wieder gelöscht werden.
-//        sonst wird der nächste Nutzer der sich einloggt automatisch weitergeleitet, obwohl er vielleicht gar nicht existiert.
 
   useEffect(() => {
     async function getUserExists(){
       try {
-        let localLoginState = await AsyncStorage.getItem('firstLogin');
-        // console.log(localLoginState);
-        
+        let localLoginState = await AsyncStorage.getItem('firstLogin');        
         setFirstLogin(localLoginState != undefined && localLoginState === 'false' ? (false) : (true));
       } catch (error) {
         alert('Fehler beim lesen des Loginstatus!');
@@ -124,7 +118,7 @@ export default function App() {
                     <Stack.Screen name='CreateIdeaData' component={CreateIdeaData} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaPlatforms' component={CreateIdeaPlatforms} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaOverview' component={CreateIdeaOverview} options={{title: 'Meine Idee'}} />
-                    <Stack.Screen name='ProfileEdit' component={ProfileEdit} options={{headerShown: false}} />
+                    <Stack.Screen name='ProfileEdit' component={ProfileEdit} options={{title: 'Profil bearbeiten'}} />
                   </>
                 )
               }

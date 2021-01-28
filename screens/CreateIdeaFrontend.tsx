@@ -12,8 +12,6 @@ const CreateIdeaFrontend = ({ navigation }: { navigation: any }) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const [selected, setSelected] = useState([false, false, true]);
 
-  console.log('CreateIdeaFrontend: ', newIdea);
-
   useEffect(() => {
     newIdea !== undefined && newIdea.getTags()?.includes(Tag.FRONTEND) && setSelected([true, false, false])
   }, []);

@@ -10,8 +10,6 @@ import { Tag } from '../customTypes/tags';
 const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const { completed }: { completed: any } = useContext<any>(ideaCreationContext);
-  
-  console.log('CreateIdeaOverview: ', newIdea);
 
   return (
     <>

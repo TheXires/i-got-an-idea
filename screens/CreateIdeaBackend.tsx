@@ -12,8 +12,6 @@ const CreateIdeaBackend = ({navigation}: {navigation: any}) => {
   const {newIdea}: {newIdea: IdeaFactory} = useContext<any>(ideaCreationContext);
   const [selected, setSelected] = useState([false, false, true]);
 
-  console.log('CreateIdeaBackend: ', newIdea);
-
   useEffect(() => {
     newIdea !== undefined && newIdea.getTags()!.includes(Tag.BACKEND) && setSelected([true, false, false])
   }, []);

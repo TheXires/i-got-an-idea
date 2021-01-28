@@ -7,7 +7,6 @@ import {Color} from '../customTypes/colors';
 import {Tag} from '../customTypes/tags';
 import {IdeaContext} from '../contexts/ideaContext';
 import {IdeaType} from '../customTypes/ideaType';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {Ionicons} from '@expo/vector-icons';
 import {getIdeaByID, pinIdeaToChats} from '../services/database';
@@ -89,7 +88,14 @@ const Ideadetails = ({navigation, route}: {navigation: any, route: any}) => {
       </ScrollView>
       
       {/* pin Idea to chats*/}
-      <FloatingActionButton onPress={() => pinIdeaToChats(idea)} navigation={navigation} next='Chat' icon={<Ionicons name="chatbubbles-sharp" size={35} color={Color.FONT1} style={{ height: 37, width: 35 }} />} />
+      <FloatingActionButton 
+        onPress={() => {
+          pinIdeaToChats(idea);
+          navigation.navigate('Chat')
+        }} 
+        navigation={navigation}
+        icon={<Ionicons name="chatbubbles-sharp" size={35} color={Color.FONT1} style={{ height: 37, width: 35 }} />} 
+      />
     </View>
   )
 }

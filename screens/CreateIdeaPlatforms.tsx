@@ -10,8 +10,6 @@ const CreateIdeaPlatforms = ({navigation}: {navigation: any}) => {
   const { newIdea }: { newIdea: IdeaFactory } = useContext<any>(ideaCreationContext);
   const [selected, setSelected] = useState([false, false, false, false, false, false, false, false, false, false]);
 
-  console.log('CreateIdeaPlatforms: ', newIdea);
-
   useEffect(() => {
     let arr = selected.slice();
     newIdea.getTags()!.filter(tag => tag > 2).map(tag => tag-3).forEach(tag => arr[tag] = true);
