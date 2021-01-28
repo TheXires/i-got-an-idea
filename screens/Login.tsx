@@ -18,7 +18,8 @@ function login({navigation}: {navigation: any}) {
           <View style={styles.buttons}>
 
             {/* loginbuttons of diverent prviders can be added here */}
-            <Loginbutton provider={'Google'} />//TODO: style anpassen
+            <Loginbutton provider={'Google'} />
+            {/* TODO: style anpassen */}
           </View>
 
           {/* Footercomponent */}

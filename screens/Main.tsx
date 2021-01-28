@@ -125,11 +125,7 @@ const Main = ({navigation}: {navigation: any}) => {
               }}
               onEndReachedThreshold={0.55}
               ListFooterComponent={contextLoadingMoreEntries ? <CustomSpinner /> : <></>}
-              refreshing={contextLoading}
-              onRefresh={() => {loadMoreEntries()}}
-              // TODO: pull to reload Funktionalität hinzufügen. (dafür muss vermutlich eine neue Funktion im ideaContext geschreiben werden, die die Liste aktualisiert? -> ne vermutlich nicht, da alles automatisch gepusht wird)
-              // https://scotch.io/tutorials/implementing-an-infinite-scroll-list-in-react-native#toc-flatlist-component
-              />
+            />
               :
             <Text style={{color: Color.FONT1, textAlign: 'center', padding: 10}}>Keine Einträge gefunden!</Text>
         ) : (

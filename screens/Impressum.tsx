@@ -5,21 +5,28 @@ import {Color} from '../customTypes/colors';
 function Impressum() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Impressums Seite</Text>
+      <Text style={styles.text}>
+        i-got-an-idea Stiftung{'\n'}
+        Musterstr. 45{'\n'}
+        45123 Essen{'\n'}
+        {'\n'}
+        Telefon: &#43;49 1521 9999999{'\n'}
+        E-Mail: xires.dev&#64;gmail.com{'\n'}
+        {'\n'}
+        Gesch&auml;ftsführung{'\n'}
+        Robin Beckmann, Felix Thomsen
+      </Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    flex: 1,
-    backgroundColor: Color.BACKGROUND,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 15
   },
   text: {
-    color: Color.FONT1
+    color: Color.FONT1,
+    fontSize: 18
   }
 });
 

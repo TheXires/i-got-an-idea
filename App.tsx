@@ -39,10 +39,11 @@ import CreateIdeaData from "./screens/CreateIdeaData";
 import CreateIdeaPlatforms from "./screens/CreateIdeaPlatforms";
 import CreateIdeaOverview from "./screens/CreateIdeaOverview";
 import ChatProvider from "./contexts/chatContext";
-import ProfileEdit from "./screens/ProfileEdit";
+import ProfileCreation from "./screens/ProfileCreation";
 import ChatDetails from "./screens/ChatDetails";
 import { getProfileData } from "./services/database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ProfileEdit from "./screens/ProfileEdit";
 
 
 // creating stack for navigation
@@ -51,11 +52,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [user, loading, error] = useAuthState(firebase.auth());
-  
   const [firstLogin, setFirstLogin] = useState(true);
-
-// TODO: local storage variable für existierenden Nutzer muss durch das ausloggen wieder gelöscht werden.
-//        sonst wird der nächste Nutzer der sich einloggt automatisch weitergeleitet, obwohl er vielleicht gar nicht existiert.
 
   useEffect(() => {
     async function getUserExists(){
@@ -107,7 +104,7 @@ export default function App() {
               ) : (
                   <>
                     {firstLogin ? (
-                      <Stack.Screen name='ProfileEdit' component={ProfileEdit} options={{headerShown: false}} />
+                      <Stack.Screen name='ProfileCreation' component={ProfileCreation} options={{headerShown: false}} />
                     ) : (null)}
                     <Stack.Screen name='Main' component={Main} options={{headerShown: false}} /> 
                     <Stack.Screen name='Profile' component={Profile} />
@@ -121,6 +118,7 @@ export default function App() {
                     <Stack.Screen name='CreateIdeaData' component={CreateIdeaData} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaPlatforms' component={CreateIdeaPlatforms} options={{title: 'Meine Idee'}} />
                     <Stack.Screen name='CreateIdeaOverview' component={CreateIdeaOverview} options={{title: 'Meine Idee'}} />
+                    <Stack.Screen name='ProfileEdit' component={ProfileEdit} options={{title: 'Profil bearbeiten'}} />
                   </>
                 )
               }

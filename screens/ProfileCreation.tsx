@@ -2,38 +2,37 @@ import React, { useEffect, useState } from 'react'
 import { StatusBar, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Color } from '../customTypes/colors';
 import { ProfileData } from '../customTypes/profileData';
-import { createProfileData, getProfileData } from '../services/database';
+import { createProfileData } from '../services/database';
 import profileplaceolder from '../assets/profileplaceholder.jpg';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import firebase from 'firebase';
 import { Ionicons } from '@expo/vector-icons';
 
 import update from 'immutability-helper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomNavigation from '../components/BottomNavigation';
-import { useDocumentDataOnce } from 'react-firebase-hooks/firestore';
-import { getUID } from '../services/auth';
-import CustomSpinner from '../components/CustomSpinner';
-import { color } from 'react-native-reanimated';
 
-const ProfileEdit = ({ navigation }: { navigation: any }) => {
-  const [firebaseUser, firebaseLoading, firebaseError] = useDocumentDataOnce<ProfileData>(getProfileData(getUID()));
-  const [user, setUser] = useState<ProfileData>({
+/**
+ * Screen to edit profile information
+ */
+const ProfileCreation = ({ navigation }: { navigation: any }) => {
+  const [firebaseUser, firebaseLoading, firebaseError] = useAuthState(firebase.auth());
+  const [newUser, setNewUser] = useState<ProfileData>({
     profilePictureURL: '',
     name: '',
     description: '',
     skills: [],
     blockedUsers: [],
-    id: '-1',
+    id: '',
     ideaChatsPinned: []
   });
-  const [userDecription, setUserDecription] = useState('')
   const [userSkill, setUserSkill] = useState('');
 
-
   useEffect(() => {
-    console.log('called');
-    
-    if(firebaseUser != undefined){
-      setUser(firebaseUser);
-      setUserDecription(firebaseUser.description);
+    if(!firebaseLoading){
+      firebaseUser?.uid != undefined && (newUser.id = firebaseUser?.uid);
+      firebaseUser?.photoURL != undefined && firebaseUser .photoURL !== '' && firebaseUser.photoURL.includes('=') && (newUser.profilePictureURL = (firebaseUser!.photoURL?.substring(0, firebaseUser!.photoURL?.lastIndexOf('=')))?.concat('?sz=150'));
+      firebaseUser?.displayName != undefined && (newUser.name = firebaseUser?.displayName);
     }
   }, [firebaseLoading]);
 
@@ -43,35 +42,51 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
     }
   }, [firebaseError]);
 
-
-  if(user.id === '-1'){
-    return <CustomSpinner />
-  }
-
   return (
     <>
-      {console.log('called in')}
       <View style={styles.container}>
         <StatusBar />
         
+        {/* Header */}
+        <View style={styles.header}>
+          {/* Headertitle */}
+          <Text style={{fontSize:18, color: Color.FONT1, fontWeight: 'bold', marginHorizontal: 15}}>
+            Profil 
+          </Text>
+          {/* Header Skip-Button */}
+          <TouchableOpacity activeOpacity={0.8} onPress={() => {
+            newUser.id != '' ? (
+              createProfileData(newUser),
+              AsyncStorage.setItem('firstLogin', 'false'),
+              navigation.navigate('Main')
+            ) : (
+              navigation.navigate('Main')
+            )
+          }}>
+            <Text style={{fontSize:12, color: Color.FONT2, fontWeight: 'bold', marginHorizontal: 15}}>
+              &Uuml;berspringen &gt;
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+
         {/* Body */}
         <ScrollView>
           <View style={styles.body}>
             <View style={styles.user}>
-              {user?.profilePictureURL && user.profilePictureURL !== '' ? (
-                <Image source={{uri: user.profilePictureURL}} style={[styles.profileimage, {marginTop: 15}]} />
+              {newUser?.profilePictureURL && newUser.profilePictureURL !== '' ? (
+                <Image source={{uri: newUser.profilePictureURL}} style={[styles.profileimage, {marginTop: 15}]} />
               ) : (
                 <Image source={profileplaceolder} style={[styles.profileimage, {marginTop: 0}]} />
               )}
-              <Text style={styles.name}>{user?.name}</Text>
+              <Text style={styles.name}>{newUser?.name}</Text>
             </View>
 
             <Text style={styles.h1}>Beschreibung</Text>
             <TextInput
               multiline={true}
               style={[styles.textInput, {height: 150, textAlignVertical: "top", marginBottom: 30}]}
-              onChangeText={text => setUserDecription(text)}
-              value={userDecription}
+              onChangeText={text => newUser.description = text.trim()}
               placeholderTextColor={Color.FONT3}
               placeholder='Erz&auml;hle etwas &uuml;ber dich...'
             />
@@ -83,29 +98,27 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
                 onChangeText={text => setUserSkill(text.trim())}
                 value={userSkill}
                 onSubmitEditing={() => {
-                  userSkill !== '' && setUser(update(user, {skills: {$push: [userSkill]}}));
+                  userSkill !== '' && setNewUser(update(newUser, {skills: {$push: [userSkill]}}));
                   setUserSkill('');
                 }}
                 placeholderTextColor={Color.FONT3}
-                placeholder='Ich kann...'
+                placeholder='Erz&auml;hle etwas &uuml;ber dich...'
               />
               <TouchableOpacity activeOpacity={.7} style={{marginRight: 0, marginLeft: 'auto'}} onPress={() => {                
-                userSkill !== '' && setUser(update(user, {skills: {$push: [userSkill]}}));
+                userSkill !== '' && setNewUser(update(newUser, {skills: {$push: [userSkill]}}));
                 setUserSkill('');
               }}>
                 <Ionicons name="ios-add-circle" size={48} color={Color.FONT2} />
               </TouchableOpacity>
             </View>
-            {user.skills.length > 0 ? (
+            {newUser.skills.length > 0 ? (
               <>
-                {user.skills.map((skill, i) => { return(
+                {newUser.skills.map((skill, i) => { return(
                   <View style={styles.tagcontainer} key={skill}>
                     <Text style={styles.tag} key={skill}>&#x2022; {skill}</Text>
                     <TouchableOpacity onPress={() => {
-                      setUser(update(user, {skills: {$splice: [[i, 1]]}}))
-                    }}>
-                      <Ionicons name="trash" size={20} color={Color.ERROR} />
-                    </TouchableOpacity>
+                      setNewUser(update(newUser, {skills: {$splice: [[i, 1]]}}))
+                    }}></TouchableOpacity>
                   </View>
                 )})}
               </>
@@ -124,18 +137,19 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
         buttonFunctionLeft={() => null}
         buttonTextRight='Weiter'
         buttonFunctionRight={() => {
-          if(user.id != '-1'){
-            user.description = userDecription.trim();
-            createProfileData(user);
-          }
-          navigation.navigate('Profile');
+          newUser.id != '' ? (
+            createProfileData(newUser),
+            AsyncStorage.setItem('firstLogin', 'false'),
+            navigation.navigate('Main')
+          ) : (
+            navigation.navigate('Main')
+          )
         }}
       />
     </>
   )
 }
 
-export default ProfileEdit
 
 const styles = StyleSheet.create({
   container: {
@@ -197,9 +211,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   tag: {
-    padding: 10,
+    padding: 5,
     marginLeft: 10,
     fontSize: 15,
     color: Color.ACCENT
   }
-})
+});
+
+export default ProfileCreation;
