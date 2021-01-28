@@ -111,7 +111,7 @@ const Profile = ({route, navigation}: {route: any, navigation: any}) => {
             </>
           )}
       </ScrollView>
-      {/* TODO: floating action button, um nutzer zu blockieren, wenn eigenes Profil dann profilbearbeiten Button */}
+      {/* TODO: floating action button: profilbearbeiten Button */}
       {user?.id == getUID() ?
         <FloatingActionButton
           onPress={() => navigation.navigate('ProfileEdit')}

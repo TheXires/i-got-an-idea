@@ -16,6 +16,7 @@ import BottomNavigation from '../components/BottomNavigation';
  * Screen to edit profile information
  */
 const ProfileCreation = ({navigation}: {navigation: any}) => {
+  const [skillInputValue, setSkillInputValue] = useState('');
   const [firebaseUser, firebaseLoading, firebaseError] = useAuthState(firebase.auth());
   const [newUser, setNewUser] = useState<ProfileData>({
     profilePictureURL: '',
@@ -26,7 +27,6 @@ const ProfileCreation = ({navigation}: {navigation: any}) => {
     id: '',
     ideaChatsPinned: []
   });
-  const [userSkill, setUserSkill] = useState('');
 
   useEffect(() => {
     if (!firebaseLoading) {
@@ -93,15 +93,15 @@ const ProfileCreation = ({navigation}: {navigation: any}) => {
 
             <Text style={styles.h1}>Skill</Text>
             <View style={styles.row}>
-              <TextInput
+            <TextInput
                 style={[styles.textInput, {marginRight: 0, width: '85%'}]}
-                onChangeText={text => setUserSkill(text.trim())}
+                onChangeText={text => setSkillInputValue(text)}
+                onSubmitEditing={skillSubmit}
+                value={skillInputValue}
                 placeholderTextColor={Color.FONT3}
                 placeholder='Mein Skill ist...'
               />
-              <TouchableOpacity activeOpacity={.7} style={{marginRight: 0, marginLeft: 'auto'}} onPress={() => {
-                setNewUser(update(newUser, {skills: {$push: [userSkill]}}));
-              }}>
+              <TouchableOpacity activeOpacity={.7} style={{marginRight: 0, marginLeft: 'auto'}} onPress={skillSubmit}>
                 <Ionicons name="ios-add-circle" size={48} color={Color.FONT2} />
               </TouchableOpacity>
             </View>
@@ -141,6 +141,11 @@ const ProfileCreation = ({navigation}: {navigation: any}) => {
       />
     </>
   )
+
+  function skillSubmit() {
+    setNewUser(update(newUser, {skills: {$push: [skillInputValue]}}));
+    setSkillInputValue('')
+  }
 }
 
 

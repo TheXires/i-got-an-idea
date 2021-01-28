@@ -71,7 +71,8 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
                 <TextInput
                     style={styles.textInput}
                     onChangeText={text => setCurrentChatMessage(text)}
-                    onSubmitEditing={chatSubmit} value={currentChatMessage}
+                    onSubmitEditing={chatSubmit}
+                    value={currentChatMessage}
                     placeholder="Neue Nachricht schreiben..."
                     placeholderTextColor={Color.FONT3}
                 />
