@@ -7,7 +7,6 @@ import {Color} from '../customTypes/colors';
 import {Tag} from '../customTypes/tags';
 import {IdeaContext} from '../contexts/ideaContext';
 import {IdeaType} from '../customTypes/ideaType';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {Ionicons} from '@expo/vector-icons';
 import {getIdeaByID, pinIdeaToChats} from '../services/database';

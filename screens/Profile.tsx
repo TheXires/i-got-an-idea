@@ -10,7 +10,7 @@ import {getProfileData} from '../services/database';
 import {ProfileData} from '../customTypes/profileData';
 import CustomSpinner from '../components/CustomSpinner';
 import FloatingActionButton from '../components/FloatingActionButton';
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { getUID } from '../services/auth';
 
 /**

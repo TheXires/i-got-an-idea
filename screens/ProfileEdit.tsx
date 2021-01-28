@@ -11,7 +11,6 @@ import BottomNavigation from '../components/BottomNavigation';
 import { useDocumentDataOnce } from 'react-firebase-hooks/firestore';
 import { getUID } from '../services/auth';
 import CustomSpinner from '../components/CustomSpinner';
-import { color } from 'react-native-reanimated';
 
 const ProfileEdit = ({ navigation }: { navigation: any }) => {
   const [firebaseUser, firebaseLoading, firebaseError] = useDocumentDataOnce<ProfileData>(getProfileData(getUID()));
