@@ -123,7 +123,7 @@ const Main = ({navigation}: {navigation: any}) => {
               onEndReached={() => {
                 loadMoreEntries();
               }}
-              onEndReachedThreshold={0.55}
+              onEndReachedThreshold={0.6}
               ListFooterComponent={contextLoadingMoreEntries ? <CustomSpinner /> : <></>}
             />
               :

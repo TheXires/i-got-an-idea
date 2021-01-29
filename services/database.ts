@@ -130,7 +130,7 @@ function getUserIdeas(userID: string) {
  * @returns {Object[]} A query object for the ideas with the modifiers applied 
  * @throws Error (and alert) when more than 10 items at a time are checked
  */
-function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined, limit = 20) {
+function getIdeas(oldestComesLast = true, filters: Tag[] = [], offset: firebase.firestore.QueryDocumentSnapshot<IdeaType> | undefined, limit = 5) {
 
 
     if (filters.length > 10) {//this is a limitation from firestore
