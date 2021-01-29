@@ -354,8 +354,8 @@ const profileDataConverter = {
         if (data.id != undefined) {
             delete data.id;
         }
-        if (data.ideaChatsPinned.length == 0) {
-            delete (data as any).ideaChatsPinned;
+        if (data.ideaChatsPinned.length == 0 || data?.ideaChatsPinned == undefined) {
+            (data as any).ideaChatsPinned = [];
         }
 
         return data;
