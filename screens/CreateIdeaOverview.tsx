@@ -59,6 +59,12 @@ const CreateIdeaOverview = ({navigation}: {navigation: any}) => {
         buttonFunctionLeft={() => navigation.goBack()}
         buttonTextRight='Idee erstellen'
         buttonFunctionRight={() => {
+          // if(){
+
+          // }else{
+          //   completed();
+          //   navigation.navigate('Main');
+          // }
           completed();
           navigation.navigate('Main');
         }}

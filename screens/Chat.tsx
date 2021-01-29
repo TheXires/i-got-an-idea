@@ -4,7 +4,7 @@ import {ChatContext} from '../contexts/chatContext';
 import {Color} from '../customTypes/colors';
 import {Chat as ChatType} from '../customTypes/chat';
 import CustomSpinner from '../components/CustomSpinner';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 /**
  * Screen for chat overview
@@ -13,26 +13,31 @@ const Chat = ({navigation}: {navigation: any}) => {
   const {chats, chatAmount}: {chats: ChatType[], chatAmount: number} = useContext<any>(ChatContext);
 
   return (
-
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {chatAmount > 0 ?
         <View>
           {chats !== undefined ? (
             chats.map(chat => {
               return (
-                <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: chat.pinnedIdea.ideaID})} key={chat.pinnedIdea.ideaID} style={styles.chatBox}>
+                <TouchableOpacity onPress={() => navigation.navigate('ChatDetails', {id: chat.pinnedIdea.ideaID})} key={chat.pinnedIdea.ideaID} style={styles.chatBox} activeOpacity={.8}>
                   <Image source={{uri: chat.pinnedIdea.pictureURL}} style={styles.image} />
                   <View style={styles.textBox}>
-                    <Text style={styles.heading}>{chat.pinnedIdea.name}</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.heading}>{chat.pinnedIdea.name}</Text>
+                      {chat.messages?.length > 0 ? (
+                        <Text style={styles.lastMessageTime}>
+                          <Text style={{color: Color.FONT3}}> - </Text>
+                          {chat.messages[chat.messages.length - 1].timestamp.toDate().getHours()}
+                          &#58;
+                          {chat.messages[chat.messages.length - 1].timestamp.toDate().getMinutes()}
+                        </Text>
+                      ) : (<></>)}
+                    </View>
                     {chat.messages?.length > 0 ?
                       <View style={styles.lastMessage}>
-                        <Text style={styles.lastMessageTime}>
-                          {chat.messages[chat.messages.length - 1].timestamp.toDate().getHours()}:
-                      {chat.messages[chat.messages.length - 1].timestamp.toDate().getMinutes()}
-                        </Text>
                         <Text style={styles.lastMessageAuthor}>
                           {chat.messages[chat.messages.length - 1].authorName}:
-                    </Text>
+                        </Text>
                         <Text numberOfLines={1} style={styles.lastMessageText}>
                           {chat.messages[chat.messages.length - 1].content}
                         </Text>
@@ -51,8 +56,8 @@ const Chat = ({navigation}: {navigation: any}) => {
         :
         <Text style={{color: Color.FONT1, width: '100%', textAlign: 'center'}}>Noch keine Chats vorhanden</Text>
       }
-
-    </View>
+  
+    </ScrollView>
   )
 }
 
@@ -68,7 +73,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: Color.BACKGROUND2,
     borderRadius: 20,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    padding: 10
   },
   textBox: {
     flexDirection: 'column',
@@ -85,26 +91,29 @@ const styles = StyleSheet.create({
   lastMessage: {
     flexDirection: 'row'
   },
-  lastMessageDate: {
-    color: Color.FONT3,
-  },
   lastMessageTime: {
     color: Color.FONT3,
   },
   lastMessageAuthor: {
     marginLeft: 5,
     marginRight: 5,
-    color: Color.FONT2,
+    color: Color.FONT3,
   },
   lastMessageText: {
     marginRight: 8,
     color: Color.FONT1,
   },
   image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25
+    width: 70,
+    height: 70,
+    borderRadius: 50
   }
 });
 
 export default Chat;
+
+
+
+
+// Funktinonsfähig
+

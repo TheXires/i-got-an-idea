@@ -16,6 +16,7 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
   const { getFinished, setFinished }: { getFinished: any, setFinished: any } = useContext<any>(ideaCreationContext);
   const [reload, setReload] = useState(false);  
 
+
   useEffect(() => {
     navigation.addListener('beforeRemove', (e: any) => {
       if(!getFinished()){
@@ -49,8 +50,6 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     reload && setReload(false);
   }, [reload]);
-
-  newIdea.authorIDDefault();
 
 
   return (
@@ -102,7 +101,15 @@ const CreateIdea = ({ navigation }: { navigation: any }) => {
         buttonTextLeft=''
         buttonFunctionLeft={() => null}
         buttonTextRight='Weiter'
-        buttonFunctionRight={() => navigation.navigate('CreateIdeaFrontend')}
+        buttonFunctionRight={() => {
+          if(newIdea.getName() === ''){
+            alert('Bitte gib zum Fortfahren einen g\u00fcltigen Namen ein.');
+          }else if(newIdea.getDescription() === '') {
+            alert('Bitte gib zum Fortfahren eine g\u00fcltige Beschreibung ein.');
+          }else{
+            navigation.navigate('CreateIdeaFrontend')
+          }
+        }}
       />
       
     </>

@@ -83,6 +83,7 @@ const ChatDetails = ({navigation, route}: {navigation: any, route: any}) => {
 
     function chatSubmit() {
         let msg;
+        setCurrentChatMessage(currentChatMessage.trim());
         if (currentChatMessage != null && currentChatMessage != '') {
             if (chat != undefined &&
                 user != undefined) {

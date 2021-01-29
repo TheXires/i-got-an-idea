@@ -24,14 +24,17 @@ const IdeaCreationProvider = (props: any) => {
   
   useEffect(() => {
     newIdea.with()
-    .creationTimestampDefault()
+    .authorIDDefault()
+    .description('')
     .imageURLsEmpty()
+    .name('')
     .tags([])
   }, [newIdea])
 
 
   function completed() {
     try{
+      newIdea.creationTimestampDefault()
       createIdea(newIdea.buildWithChecks());
       setNewIdea(new IdeaFactory);
       finished = true;

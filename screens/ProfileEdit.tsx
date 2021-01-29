@@ -77,10 +77,10 @@ const ProfileEdit = ({ navigation }: { navigation: any }) => {
             <View style={styles.row}>
               <TextInput
                 style={[styles.textInput, {marginRight: 0, width: '85%'}]}
-                onChangeText={text => setUserSkill(text.trim())}
+                onChangeText={text => setUserSkill(text)}
                 value={userSkill}
                 onSubmitEditing={() => {
-                  userSkill !== '' && setUser(update(user, {skills: {$push: [userSkill]}}));
+                  userSkill !== '' && setUser(update(user, {skills: {$push: [userSkill.trim()]}}));
                   setUserSkill('');
                 }}
                 placeholderTextColor={Color.FONT3}
