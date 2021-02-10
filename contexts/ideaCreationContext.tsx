@@ -24,7 +24,6 @@ const IdeaCreationProvider = (props: any) => {
   
   useEffect(() => {
     newIdea.with()
-    .authorIDDefault()
     .description('')
     .imageURLsEmpty()
     .name('')
@@ -34,7 +33,7 @@ const IdeaCreationProvider = (props: any) => {
 
   function completed() {
     try{
-      newIdea.creationTimestampDefault()
+      newIdea.creationTimestampDefault().and().authorIDDefault()
       createIdea(newIdea.buildWithChecks());
       setNewIdea(new IdeaFactory);
       finished = true;
