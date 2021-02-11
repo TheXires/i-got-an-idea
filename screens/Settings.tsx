@@ -31,7 +31,7 @@ const Settings = ({ navigation }: { navigation: any }) => {
             }}
           >
             <Text style={styles.settingText}>
-              Profile bearbeiten
+              Profil bearbeiten
             </Text>
           </TouchableOpacity>
         </View>

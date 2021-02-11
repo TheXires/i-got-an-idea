@@ -194,7 +194,9 @@ const styles = StyleSheet.create({
   name: {
     color: Color.ACCENT,
     fontSize: 21,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    width: '100%',
+    textAlign: 'center'
   },
   textInput: {
     padding: 10,
