@@ -25,4 +25,6 @@ After installing, use
 npm start
 ```
 to run a local expo dev environment and use the expo app to connect to it. You will need a Google account to login and use the app.
+The app won't run in the browser because it needs Google Play Services for authentication and therefore will only be testable on a real device.
+The App is untested on IOS devices.
 
