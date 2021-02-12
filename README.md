@@ -1,6 +1,6 @@
 # I Got An Idea
 
-App for creating, storing and shearing IT related ideas with the community.
+App for creating, storing and sharing IT related ideas with the community.
 
 ## Installation
 
