@@ -7,7 +7,7 @@ App for creating, storing and shearing IT related ideas with the community.
 #### APK
 You can download a binary for Android devices to test the app without cloning and spinning up your own dev server [here](https://github.com/TheXires/i-got-an-idea/raw/master/APK/I-Got-An-Idea.apk).
 #### Expo Dev Server
-Navigate the console into a directory you want to use for this project.
+Open the console and navigate into the project directory.
 
 Make sure to install [Node.js and Expo](https://docs.expo.io/get-started/installation/) before you start.
 After that, clone the repo and run:
